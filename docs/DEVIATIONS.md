@@ -129,3 +129,12 @@ what it could affect.
     the H2 script, which needs the dense baseline; and the fit and headroom diagnostics of X5
     were repeated for the large model (exploratory). The base model is published alongside as
     `ease-delta-base`, for machines where 2.7× the update time matters.
+
+15. **Bit-exact reuse on the CPU needed a change, found after publication of the code.** Running
+    the shipped (395M) model on the CPU from a fresh clone, the full-rebuild check reported 19 of
+    26 cached values differing by up to 6e-6. The cause was measured, not guessed: on the CPU a
+    pair's reading depended on which other pairs shared its batch of eight (the base model did
+    not show this; on the Apple GPU neither model does, which is what H1 measured). Canonical mode
+    now uses a batch of one pair on the CPU, which makes a reading depend on the pair alone there
+    too; the GPU keeps batches of eight. The cost on the CPU and the re-check are in section 8k.
+    H1's figure (0 of 195,434, Apple GPU) is unchanged.

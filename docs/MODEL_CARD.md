@@ -2,7 +2,7 @@
 license: cc-by-sa-4.0
 language:
 - en
-base_model: answerdotai/ModernBERT-large
+base_model: answerdotai/ModernBERT-base
 datasets:
 - nyu-mll/multi_nli
 - tals/vitaminc
@@ -16,14 +16,14 @@ tags:
 
 # Model card: EASE-Delta
 
-Generated 2026-10-03T08:23:27+00:00 by `scripts/package_release.py`. Figures are read from `runs/results_large/`. Full results, including hypotheses that were not supported: `docs/RESULTS.md`.
+Generated 2026-10-03T09:44:00+00:00 by `scripts/package_release.py`. Figures are read from `runs/results/`. Full results, including hypotheses that were not supported: `docs/RESULTS.md`.
 
 ## What it is
 
 Two learned parts and an exact core.
 
-- **Edge model**, 394,913,539 parameters, `answerdotai/ModernBERT-large` fine-tuned. Input: a claim and one evidence passage. Output: probabilities that the passage *supports* the claim, *refutes* it, or *settles nothing*, and a 128-dimensional message vector.
-- **Calibrated rules**: each reading is rescaled by a fitted temperature (1.020) and class bias, then combined by the exact precedence policy. Calibrated rules ship by the plan in docs/PREREGISTRATION_LARGE.md; the learned refiner was not a candidate for this release. The rules are stored in refiner form with the learned correction set to zero, so gated consolidation can add one later if feedback shows it helps.
+- **Edge model**, 149,113,347 parameters, `answerdotai/ModernBERT-base` fine-tuned. Input: a claim and one evidence passage. Output: probabilities that the passage *supports* the claim, *refutes* it, or *settles nothing*, and a 128-dimensional message vector.
+- **Calibrated rules**: each reading is rescaled by a fitted temperature (0.998) and class bias, then combined by the exact precedence policy. A learned refiner was trained and evaluated; it is not the default because: significantly worse than calibrated rules on SMALL. The rules are stored in refiner form with the learned correction set to zero, so gated consolidation can add one later if feedback shows it helps.
 - **Exact core**: versioned ledger, dependency graph, precedence policy, requirement logic, planner. Not learned.
 
 ## Intended use
@@ -73,16 +73,16 @@ Credit, as the licences ask: VitaminC, by Tal Schuster, Adam Fisch and Regina Ba
 
 | Set | n | Accuracy | Calibration error (ECE) after temperature scaling |
 |---|---:|---:|---:|
-| anli_r1.test | 1,000 | 53.70% | 0.210 |
-| anli_r2.test | 1,000 | 38.10% | 0.354 |
-| anli_r3.test | 1,200 | 36.00% | 0.358 |
-| mnli_mm.test | 9,832 | 90.21% | 0.018 |
-| snli.test | 9,824 | 84.39% | 0.012 |
-| unrelated.test | 6,000 | 99.42% | 0.005 |
-| vitaminc.test | 55,197 | 91.53% | 0.016 |
-| wanli.test | 5,000 | 77.42% | 0.034 |
+| anli_r1.test | 1,000 | 46.40% | 0.241 |
+| anli_r2.test | 1,000 | 33.30% | 0.372 |
+| anli_r3.test | 1,200 | 34.75% | 0.359 |
+| mnli_mm.test | 9,832 | 88.56% | 0.027 |
+| snli.test | 9,824 | 80.33% | 0.012 |
+| unrelated.test | 6,000 | 99.18% | 0.008 |
+| vitaminc.test | 55,197 | 90.20% | 0.024 |
+| wanli.test | 5,000 | 74.74% | 0.030 |
 
-Unrelated passages read as decisive: 0.58%.
+Unrelated passages read as decisive: 0.82%.
 
 ## Measured performance of the whole system
 
@@ -90,23 +90,29 @@ The shipped configuration (calibrated rules, every record compared with every re
 
 | Test set | Disposition accuracy | Stale-decision rate | False-READY rate |
 |---|---:|---:|---:|
-| STANDARD | 91.55% | 11.10% | 2.75% |
-| WIDE | 86.83% | 16.14% | 3.38% |
+| STANDARD | 89.52% | 13.05% | 2.97% |
+| WIDE | 84.63% | 16.26% | 4.20% |
 
-When records say which requirement they concern (`about` on an event, or documents filed per requirement), accuracy rises to 92.47% (STANDARD), 90.69% (WIDE).
+When records say which requirement they concern (`about` on an event, or documents filed per requirement), accuracy rises to 90.74% (STANDARD), 88.70% (WIDE).
+With the optional dependency proposer it is 89.71% (STANDARD), 86.62% (WIDE) at 5-11 times less work; the proposer is off by default because it misses most conflicts that follow from a consequence (below).
 
 Exactness: 0 of 195,434 cached values differed from a full rebuild (canonical mode).
 
-By device (shipped configuration, bit-exact mode, same machine). large: update median 59 ms on STANDARD and 118 ms on WIDE, 4.8 GB of memory; large, CPU: update median 210 ms on STANDARD and 433 ms on WIDE, 4.8 GB of memory.
+- STANDARD: update after a changed record, median 16 ms (95th percentile 38 ms) on an Apple M4 Max; full re-reading 167 ms.
+- WIDE: update after a changed record, median 36 ms (95th percentile 79 ms) on an Apple M4 Max; full re-reading 960 ms.
+- Timed with the learned refiner. The shipped rules skip that network, so they do strictly less work per update; the encoder dominates either way.
+
+By device (shipped configuration, bit-exact mode, same machine). Apple GPU: update median 23 ms on STANDARD and 48 ms on WIDE, 2.6 GB of memory; CPU, 4 threads: update median 75 ms on STANDARD and 223 ms on WIDE, 2.5 GB of memory; CPU, all cores: update median 108 ms on STANDARD and 295 ms on WIDE, 2.6 GB of memory.
 
 ## What limits accuracy
 
-Reading. When every reading is replaced by the correct one, the exact core gives the right answer for every action at every step of the test tasks. The edge model reads the record written for a requirement correctly 90.5% of the time on STANDARD and 90.0% of the time on WIDE. Passages on a claim's own subject that do not settle it are read as settling it 20.2% of the time (VitaminC test), so expect cross-talk between requirements of one project unless records say which requirement they concern.
+Reading. When every reading is replaced by the correct one, the exact core gives the right answer for every action at every step of the test tasks. The edge model reads the record written for a requirement correctly 88.8% of the time on STANDARD and 88.7% of the time on WIDE. Passages on a claim's own subject that do not settle it are read as settling it 22.3% of the time (VitaminC test), so expect cross-talk between requirements of one project unless records say which requirement they concern.
 
+Training this model for 200,000 more examples on the same corpora did not help (development sets: mnli.dev -0.39 points, vitaminc.dev -0.48 points). A larger encoder was not trained.
 
 ## Known weakness: implicit conflicts
 
-On STALE, at 5.0% false positives, the edge model recognised 88.5% of direct conflicts and 45.0% of conflicts that follow from a consequence. It should not be relied on to notice that a new fact undermines an old one unless the two are about the same thing in similar words.
+On STALE, at 5.0% false positives, the edge model recognised 77.0% of direct conflicts and 34.5% of conflicts that follow from a consequence. It should not be relied on to notice that a new fact undermines an old one unless the two are about the same thing in similar words.
 
 ## Limitations
 
@@ -206,11 +212,16 @@ These were written before the results were known and are not excuses for them. I
 **Deployment**
 
 * The HTTP API has no authentication and is meant for the local machine.
+* Bit-exact reuse was measured on the Apple GPU (H1). On the CPU the shipped model's reading of a
+  pair depended on the other pairs in its batch, by up to 6e-6, so the CPU uses batches of one
+  (Deviations, item 15); with that, the full-rebuild check reports no differences on the CPU
+  either, at the cost given in section 8k.
 * Run on macOS with Apple silicon (Python 3.12) and, through the Dockerfile, on Linux (aarch64,
   CPU) where the test suite passes and the report regenerates. Windows, x86-64 and other Python
-  versions are untested. Without a GPU, an update took about 0.1 to 0.2 seconds with the base
-  reader and 0.2 to 0.4 seconds with the shipped larger reader on this machine's processor, with
-  2.5 and 4.8 GB of memory (sections 8k and 8l). Slower processors were not measured.
+  versions are untested. Without a GPU, an update took about 0.1 seconds with the base reader
+  and 0.2 to 0.6 seconds with the shipped larger reader on this machine's processor, with 2.5 and
+  4.8 GB of memory (sections 8k and 8l); reading a new task of 13 requirements and 34 records in
+  full takes about 22 seconds there. Slower processors were not measured.
 * With `--multi`, workspaces are separated by key and by files; the model and its reading cache
   are shared. One process serves requests that need the model one at a time. Accounts,
   passwords and billing do not exist. None of this has been load-tested or audited.

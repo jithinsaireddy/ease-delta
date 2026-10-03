@@ -313,3 +313,32 @@ def test_withdrawing_a_member_reopens_a_join_predicate():
     eng.deliver(Event("approval", 2, None, source_id="client", authority=2))
     assert eng.belief("latest_approved")["status"] == "UNRESOLVED"
     assert eng.verify()["not_bitwise_equal"] == 0
+
+
+@pytest.mark.slow
+def test_canonical_readings_on_the_cpu_do_not_depend_on_the_batch():
+    """Found when the service was run on the CPU: with batches of eight, a pair's reading depended on
+    the other pairs in its batch by up to 6e-6. The CPU default is now a batch of one. Needs the
+    released model; skipped without it."""
+    import os
+    from pathlib import Path
+
+    import numpy as np
+
+    from ease.scorer import ModelScorer
+
+    model = Path(os.environ.get("EASE_TEST_MODEL", "release/edge"))
+    if not (model / "model.safetensors").exists():
+        pytest.skip("no released model")
+    claim = "The client has approved the design."
+    texts = ["Email from the client: we approve the design as presented, please go ahead.",
+             "The venue has confirmed the booking in writing for 14 November.", "Short note.",
+             "Email from accounts: the invoice will follow next week once the finance team, closed on Monday, has it."]
+    pairs = [(claim, t) for t in texts]
+    s = ModelScorer(str(model), device="cpu", canonical=True)
+    assert s.canonical_batch == 1
+    s.cache = {}
+    alone = [np.asarray(s.score([p])[0][0]) for p in pairs]
+    s.cache = {}
+    together = [np.asarray(v[0]) for v in s.score(pairs)]
+    assert all(np.array_equal(a, b) for a, b in zip(alone, together))

@@ -51,10 +51,11 @@ docker run --rm -p 127.0.0.1:8791:8791 -e EASE_MULTI=1 -e EASE_ADMIN_KEY=change-
   -v $PWD/release:/models:ro -v ease-data:/data ease-delta
 ```
 
-or `EASE_ADMIN_KEY=change-me docker compose up`. The image runs on the CPU; on a laptop-class
-processor an update takes about 0.1 to 0.2 s and the process uses about 2.5 GB
-(`docs/RESULTS.md`, section 8k). Put a TLS-terminating reverse proxy in front of it; the service
-itself speaks plain HTTP.
+or `EASE_ADMIN_KEY=change-me docker compose up`. The image runs on the CPU; with the shipped
+model an update takes about 0.2 to 0.6 s on a laptop-class processor and the process uses about
+4.8 GB; the base variant (`ease-delta-base`) takes about 0.1 to 0.3 s and 2.5 GB
+(`docs/RESULTS.md`, sections 8k and 8l). Put a TLS-terminating reverse proxy in front of it; the
+service itself speaks plain HTTP.
 
 ## Backups
 

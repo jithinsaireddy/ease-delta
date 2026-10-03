@@ -27,7 +27,7 @@ and are kept as reported.
 | | Result |
 |---|---|
 | Exactness | 0 of 195,434 cached values differed from an independent full rebuild, with either reader |
-| Cost of an update | base reader: 16 ms median on tasks of 5 requirements and 11 records (full re-reading: 167 ms); 36 ms on tasks of 13 requirements and 34 records (960 ms). Shipped larger reader: 59 ms and 118 ms on the Apple GPU, 210 ms and 433 ms on its CPU |
+| Cost of an update | base reader: 16 ms median on tasks of 5 requirements and 11 records (full re-reading: 167 ms); 36 ms on tasks of 13 requirements and 34 records (960 ms). Shipped larger reader: 59 ms and 118 ms on the Apple GPU, 0.19 s and 0.58 s on its CPU |
 | Larger reader (shipped) | ModernBERT-large in place of base, same recipe: +2.0 accuracy points [+1.1, +2.9] on standard tasks and +2.2 [+0.7, +3.6] on larger ones, not worse on small ones; stale decisions 13.1% → 11.1% on standard tasks; it reads the record written for a requirement correctly 90.5% of the time (base 88.9%) at 2.7× the update time |
 | Against a dense reader with the same backbone, training and wrapper (base reader) | with the learned refiner: +3.6 accuracy points [+2.1, +5.1] and 3.9 points fewer stale decisions [1.4, 6.6] on standard tasks, at 6.5% of the tokens. On larger tasks +5.4 points [+2.0, +8.7], but the stale-decision difference was not significant, so that hypothesis is **not supported**. The shipped calibrated rules: +2.2 points [+0.6, +3.9] and 3.6 fewer stale decisions [1.0, 6.2] on standard tasks; +5.5 points [+2.3, +8.7] on larger ones |
 | Against a public NLI model in the same wrapper (base reader) | about +19 to +20 points; it reads 45% of unrelated documents as evidence, this model 0.8% |
@@ -39,7 +39,7 @@ and are kept as reported.
 | "The latest version" | read **unsafely**: name the specific version in requirements |
 | Where the error comes from | with every reading correct, the exact parts were right at every step of every test task, with either reader. All error is the reader's: 89% (base) and 90.5% (large) correct on the record written for a requirement. Messages on the same subject that settle nothing are read as settling it 22% (base) and 20% (large) of the time |
 | More training | 200,000 more examples on the same corpora did not help (slightly worse on development data). A larger encoder was not trained |
-| Without a GPU | base reader: 0.09 s per update on standard tasks, 0.19 s on larger ones, 2.5 GB of memory; shipped larger reader: 0.21 s, 0.43 s, 4.8 GB, on this laptop's processor |
+| Without a GPU | on this laptop's processor, with readings bit-exact there too: base reader 0.07 to 0.11 s per update on standard tasks and 0.22 to 0.29 s on larger ones (4 to 12 threads), 2.5 GB of memory; shipped larger reader 0.19 s and 0.58 s, 4.8 GB |
 
 ## How it works
 

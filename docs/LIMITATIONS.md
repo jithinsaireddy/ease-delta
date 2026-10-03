@@ -94,11 +94,16 @@ These were written before the results were known and are not excuses for them. I
 **Deployment**
 
 * The HTTP API has no authentication and is meant for the local machine.
+* Bit-exact reuse was measured on the Apple GPU (H1). On the CPU the shipped model's reading of a
+  pair depended on the other pairs in its batch, by up to 6e-6, so the CPU uses batches of one
+  (Deviations, item 15); with that, the full-rebuild check reports no differences on the CPU
+  either, at the cost given in section 8k.
 * Run on macOS with Apple silicon (Python 3.12) and, through the Dockerfile, on Linux (aarch64,
   CPU) where the test suite passes and the report regenerates. Windows, x86-64 and other Python
-  versions are untested. Without a GPU, an update took about 0.1 to 0.2 seconds with the base
-  reader and 0.2 to 0.4 seconds with the shipped larger reader on this machine's processor, with
-  2.5 and 4.8 GB of memory (sections 8k and 8l). Slower processors were not measured.
+  versions are untested. Without a GPU, an update took about 0.1 seconds with the base reader
+  and 0.2 to 0.6 seconds with the shipped larger reader on this machine's processor, with 2.5 and
+  4.8 GB of memory (sections 8k and 8l); reading a new task of 13 requirements and 34 records in
+  full takes about 22 seconds there. Slower processors were not measured.
 * With `--multi`, workspaces are separated by key and by files; the model and its reading cache
   are shared. One process serves requests that need the model one at a time. Accounts,
   passwords and billing do not exist. None of this has been load-tested or audited.

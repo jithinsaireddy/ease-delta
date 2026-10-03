@@ -1,6 +1,6 @@
 # EASE-Delta: results
 
-Generated 2026-10-03 08:23 UTC by `scripts/make_report.py` from `runs/results/*.json`. No figure in this document was typed by hand.
+Generated 2026-10-03 09:46 UTC by `scripts/make_report.py` from `runs/results/*.json`. No figure in this document was typed by hand.
 
 Pre-registration: `docs/PREREGISTRATION.md`, SHA-256 `babc7259667e922ff9edce371c64d0905f15f4e38568cb99642b383355bb0af3`, recorded 2026-09-29T21:24:22Z before any test split was evaluated.
 
@@ -574,8 +574,8 @@ Timing of the shipped configuration by device; exploratory. Canonical shapes. Ap
 | Device | Threads | STANDARD update, median (95th) | WIDE update, median (95th) | First full reading of a task, median (STANDARD / WIDE) | Peak memory |
 |---|---:|---:|---:|---:|---:|
 | Apple GPU | 12 | 23 ms (57 ms) | 48 ms (87 ms) | 0.3 s / 1.6 s | 2.6 GB |
-| CPU, 4 threads | 4 | 93 ms (285 ms) | 190 ms (406 ms) | 1.1 s / 6.8 s | 2.5 GB |
-| CPU, all cores | 12 | 90 ms (242 ms) | 187 ms (376 ms) | 1.0 s / 6.3 s | 2.5 GB |
+| CPU, 4 threads | 4 | 75 ms (205 ms) | 223 ms (426 ms) | 1.3 s / 9.1 s | 2.5 GB |
+| CPU, all cores | 12 | 108 ms (299 ms) | 295 ms (563 ms) | 1.9 s / 11.9 s | 2.6 GB |
 
 ## 8l. A larger encoder (pre-registered addendum)
 
@@ -611,7 +611,7 @@ VitaminC real revisions: base 88.65%, large 89.90%; synthetic: base 92.78%, larg
 |---|---|---:|---:|---:|
 | base | mps | 22 ms (57 ms) | 48 ms (85 ms) | 2.5 GB |
 | large | mps | 59 ms (171 ms) | 118 ms (230 ms) | 4.8 GB |
-| large, CPU | cpu | 210 ms (581 ms) | 433 ms (816 ms) | 4.8 GB |
+| large, CPU | cpu | 192 ms (534 ms) | 576 ms (1051 ms) | 4.8 GB |
 
 Median update time, large / base, on STANDARD: 2.68.
 
@@ -756,6 +756,15 @@ what it could affect.
     were repeated for the large model (exploratory). The base model is published alongside as
     `ease-delta-base`, for machines where 2.7× the update time matters.
 
+15. **Bit-exact reuse on the CPU needed a change, found after publication of the code.** Running
+    the shipped (395M) model on the CPU from a fresh clone, the full-rebuild check reported 19 of
+    26 cached values differing by up to 6e-6. The cause was measured, not guessed: on the CPU a
+    pair's reading depended on which other pairs shared its batch of eight (the base model did
+    not show this; on the Apple GPU neither model does, which is what H1 measured). Canonical mode
+    now uses a batch of one pair on the CPU, which makes a reading depend on the pair alone there
+    too; the GPU keeps batches of eight. The cost on the CPU and the re-check are in section 8k.
+    H1's figure (0 of 195,434, Apple GPU) is unchanged.
+
 ## 11. Limitations
 
 These were written before the results were known and are not excuses for them. Items marked *(updated)* were revised afterwards to replace an expectation with what was measured.
@@ -854,11 +863,16 @@ These were written before the results were known and are not excuses for them. I
 **Deployment**
 
 * The HTTP API has no authentication and is meant for the local machine.
+* Bit-exact reuse was measured on the Apple GPU (H1). On the CPU the shipped model's reading of a
+  pair depended on the other pairs in its batch, by up to 6e-6, so the CPU uses batches of one
+  (Deviations, item 15); with that, the full-rebuild check reports no differences on the CPU
+  either, at the cost given in section 8k.
 * Run on macOS with Apple silicon (Python 3.12) and, through the Dockerfile, on Linux (aarch64,
   CPU) where the test suite passes and the report regenerates. Windows, x86-64 and other Python
-  versions are untested. Without a GPU, an update took about 0.1 to 0.2 seconds with the base
-  reader and 0.2 to 0.4 seconds with the shipped larger reader on this machine's processor, with
-  2.5 and 4.8 GB of memory (sections 8k and 8l). Slower processors were not measured.
+  versions are untested. Without a GPU, an update took about 0.1 seconds with the base reader
+  and 0.2 to 0.6 seconds with the shipped larger reader on this machine's processor, with 2.5 and
+  4.8 GB of memory (sections 8k and 8l); reading a new task of 13 requirements and 34 records in
+  full takes about 22 seconds there. Slower processors were not measured.
 * With `--multi`, workspaces are separated by key and by files; the model and its reading cache
   are shared. One process serves requests that need the model one at a time. Accounts,
   passwords and billing do not exist. None of this has been load-tested or audited.

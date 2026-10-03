@@ -65,12 +65,16 @@ class ModelScorer:
     development machine (M4 Max, MPS, torch 2.14) regrouping changed values by up to 4.8e-6.
     `canonical=True` removes that dependence. Every forward pass then has a shape determined by the
     pair alone: the batch always holds `canonical_batch` rows (short batches are filled with copies
-    of their first row) and the length is the smallest bucket that fits the pair. In that mode
-    regrouping changed nothing, bit for bit, on both MPS and CPU (runs/determinism_probe.json).
+    of their first row) and the length is the smallest bucket that fits the pair. On MPS that was
+    enough: regrouping changed nothing, bit for bit (docs/RESULTS.md, section 4). On the CPU it was
+    not: a row's value still depended on the other rows in its batch, by up to 6e-6, so on the CPU
+    the canonical batch is one pair (the shape is then fixed by the pair alone and the result is
+    independent of everything else), at about a quarter more time per update. Pass
+    `canonical_batch` to override either default.
     """
 
     def __init__(self, model_dir: str | Path, device: Optional[str] = None, batch_size: int = 64,
-                 canonical: bool = False, canonical_len: Optional[int] = None, canonical_batch: int = 8,
+                 canonical: bool = False, canonical_len: Optional[int] = None, canonical_batch: Optional[int] = None,
                  canonical_buckets: tuple[int, ...] = (64, 128, 256),
                  cache: Optional[dict] = None, max_cache: int = 500_000):
         import torch
@@ -86,7 +90,7 @@ class ModelScorer:
         self.msg_dim = self.model.cfg.msg_dim
         self.batch_size = batch_size
         self.canonical = canonical
-        self.canonical_batch = canonical_batch
+        self.canonical_batch = canonical_batch if canonical_batch else (1 if self.device.type == "cpu" else 8)
         buckets = (canonical_len,) if canonical_len else canonical_buckets
         self.buckets = tuple(sorted({min(b, self.max_len) for b in buckets} | {self.max_len}))
         self.version = "edge-" + file_digest(self.dir / "model.safetensors")[:16]
