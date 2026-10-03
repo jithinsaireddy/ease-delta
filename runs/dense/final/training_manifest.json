@@ -1,0 +1,34 @@
+{
+  "args": {
+    "atoms": "runs/atoms",
+    "edge": "runs/stage_a/final",
+    "episode_seed": 20260901,
+    "episodes": 4000,
+    "epochs": 1.0,
+    "head_lr": 0.0002,
+    "lr": 2e-05,
+    "max_len": 1024,
+    "out": "runs/dense",
+    "seed": 1,
+    "token_budget": 8192,
+    "train_examples": 60000,
+    "val_every": 400,
+    "val_examples": 4000,
+    "val_frac": 0.1,
+    "val_probe": 800
+  },
+  "examples": 60000,
+  "init": {
+    "copied_tensors": 138,
+    "total_tensors": 140
+  },
+  "initialised_from": "runs/stage_a/final",
+  "steps": 2679,
+  "tokens": 18477017,
+  "train_seconds": 3626.7,
+  "val": {
+    "accuracy": 0.931,
+    "n": 4000,
+    "nll": 0.24278745768620524
+  }
+}

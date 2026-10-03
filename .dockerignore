@@ -1,0 +1,15 @@
+.venv
+.git
+.claude
+.pytest_cache
+.hypothesis
+.ruff_cache
+runs
+release
+scratch
+docs
+tests
+scripts
+configs
+**/__pycache__
+*.sqlite*

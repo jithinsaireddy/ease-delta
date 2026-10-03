@@ -218,4 +218,5 @@ def belief_interval(
             lb[f] = v
         b = evaluate(schema, node_id, dummy_status, lb).belief
         lo, hi = min(lo, b), max(hi, b)
-    return lo, hi, True
+    # a belief is a probability; rounding in the arithmetic can put a corner a few ulps outside [0, 1]
+    return min(max(lo, 0.0), 1.0), min(max(hi, 0.0), 1.0), True

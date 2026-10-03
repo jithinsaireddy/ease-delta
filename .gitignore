@@ -1,0 +1,55 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.hypothesis/
+.ruff_cache/
+.claude/
+scratch/
+*.egg-info/
+build/
+dist/
+.DS_Store
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+# Run outputs are large and stay local. The small files that docs/RESULTS.md is generated from
+# are kept, so the report can be regenerated and checked without rerunning anything.
+runs/*
+!runs/prereg_hash.txt
+!runs/prereg_large_hash.txt
+!runs/mechanism_probe.json
+!runs/leakage_audit.json
+!runs/determinism_probe.json
+!runs/canonical_bench.json
+!runs/results/
+runs/results/*
+!runs/results/*.json
+!runs/stage_a/
+runs/stage_a/*
+!runs/stage_a/run_config.json
+!runs/stage_a/final/
+runs/stage_a/final/*
+!runs/stage_a/final/training_manifest.json
+!runs/dense/
+runs/dense/*
+!runs/dense/final/
+runs/dense/final/*
+!runs/dense/final/training_manifest.json
+!runs/stage_a_large/
+runs/stage_a_large/*
+!runs/stage_a_large/run_config.json
+!runs/stage_a_large/final/
+runs/stage_a_large/final/*
+!runs/stage_a_large/final/training_manifest.json
+!runs/results_large/
+runs/results_large/*
+!runs/results_large/*.json
+
+# The release directory holds the model weights, which are published separately.
+# Its manifest (file hashes, what was chosen and why) is kept.
+release/*
+!release/MANIFEST.json
+release_base/*
+!release_base/MANIFEST.json

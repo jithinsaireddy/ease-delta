@@ -1,0 +1,87 @@
+{
+  "name": "EASE-Delta",
+  "created": "2026-10-03T08:18:51+00:00",
+  "edge_version": "edge-5739087bb98e2f4c",
+  "aggregator": {
+    "kind": "calibrated rules (refiner with zero correction)",
+    "version": "refined-975209105aa7e688",
+    "temperature": 0.9983299970626831,
+    "bias": [
+      0.03598080947995186,
+      -0.2144969254732132,
+      0.17851610481739044
+    ],
+    "chosen_because": "significantly worse than calibrated rules on SMALL"
+  },
+  "backbone": "answerdotai/ModernBERT-base",
+  "parameters_edge": 149113347,
+  "training_examples": 900000,
+  "examples_by_source": {
+    "mnli": 243178,
+    "unrelated": 179460,
+    "vitaminc": 359978,
+    "wanli": 117384
+  },
+  "licences_of_training_data": {
+    "mnli": "cc-by-3.0 / cc-by-sa-3.0 / mit / other (per genre)",
+    "unrelated": "derived: texts drawn from the real sources above",
+    "vitaminc": "cc-by-sa-3.0",
+    "wanli": "cc-by-4.0"
+  },
+  "preregistration_sha256": "babc7259667e922ff9edce371c64d0905f15f4e38568cb99642b383355bb0af3",
+  "versions": {
+    "torch": "2.14.0",
+    "transformers": "5.17.0",
+    "datasets": "5.0.1"
+  },
+  "files": {
+    "aggregator/aggregator.json": {
+      "sha256": "e16e83e40135aee4cc1e0657bbdbc19e1d0e4a74711d4656178236e688269633",
+      "bytes": 335
+    },
+    "aggregator/aggregator.safetensors": {
+      "sha256": "b41290af577f1b8fe4961cb2782a6d7e64e2ab49962cd9c03e988bd290f24e10",
+      "bytes": 330240
+    },
+    "aggregator/rule_calibration.json": {
+      "sha256": "11ae33c115014559061d3dccbb627a2852f8c3f6b5f27124093b401489d77db5",
+      "bytes": 130
+    },
+    "edge/edge_config.json": {
+      "sha256": "e040cfeea306f044389aa21ae255d743ea8ba8791f53e8d2858c65db0252e6fa",
+      "bytes": 230
+    },
+    "edge/model.safetensors": {
+      "sha256": "5739087bb98e2f4cfa032ee3276664691648a3c3934b31a19ab9d239b84ab57c",
+      "bytes": 596467948
+    },
+    "edge/regression_sets.npz": {
+      "sha256": "811b6d19982f3f76df0e1da5eab880bd5c42926c1dcc5f82cfae572ba3b76d71",
+      "bytes": 23868366
+    },
+    "edge/regression_suite.npz": {
+      "sha256": "6a3a86b904edc62ad60020052c91ecaad883bbf1da98a5152d2b83e1c01b61f9",
+      "bytes": 7391995
+    },
+    "edge/tokenizer.json": {
+      "sha256": "e0a696f1fbf0f2c7d212e8b9e133250d19bd1c7e5bc34fc91c59d008894dc7b1",
+      "bytes": 3583326
+    },
+    "edge/tokenizer_config.json": {
+      "sha256": "fb54f027372062b2ca52282efb04d178a8b57167a00cd8f4e816515823a2c016",
+      "bytes": 380
+    },
+    "edge/training_manifest.json": {
+      "sha256": "8c4ed53d0dab3f0c698d3441efb6c8675f88f8a237a5a3c6852f915ee9c873f2",
+      "bytes": 2923
+    },
+    "proposer.json": {
+      "sha256": "0923490ccb65e96fef5275740cb8c4990fac58d060ad1d218bb890a016f1f4b0",
+      "bytes": 114
+    },
+    "settings.json": {
+      "sha256": "cfa29b42278512135c1681d204f55f2967641a2738d5eab367483bf76ac1fcfd",
+      "bytes": 393
+    }
+  }
+}

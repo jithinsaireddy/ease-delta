@@ -1,0 +1,136 @@
+{
+  "config": {
+    "batch_size": 32,
+    "ckpt_every": 1000,
+    "dev_limit": 2000,
+    "dev_sets": [
+      "vitaminc.dev",
+      "mnli.dev",
+      "unrelated.dev",
+      "snli.dev"
+    ],
+    "device": "",
+    "dropout": 0.1,
+    "empty_cache_every": 200,
+    "encoder_name": "answerdotai/ModernBERT-large",
+    "eval_cache": "runs/eval_cache",
+    "eval_every": 2000,
+    "grad_clip": 1.0,
+    "head_lr": 0.00015,
+    "init_from": "",
+    "label_smoothing": 0.0,
+    "local_sources": {},
+    "log_every": 50,
+    "lr": 3e-05,
+    "max_len": 256,
+    "mix_every": 500,
+    "mix_tolerance": 0.12,
+    "mixture": {
+      "mnli": 0.27,
+      "unrelated": 0.2,
+      "vitaminc": 0.4,
+      "wanli": 0.13
+    },
+    "msg_dim": 128,
+    "pad_multiple": 8,
+    "pool_batches": 50,
+    "pooling": "cls",
+    "run_dir": "runs/stage_a_large",
+    "seed": 1234,
+    "shuffle_buffer": 1000000,
+    "total_examples": 900000,
+    "warmup_frac": 0.05,
+    "weight_decay": 0.01
+  },
+  "dev_metrics_full": {
+    "mnli.dev": {
+      "accuracy": 0.9030056036678553,
+      "brier": 0.1456323050398504,
+      "ece": 0.010014115824620591,
+      "macro_f1": 0.9027877989338435,
+      "n": 9815,
+      "nll": 0.26479096906783245
+    },
+    "snli.dev": {
+      "accuracy": 0.846,
+      "brier": 0.23099046221752137,
+      "ece": 0.03285633796867948,
+      "macro_f1": 0.8473216129210136,
+      "n": 3000,
+      "nll": 0.4268683104323174
+    },
+    "unrelated.dev": {
+      "accuracy": 0.997,
+      "brier": 0.004759002979035539,
+      "ece": 0.002903429113764198,
+      "macro_f1": 0.3328325822066433,
+      "n": 3000,
+      "nll": 0.009563247361837885
+    },
+    "vitaminc.dev": {
+      "accuracy": 0.8668555240793201,
+      "brier": 0.2090611322895506,
+      "ece": 0.054882037106198475,
+      "macro_f1": 0.8310211183410091,
+      "n": 6001,
+      "n_sets": 1801,
+      "nll": 0.40288551315992555,
+      "set_accuracy": 0.7240421987784564
+    }
+  },
+  "examples": 900000,
+  "examples_by_source": {
+    "mnli": 243178,
+    "unrelated": 179460,
+    "vitaminc": 359978,
+    "wanli": 117384
+  },
+  "label_counts_by_source(S,R,N,not-S)": {
+    "mnli": [
+      80854,
+      81405,
+      80919,
+      0
+    ],
+    "unrelated": [
+      0,
+      0,
+      179460,
+      0
+    ],
+    "vitaminc": [
+      180370,
+      128141,
+      51467,
+      0
+    ],
+    "wanli": [
+      43974,
+      17597,
+      55813,
+      0
+    ]
+  },
+  "label_mix_drift_warnings": 0,
+  "licences": {
+    "mnli": "cc-by-3.0 / cc-by-sa-3.0 / mit / other (per genre)",
+    "unrelated": "derived: texts drawn from the real sources above",
+    "vitaminc": "cc-by-sa-3.0",
+    "wanli": "cc-by-4.0"
+  },
+  "parameters": 394913539,
+  "shuffle_buffer": 1000000,
+  "stage": "A",
+  "steps": 28125,
+  "stream_epochs": {
+    "mnli": 0,
+    "vitaminc": 0,
+    "wanli": 1
+  },
+  "stream_reopens": {
+    "mnli": 0,
+    "vitaminc": 0,
+    "wanli": 0
+  },
+  "train_seconds": 17704.1
+}

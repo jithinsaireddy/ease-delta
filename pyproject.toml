@@ -13,21 +13,17 @@ dependencies = [
   "torch>=2.6",
   "transformers>=4.48",
   "datasets>=4.0",
-  "huggingface_hub",
   "safetensors",
   "numpy",
   "scipy",
-  "scikit-learn",
   "pyyaml",
-  "tqdm",
   "fastapi",
   "uvicorn",
   "pydantic>=2",
-  "psutil",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "hypothesis", "httpx", "matplotlib"]
+dev = ["pytest", "hypothesis", "httpx", "ruff"]
 
 [project.scripts]
 ease = "ease.cli:main"
@@ -37,6 +33,10 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 ease = ["service/*.html"]
+
+[tool.ruff.lint]
+# Correctness rules, named here so the outcome does not depend on a ruff version's defaults.
+select = ["E9", "F", "B023"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -1,0 +1,137 @@
+{
+  "note": "Timing of the shipped configuration by device; exploratory. Canonical shapes. Apple M4 Max, 12 performance and 4 efficiency cores. Times include ledger write, propagation, tokenisation and the model's forward passes.",
+  "runs": {
+    "Apple GPU": {
+      "device": "mps",
+      "model_load_seconds": 10.189296916000785,
+      "peak_memory_gb": 2.551431168,
+      "sets": {
+        "STANDARD": {
+          "episodes": 40,
+          "pairs_per_update": 3.193846153846154,
+          "reading_a_new_task_in_full": {
+            "max_ms": 587.4391230045148,
+            "mean_ms": 266.7390751998937,
+            "n": 40,
+            "p50_ms": 253.47345849968406,
+            "p95_ms": 425.0363401001777
+          },
+          "update": {
+            "max_ms": 58.900125000036496,
+            "mean_ms": 17.35765051695825,
+            "n": 325,
+            "p50_ms": 22.770999999920605,
+            "p95_ms": 56.99192460051563
+          }
+        },
+        "WIDE": {
+          "episodes": 15,
+          "pairs_per_update": 6.486607142857143,
+          "reading_a_new_task_in_full": {
+            "max_ms": 3201.8691669982218,
+            "mean_ms": 1643.0839222656384,
+            "n": 15,
+            "p50_ms": 1585.4304969980149,
+            "p95_ms": 2378.564546397864
+          },
+          "update": {
+            "max_ms": 139.20479199987312,
+            "mean_ms": 37.59209713398702,
+            "n": 224,
+            "p50_ms": 48.419374999866704,
+            "p95_ms": 86.72980445007852
+          }
+        }
+      },
+      "threads": 12
+    },
+    "CPU, 4 threads": {
+      "device": "cpu",
+      "model_load_seconds": 10.162462582999979,
+      "peak_memory_gb": 2.454339584,
+      "sets": {
+        "STANDARD": {
+          "episodes": 40,
+          "pairs_per_update": 3.193846153846154,
+          "reading_a_new_task_in_full": {
+            "max_ms": 2827.8064200003428,
+            "mean_ms": 1217.8644480249204,
+            "n": 40,
+            "p50_ms": 1116.3422275012636,
+            "p95_ms": 2044.4030200501848
+          },
+          "update": {
+            "max_ms": 297.9343329998301,
+            "mean_ms": 74.1663521938636,
+            "n": 325,
+            "p50_ms": 92.74741699937294,
+            "p95_ms": 285.2770330006024
+          }
+        },
+        "WIDE": {
+          "episodes": 15,
+          "pairs_per_update": 6.486607142857143,
+          "reading_a_new_task_in_full": {
+            "max_ms": 16091.529625999101,
+            "mean_ms": 7331.261494867065,
+            "n": 15,
+            "p50_ms": 6805.814918997385,
+            "p95_ms": 11385.669522302025
+          },
+          "update": {
+            "max_ms": 805.2472080007647,
+            "mean_ms": 151.95408485709956,
+            "n": 224,
+            "p50_ms": 190.16456249983094,
+            "p95_ms": 406.2993437001296
+          }
+        }
+      },
+      "threads": 4
+    },
+    "CPU, all cores": {
+      "device": "cpu",
+      "model_load_seconds": 10.058950124999683,
+      "peak_memory_gb": 2.528804864,
+      "sets": {
+        "STANDARD": {
+          "episodes": 40,
+          "pairs_per_update": 3.193846153846154,
+          "reading_a_new_task_in_full": {
+            "max_ms": 2404.286211000908,
+            "mean_ms": 1080.1279625502275,
+            "n": 40,
+            "p50_ms": 996.8746880012986,
+            "p95_ms": 1755.7124116504378
+          },
+          "update": {
+            "max_ms": 245.38049999955547,
+            "mean_ms": 66.32844203380675,
+            "n": 325,
+            "p50_ms": 90.18224999999802,
+            "p95_ms": 241.57855839985132
+          }
+        },
+        "WIDE": {
+          "episodes": 15,
+          "pairs_per_update": 6.486607142857143,
+          "reading_a_new_task_in_full": {
+            "max_ms": 13172.447373000068,
+            "mean_ms": 6922.451719000552,
+            "n": 15,
+            "p50_ms": 6276.779164999425,
+            "p95_ms": 10104.705947301585
+          },
+          "update": {
+            "max_ms": 581.4034589993753,
+            "mean_ms": 143.96667112056403,
+            "n": 224,
+            "p50_ms": 187.3858745002508,
+            "p95_ms": 376.32662059932045
+          }
+        }
+      },
+      "threads": 12
+    }
+  }
+}

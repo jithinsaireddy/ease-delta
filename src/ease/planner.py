@@ -69,6 +69,16 @@ def open_predicates(engine: Engine, min_open: float = 0.2) -> list[str]:
     return [p.id for p in engine.schema.predicates if ls[p.id][2] >= min_open]
 
 
+def askable_predicates(engine: Engine, settled: float = 0.999) -> list[str]:
+    """Predicates a person's answer could still inform: all that the model is not sure of.
+
+    Wider than `open_predicates`. A requirement read as satisfied at 0.86 is not open, yet a
+    confirmation of it can be what lifts an action over its threshold.
+    """
+    ls, _ = engine.leaf_state()
+    return [p.id for p in engine.schema.predicates if max(ls[p.id][0], ls[p.id][1]) < settled]
+
+
 def value_of_asking(engine: Engine, predicates: Sequence[str]) -> Question:
     ls, lb = engine.leaf_state()
     base, base_disp = policy_utility(engine, ls, lb)
@@ -94,12 +104,13 @@ def value_of_asking(engine: Engine, predicates: Sequence[str]) -> Question:
 
 def best_question(engine: Engine, max_set: int = 3, candidates: Optional[Sequence[str]] = None,
                   max_candidates: int = 12) -> Optional[Question]:
-    """The set of at most `max_set` open predicates with the highest positive value, or None if
-    nothing is worth its cost."""
-    cands = list(candidates) if candidates is not None else open_predicates(engine)
+    """The set of at most `max_set` predicates with the highest positive value, or None if nothing
+    is worth its cost. Candidates are the predicates the model is not sure of; when there are more
+    than `max_candidates`, the least settled are kept."""
+    cands = list(candidates) if candidates is not None else askable_predicates(engine)
     if len(cands) > max_candidates:
         ls, _ = engine.leaf_state()
-        cands = sorted(cands, key=lambda p: -ls[p][2])[:max_candidates]
+        cands = sorted(cands, key=lambda p: (max(ls[p][0], ls[p][1]), p))[:max_candidates]
     best: Optional[Question] = None
     for k in range(1, max_set + 1):
         for combo in combinations(sorted(cands), k):
@@ -158,11 +169,41 @@ def certify_stable(engine: Engine, action_id: str, free: Sequence[str], max_free
     return Certificate(action_id, free, True, current, checked)
 
 
-def unnecessary_questions(engine: Engine) -> dict[str, list[str]]:
-    """For each action, the open predicates under it that provably cannot change its proposal."""
+def unnecessary_questions(engine: Engine, max_open: int = 8) -> dict[str, list[str]]:
+    """For each action, the open predicates under it whose answer cannot change its proposal,
+    whatever the other open predicates turn out to be.
+
+    Settling one predicate alone often changes nothing while settling it together with others
+    does (an AND of two open requirements). So a predicate counts as unnecessary only if, for
+    every settlement of the other open predicates under the action, its three possible values
+    give the same disposition. With more than `max_open` open predicates nothing is certified.
+    """
     out: dict[str, list[str]] = {}
     opens = set(open_predicates(engine))
+    ls, lb = engine.leaf_state()
     for a in engine.schema.actions:
         leaves = [l for l in dict.fromkeys(engine.schema.leaves_of(a.requires)) if l in opens]
-        out[a.id] = [l for l in leaves if certify_stable(engine, a.id, [l]).stable]
+        out[a.id] = []
+        if not leaves or len(leaves) > max_open:
+            continue
+        for l in leaves:
+            others = [o for o in leaves if o != l]
+            irrelevant = True
+            for combo in product((0, 1, 2), repeat=len(others)):
+                seen = set()
+                for v in (0, 1, 2):
+                    s2, b2 = dict(ls), dict(lb)
+                    for pid, val in zip(others + [l], combo + (v,)):
+                        if val == 0:
+                            s2[pid], b2[pid] = YES, 1.0
+                        elif val == 1:
+                            s2[pid], b2[pid] = NO, 0.0
+                        else:
+                            s2[pid], b2[pid] = OPEN, float(engine.schema.predicate(pid).prior)
+                    seen.add(disposition_of(evaluate(engine.schema, a.requires, s2, b2).status, engine.cfg))
+                if len(seen) > 1:
+                    irrelevant = False
+                    break
+            if irrelevant:
+                out[a.id].append(l)
     return out

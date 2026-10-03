@@ -68,6 +68,12 @@ def main() -> int:
     prop, stale, evo = load(R / "proposer.json"), load(R / "stale.json"), load(R / "evolution.json")
     joins = load(R / "joins.json")
     numeric = load(R / "numeric.json")
+    demo_trace = load(R / "demo_trace.json")
+    small = load(R / "small.json")
+    set_size = load(R / "set_size.json")
+    linking_rules = load(R / "linking_rules.json")
+    evo_rules = load(R / "evolution_rules.json")
+    suites_check = load(R / "set_suites_check.json")
     man = load(Path(a.stage_a) / "training_manifest.json")
     dman = load(Path(a.dense) / "training_manifest.json")
     probe = load(Path("runs/mechanism_probe.json"))
@@ -82,7 +88,9 @@ def main() -> int:
       f"`{a.results}/*.json`. No figure in this document was typed by hand.\n")
     w(f"Pre-registration: `docs/PREREGISTRATION.md`, SHA-256 `{prereg[0]}`, recorded "
       f"{prereg[-1] if len(prereg) > 2 else 'n/a'} before any test split was evaluated.\n")
-    w(f"Machine: {platform.platform()}, Apple M4 Max, 48 GB, 40-core GPU.\n")
+    rc = load(Path(a.stage_a).parent / "run_config.json")
+    machine = (rc or {}).get("machine", {}).get("platform") or platform.platform()
+    w(f"Machine: {machine}, Apple M4 Max, 48 GB, 40-core GPU.\n")
 
     # ------------------------------------------------------------------ verdicts
     V: dict[str, tuple] = {}
@@ -185,7 +193,7 @@ def main() -> int:
               "reader with the same backbone, pretraining, training episodes and wrapper.\n")
         else:
             w("**Architecture claim (pre-registration, section 6): supported on one test set and not the other.** "
-              "See sections 4 and 5.\n")
+              "See section 3.\n")
 
     # ------------------------------------------------------------------ training
     w("## 2. The edge model (Stage A)\n")
@@ -385,7 +393,7 @@ def main() -> int:
         w(f"{stale['pairs']['conflict']} conflict pairs and {stale['pairs']['control']} control pairs. "
           f"Threshold on P(REFUTES) = {f(stale['threshold_on_p_refutes'])}, set for "
           f"{pct(stale['false_positive_rate_on_controls'],1)} false positives on controls. "
-          f"**{stale['not_comparable_with'].capitalize()}.**\n")
+          f"**Not comparable with {stale['not_comparable_with']}.**\n")
         w("| Type | n | Detected | AUROC vs controls | Read as REFUTES | Read as NEI | Read as SUPPORTS |")
         w("|---|---:|---:|---:|---:|---:|---:|")
         for t, e in stale["by_type"].items():
@@ -452,6 +460,265 @@ def main() -> int:
               f"{pct(t['match']['SATISFIED'],0)} / {pct(t['match']['VIOLATED'],0)} / {pct(t['match']['UNRESOLVED'],0)} | "
               f"{pct(one,0)} |")
         w("")
+
+    if small:
+        w("## 8c. Small tasks (X2, exploratory)\n")
+        d = small["episodes"]
+        w(f"Not pre-registered; designed after the demo below, before any episode-level result was known. "
+          f"{f(d['episodes'])} episodes from the test pool with {d['mean_predicates']:.1f} predicates and "
+          f"{d['mean_records']:.1f} records per task on average.\n")
+        w("| System | Disposition accuracy | False-READY rate | Status accuracy | Status NLL |")
+        w("|---|---:|---:|---:|---:|")
+        for k, m in small["systems"].items():
+            w(f"| {k} | {ci(m['disposition_accuracy'], as_pct=True)} | {ci(m['false_ready_rate'], as_pct=True)} | "
+              f"{ci(m['status_accuracy'], as_pct=True)} | {ci(m['status_nll'],3)} |")
+        w("")
+        w("| Comparison | Status NLL | Disposition accuracy |")
+        w("|---|---:|---:|")
+        for k, c in small["comparisons"].items():
+            w(f"| {k} | {diff(c['status_nll'])} | {diff(c['disposition_accuracy'], as_pct=True)} |")
+        w("")
+    if set_size:
+        w("## 8d. Readings per predicate (X3, exploratory)\n")
+        w("Not pre-registered; designed after the STANDARD results showed E-declared below E. \"Declared links\" "
+          "compares each record only with the predicate it was written for, so each predicate has one to three "
+          "readings instead of about eleven.\n")
+        w("| Set | System | Disposition accuracy | Status accuracy | Status NLL |")
+        w("|---|---|---:|---:|---:|")
+        for sname, e in set_size["sets"].items():
+            for k, m in e["systems"].items():
+                w(f"| {sname} | {k} | {ci(m['disposition_accuracy'], as_pct=True)} | {ci(m['status_accuracy'], as_pct=True)} | "
+                  f"{ci(m['status_nll'],3)} |")
+        w("")
+        w("| Set | Comparison | Disposition accuracy | Status NLL |")
+        w("|---|---|---:|---:|")
+        for sname, e in set_size["sets"].items():
+            for k, c in e["comparisons"].items():
+                w(f"| {sname} | {k} | {diff(c['disposition_accuracy'], as_pct=True)} | {diff(c['status_nll'])} |")
+        w("")
+        w("Status accuracy by the number of readings a predicate has (first 300 episodes of each set):\n")
+        w("| Set | Readings | n | E | Calibrated rules |")
+        w("|---|---|---:|---:|---:|")
+        for sname, e in set_size["sets"].items():
+            by = e["status_accuracy_by_readings_per_predicate"]
+            for bucket in sorted(by["E"], key=lambda b: int(b.split("-")[0].rstrip("+"))):
+                w(f"| {sname} | {bucket} | {f(by['E'][bucket]['n'])} | {pct(by['E'][bucket]['accuracy'],1)} | "
+                  f"{pct(by['rules'][bucket]['accuracy'],1)} |")
+        w("")
+    if linking_rules:
+        w("## 8e. The dependency proposer with calibrated rules (X3b, exploratory)\n")
+        w(f"Not pre-registered. Same proposer and threshold as H8 ({f(linking_rules['threshold'],3)}); nothing re-tuned.\n")
+        w("| Set | System | Disposition accuracy | False-READY rate | Tokens per changed event |")
+        w("|---|---|---:|---:|---:|")
+        for sname, e in linking_rules["sets"].items():
+            for k, m in e["systems"].items():
+                w(f"| {sname} | {k} | {ci(m['disposition_accuracy'], as_pct=True)} | {ci(m['false_ready_rate'], as_pct=True)} | "
+                  f"{ci(m['tokens_per_changed_event'], 0)} |")
+        w("")
+        w("| Set | Comparison | Disposition accuracy | Tokens ratio |")
+        w("|---|---|---:|---:|")
+        for sname, e in linking_rules["sets"].items():
+            for k, c in e["comparisons"].items():
+                t = c.get("tokens_per_changed_event", {})
+                w(f"| {sname} | {k} | {diff(c['disposition_accuracy'], as_pct=True)} | "
+                  + (f"{f(t['ratio'],3)} [{f(t['ratio_lo'],3)}, {f(t['ratio_hi'],3)}]" if "ratio" in t else "n/a") + " |")
+        w("")
+    if suites_check:
+        w("## 8f. Would set suites have caught the failing refiner? (non-test data)\n")
+        w("Set suites are built from Stage B-pool episodes only (`scripts/build_set_suites.py`). Accuracy and NLL of "
+          "each predicate's status:\n")
+        names_ = list(next(iter(suites_check.values())).keys())
+        w("| Aggregator | " + " | ".join(names_) + " |")
+        w("|---|" + "---:|" * len(names_))
+        for k, row in suites_check.items():
+            w(f"| {k} | " + " | ".join(f"{pct(row[n]['accuracy'],1)} (NLL {f(row[n]['nll'],3)})" for n in names_) + " |")
+        w("")
+    if evo_rules:
+        w("## 8g. Self-evolution from calibrated rules, with set suites (X4, exploratory)\n")
+        w("Not pre-registered. The H7 procedure repeated with the changes described in Deviations, item 9: "
+          "calibrated rules as the starting point, set suites in the gate, context frozen during fine-tuning.\n")
+        w("| Stream | Items | Verified | Frozen accuracy | Evolving, second half | Corrupted, second half | "
+          "Consolidations adopted (evolving / corrupted) |")
+        w("|---|---:|---:|---:|---:|---:|---:|")
+        for sname, e in evo_rules["streams"].items():
+            h, hc = e["evolving_vs_frozen"], e["corrupted_vs_frozen"]
+            w(f"| {sname} | {f(e['items'])} | {f(e['verified'])} | {pct(e['frozen']['accuracy'],2)} | "
+              f"{pct(h['accuracy_a'],2)} ({100*h['difference']:+.2f} pts) | {pct(hc['accuracy_a'],2)} ({100*hc['difference']:+.2f} pts) | "
+              f"{e['evolving']['adopted']}/{len(e['evolving']['consolidations'])} / {e['corrupted']['adopted']}/{len(e['corrupted']['consolidations'])} |")
+        w("")
+        from collections import Counter
+        why = Counter()
+        for e in evo_rules["streams"].values():
+            for c in e["evolving"]["consolidations"]:
+                for part in c["reason"].split("; "):
+                    if "fails regression on" in part:
+                        for n in part.split("[", 1)[1].rstrip("]").replace("'", "").split(", "):
+                            why[n] += 1
+                    elif "no reliable held-out gain" in part:
+                        why["no reliable held-out gain"] += 1
+        if why:
+            w("Why candidates were rejected (counts over all attempts and candidates): "
+              + ", ".join(f"{k} {v}" for k, v in why.most_common()) + ".\n")
+    if demo_trace:
+        w("## 8h. The hand-off demo, scored (illustration)\n")
+        w(demo_trace["note"] + " The scenario's twelve messages are email-like text of a kind absent from "
+          "training. Correct statuses were written from the messages' wording before any model was trained.\n")
+        w("| System | READY threshold | Predicate statuses correct | Action dispositions correct | False READY |")
+        w("|---|---:|---:|---:|---:|")
+        for r in demo_trace["runs"]:
+            w(f"| {r['system']} | {r['threshold']} | {r['predicate_status_correct']} | "
+              f"{r['action_disposition_correct']} | {r['false_ready']} |")
+        w("")
+        errs = []
+        for r in demo_trace["runs"]:
+            if r["threshold"] != 0.5:
+                continue
+            for i, e in enumerate(r["events"], 1):
+                for pid, v in e["predicates"].items():
+                    if v["model"] != v["truth"]:
+                        errs.append(f"- {r['system']}, event {i} ({e['event']}): `{pid}` read as {v['model']}, "
+                                    f"should be {v['truth']} (satisfied {v['p']['SATISFIED']:.2f}, violated "
+                                    f"{v['p']['VIOLATED']:.2f}, open {v['p']['UNRESOLVED']:.2f})")
+        if errs:
+            w("Misreadings at threshold 0.5:\n")
+            w("\n".join(errs) + "\n")
+
+    rel = load(Path("release") / "MANIFEST.json")
+    if rel and "chosen_because" in rel.get("aggregator", {}):
+        w("## 8i. What the release ships, and why\n")
+        why_ = rel['aggregator']['chosen_because']
+        if why_.startswith("fixed by the plan"):
+            w(f"Aggregator: **{rel['aggregator']['kind']}**, on the large edge model: {why_}.\n")
+        else:
+            w(f"Aggregator: **{rel['aggregator']['kind']}**. Rule (Deviations, item 7, fixed before episode-level results): "
+              f"{why_}.\n")
+
+    headroom, more, cpu = load(R / "headroom.json"), load(R / "more_training.json"), load(R / "cpu_timing.json")
+    if headroom:
+        w("## 8j. Where more accuracy would come from (X5, exploratory)\n")
+        w("Not pre-registered; run after every result above was known, to decide what to do next. The released "
+          "model is unchanged by any of it.\n")
+        w("**Replay with reading errors corrected.** The test episodes above, run again with the shipped rules after "
+          "replacing some of the edge model's readings by the label the generator recorded. A reading is *wrong* when "
+          "its most probable label differs from that label. The *linked* record is the one written for the "
+          "requirement; every other record in the task is *unrelated* to it.\n")
+        for name, e in headroom["headroom"].items():
+            ra, er = e["reading_accuracy"], e["errors"]
+            w(f"*{name}*: {f(e['pairs'])} readings, {pct(ra['all'],2)} correct ({pct(ra['linked'],2)} on the "
+              f"{f(e['linked_pairs'])} linked, {pct(ra['unrelated'],2)} on the unrelated); {f(er['on_linked_pairs'])} "
+              f"errors on linked records, {f(er['on_unrelated_pairs'])} on unrelated ones.\n")
+            w("| Readings replaced | Number | Disposition accuracy | Stale decisions | False READY | Missed READY |")
+            w("|---|---:|---:|---:|---:|---:|")
+            order = ["as measured", "25% of reading errors corrected", "50% of reading errors corrected",
+                     "75% of reading errors corrected", "errors on unrelated records corrected",
+                     "errors on the linked record corrected", "all reading errors corrected",
+                     "every reading correct and confident"]
+            for lab in order:
+                c = e["conditions"].get(lab)
+                if c:
+                    w(f"| {lab} | {f(c['readings_corrected'])} | {ci(c['disposition_accuracy'], as_pct=True)} | "
+                      f"{pct(c['stale_decision_rate']['value'],2)} | {pct(c['false_ready_rate']['value'],2)} | "
+                      f"{pct(c['missed_ready_rate']['value'],2)} |")
+            w("")
+        w("With every reading correct and confident the exact parts reproduce the generator's answer for every action "
+          "at every step, so on these tasks all error comes from reading. The gap between the last two rows is "
+          "readings that were right but hesitant. The partial rows correct a random share, chosen once (seed 0).\n")
+        if "fit" in headroom:
+            w("**Fit.** Accuracy on a systematic sample of each training split against held-out data. The sample "
+              "includes rows the model never drew during training.\n")
+            w("| Corpus | Training split (sample) | n | Held-out | n | Gap |")
+            w("|---|---:|---:|---:|---:|---:|")
+            for k, v in headroom["fit"].items():
+                w(f"| {k} | {pct(v['train_sample']['accuracy'],2)} | {f(v['train_sample']['n'])} | "
+                  f"{pct(v['held_out']['accuracy'],2)} (`{v['held_out']['set']}`) | {f(v['held_out']['n'])} | "
+                  f"{100*v['accuracy_gap']:+.2f} pts |")
+            w("")
+        nei = headroom["errors"].get("vitaminc.test")
+        if nei:
+            w(f"**Evidence on the same topic that settles nothing.** On `vitaminc.test`, of the passages labelled as "
+              f"not settling their claim, {pct(1 - nei['recall']['NEI'],2)} were read as supporting or refuting it. "
+              f"These passages are about the claim's subject. For passages on another subject the figure is "
+              f"{pct(1 - headroom['errors']['unrelated.test']['recall']['NEI'],2)} (`unrelated.test`).\n")
+    if more:
+        w("**More training of the same model on the same corpora.** The released edge model (A, "
+          f"{f(more['a']['examples'])} examples) was trained for {f(more['b']['additional_examples'])} more examples "
+          "on the same mixture (B; `configs/diag_more_training.yaml`) and both were run on the development sets. "
+          "No test split was read, and B is not released.\n")
+        w("| Development set | n | A | B | B − A | Only A right / only B right | p (McNemar, exact) | Log loss A → B |")
+        w("|---|---:|---:|---:|---:|---:|---:|---:|")
+        for k, s in more["sets"].items():
+            d = s["accuracy_difference"]
+            w(f"| {k} | {f(s['n'])} | {pct(s['accuracy_a'],2)} | {pct(s['accuracy_b'],2)} | "
+              f"{100*d['value']:+.2f} pts [{100*d['lo']:+.2f}, {100*d['hi']:+.2f}] | {s['only_a_right']} / {s['only_b_right']} | "
+              f"{s['mcnemar_p']:.3f} | {f(s['nll_a'],3)} → {f(s['nll_b'],3)} |")
+        w("")
+    if cpu:
+        w("## 8k. Running without a GPU (exploratory)\n")
+        w(cpu["note"] + " The shipped configuration on the first test episodes of each kind.\n")
+        w("| Device | Threads | STANDARD update, median (95th) | WIDE update, median (95th) | "
+          "First full reading of a task, median (STANDARD / WIDE) | Peak memory |")
+        w("|---|---:|---:|---:|---:|---:|")
+        for lab, e in cpu["runs"].items():
+            s, wd = e["sets"]["STANDARD"], e["sets"]["WIDE"]
+            w(f"| {lab} | {e['threads']} | {s['update']['p50_ms']:.0f} ms ({s['update']['p95_ms']:.0f} ms) | "
+              f"{wd['update']['p50_ms']:.0f} ms ({wd['update']['p95_ms']:.0f} ms) | "
+              f"{s['reading_a_new_task_in_full']['p50_ms']/1e3:.1f} s / {wd['reading_a_new_task_in_full']['p50_ms']/1e3:.1f} s | "
+              f"{e['peak_memory_gb']:.1f} GB |")
+        w("")
+
+    large = load(R / "large.json")
+    if large:
+        w("## 8l. A larger encoder (pre-registered addendum)\n")
+        pl = Path("runs/prereg_large_hash.txt").read_text().split() if Path("runs/prereg_large_hash.txt").exists() else ["?"]
+        w(f"Plan: `docs/PREREGISTRATION_LARGE.md`, SHA-256 `{pl[0]}`, recorded {pl[-1] if len(pl) > 2 else 'n/a'} "
+          "before the large model was trained. `answerdotai/ModernBERT-large` by the released recipe, calibrated "
+          "rules on top, against the released base model; everything paired.\n")
+        vd = large.get("verdicts", {})
+        for h, text in (("H10", "reading: the large model is more accurate on `vitaminc.test` and `mnli_mm.test`"),
+                        ("H11", "decisions: higher disposition accuracy on STANDARD"),
+                        ("H12", "cost: median update on STANDARD at most 3.5× the base model's")):
+            if h in vd:
+                w(f"- **{h}** ({text}): {verdict(vd[h])}")
+        sh = large.get("ships", {})
+        if sh.get("large") is not None:
+            w(f"- **Which model ships** by the rule in the plan: {'the large model' if sh['large'] else 'the base model stays'}"
+              + (f" ({'; '.join(sh['reasons_against'])})" if sh.get("reasons_against") else "") + ".")
+        w("")
+        if large.get("items"):
+            w("| Edge test set | n | Base | Large | Large − Base | Only base right / only large right | p (McNemar) |")
+            w("|---|---:|---:|---:|---:|---:|---:|")
+            for k, r in large["items"].items():
+                w(f"| {k} | {f(r['n'])} | {pct(r['accuracy_base'],2)} | {pct(r['accuracy_large'],2)} | "
+                  f"{100*r['difference']:+.2f} pts [{100*r['lo']:+.2f}, {100*r['hi']:+.2f}] | {r['only_base_right']} / {r['only_large_right']} | {r['mcnemar_p']:.3g} |")
+            w("")
+            u = large["items"].get("unrelated.test")
+            if u and "false_decisive_base" in u:
+                w(f"Unrelated passages read as decisive: base {pct(u['false_decisive_base'],2)}, large {pct(u['false_decisive_large'],2)}.\n")
+            rs = large.get("edge_summaries", {}).get("real_synthetic")
+            if rs and rs["base"].get("accuracy_real") is not None:
+                w(f"VitaminC real revisions: base {pct(rs['base']['accuracy_real'],2)}, large {pct(rs['large']['accuracy_real'],2)}; "
+                  f"synthetic: base {pct(rs['base']['accuracy_synthetic'],2)}, large {pct(rs['large']['accuracy_synthetic'],2)}.\n")
+        if large.get("episodes"):
+            w("| Test set | Episodes | Disposition accuracy, base | large | Large − Base | Stale decisions, base | large | False READY, base | large |")
+            w("|---|---:|---:|---:|---:|---:|---:|---:|---:|")
+            for k, e in large["episodes"].items():
+                b, l, c = e["base"], e["large"], e["large_minus_base"]
+                w(f"| {k} | {f(e['episodes'])} | {pct(b['disposition_accuracy']['value'],2)} | {pct(l['disposition_accuracy']['value'],2)} | "
+                  f"{100*c['disposition_accuracy']['difference']:+.2f} pts [{100*c['disposition_accuracy']['lo']:+.2f}, {100*c['disposition_accuracy']['hi']:+.2f}] | "
+                  f"{pct(b['stale_decision_rate']['value'],2)} | {pct(l['stale_decision_rate']['value'],2)} | "
+                  f"{pct(b['false_ready_rate']['value'],2)} | {pct(l['false_ready_rate']['value'],2)} |")
+            w("")
+        tm = large.get("timing")
+        if tm and tm.get("runs"):
+            w("| Model | Device | STANDARD update, median (95th) | WIDE update, median (95th) | Peak memory |")
+            w("|---|---|---:|---:|---:|")
+            for lab, e in tm["runs"].items():
+                s_, wd = e["sets"]["STANDARD"], e["sets"]["WIDE"]
+                w(f"| {lab} | {e['device']} | {s_['update']['p50_ms']:.0f} ms ({s_['update']['p95_ms']:.0f} ms) | "
+                  f"{wd['update']['p50_ms']:.0f} ms ({wd['update']['p95_ms']:.0f} ms) | {e['peak_memory_gb']:.1f} GB |")
+            if "timing_ratio_standard_p50" in large:
+                w(f"\nMedian update time, large / base, on STANDARD: {large['timing_ratio_standard_p50']:.2f}.")
+            w("")
 
     # ------------------------------------------------------------------ supporting
     w("## 9. Supporting checks\n")

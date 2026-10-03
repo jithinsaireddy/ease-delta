@@ -1,0 +1,31 @@
+# 50-step pilot of the large encoder on training data only: measures memory and speed to decide
+# the batch size (docs/PREREGISTRATION_LARGE.md, section 2). Its weights are discarded.
+run_dir: runs/pilot_large
+eval_cache: runs/eval_cache
+encoder_name: answerdotai/ModernBERT-large
+msg_dim: 128
+pooling: cls
+dropout: 0.1
+max_len: 256
+batch_size: 32
+total_examples: 1600
+lr: 3.0e-5
+head_lr: 1.5e-4
+weight_decay: 0.01
+warmup_frac: 0.05
+grad_clip: 1.0
+seed: 1234
+mixture:
+  vitaminc: 0.40
+  mnli: 0.27
+  wanli: 0.13
+  unrelated: 0.20
+shuffle_buffer: 20000     # pilot only: a small buffer starts faster; the real run spans the corpus
+pool_batches: 10
+pad_multiple: 8
+log_every: 10
+eval_every: 100000
+ckpt_every: 100000
+dev_sets: [unrelated.dev]
+dev_limit: 200
+empty_cache_every: 200

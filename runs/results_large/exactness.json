@@ -1,0 +1,35 @@
+{
+  "H1_supported": true,
+  "aggregator": "refined-49c783a8cd169f70",
+  "edge_version": "edge-2e659683f3e9a846",
+  "hypothesis": "H1",
+  "pool": "test",
+  "runs": [
+    {
+      "dispositions_that_differ_from_rebuild": 0,
+      "episodes": 200,
+      "events_checked": 3559,
+      "max_abs_difference": 0.0,
+      "minutes": 27.99,
+      "mode": "canonical",
+      "nodes_checked": 195434,
+      "nodes_not_bitwise_equal": 0,
+      "worst": null
+    },
+    {
+      "dispositions_that_differ_from_rebuild": 0,
+      "episodes": 50,
+      "events_checked": 926,
+      "max_abs_difference": 7.62939453125e-06,
+      "minutes": 6.25,
+      "mode": "dynamic",
+      "nodes_checked": 53302,
+      "nodes_not_bitwise_equal": 46624,
+      "worst": [
+        "standard-20260929-4",
+        18,
+        "edge:rec_p0_import|p0"
+      ]
+    }
+  ]
+}

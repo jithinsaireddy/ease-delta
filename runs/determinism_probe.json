@@ -1,0 +1,70 @@
+{
+  "mps/dynamic": {
+    "same_batches_repeated": {
+      "pairs_not_bitwise_equal": 0,
+      "max_abs_diff": 0.0,
+      "argmax_flips": 0
+    },
+    "different_batch_composition": {
+      "pairs_not_bitwise_equal": 14,
+      "max_abs_diff": 4.76837158203125e-06,
+      "argmax_flips": 0
+    },
+    "single_vs_batched(40)": {
+      "pairs_not_bitwise_equal": 38,
+      "max_abs_diff": 6.198883056640625e-06,
+      "argmax_flips": 0
+    }
+  },
+  "mps/canonical": {
+    "same_batches_repeated": {
+      "pairs_not_bitwise_equal": 0,
+      "max_abs_diff": 0.0,
+      "argmax_flips": 0
+    },
+    "different_batch_composition": {
+      "pairs_not_bitwise_equal": 0,
+      "max_abs_diff": 0.0,
+      "argmax_flips": 0
+    },
+    "single_vs_batched(40)": {
+      "pairs_not_bitwise_equal": 0,
+      "max_abs_diff": 0.0,
+      "argmax_flips": 0
+    }
+  },
+  "cpu/dynamic": {
+    "same_batches_repeated": {
+      "pairs_not_bitwise_equal": 0,
+      "max_abs_diff": 0.0,
+      "argmax_flips": 0
+    },
+    "different_batch_composition": {
+      "pairs_not_bitwise_equal": 0,
+      "max_abs_diff": 0.0,
+      "argmax_flips": 0
+    },
+    "single_vs_batched(40)": {
+      "pairs_not_bitwise_equal": 40,
+      "max_abs_diff": 8.046627044677734e-06,
+      "argmax_flips": 0
+    }
+  },
+  "cpu/canonical": {
+    "same_batches_repeated": {
+      "pairs_not_bitwise_equal": 0,
+      "max_abs_diff": 0.0,
+      "argmax_flips": 0
+    },
+    "different_batch_composition": {
+      "pairs_not_bitwise_equal": 0,
+      "max_abs_diff": 0.0,
+      "argmax_flips": 0
+    },
+    "single_vs_batched(40)": {
+      "pairs_not_bitwise_equal": 0,
+      "max_abs_diff": 0.0,
+      "argmax_flips": 0
+    }
+  }
+}

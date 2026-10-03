@@ -1,0 +1,55 @@
+{
+  "title": "EASE-Delta mechanism probe (independent replication)",
+  "scope": "Fixed random tanh circuits, float64, CPU. Counts node evaluations only. Sparse and dense circuits are different random functions, not matched-accuracy models.",
+  "sparse_fan_in_sweep": [],
+  "experiments": [
+    {
+      "topology": "sparse",
+      "events": 1500,
+      "event_types": {
+        "replacement": 972,
+        "stale_delivery": 132,
+        "retraction": 177,
+        "duplicate": 219
+      },
+      "ledger_outcomes": {
+        "applied": 1149,
+        "duplicate": 297,
+        "stale": 54
+      },
+      "events_with_numeric_input_changes": 1124,
+      "computed_nodes_in_full_forward_pass": 208,
+      "nodes_not_bitwise_equal_to_full_recompute": 0,
+      "max_absolute_error": 0.0,
+      "mean_nodes_recomputed_all_events": 16.124666666666666,
+      "mean_nodes_recomputed_when_numeric_input_changes": 21.518683274021353,
+      "mean_fraction_recomputed_when_numeric_input_changes": 0.10345520804817958,
+      "node_evaluations_incremental": 24187,
+      "node_evaluations_full_rebuild_each_event": 312000
+    },
+    {
+      "topology": "dense",
+      "events": 1500,
+      "event_types": {
+        "replacement": 972,
+        "stale_delivery": 132,
+        "retraction": 177,
+        "duplicate": 219
+      },
+      "ledger_outcomes": {
+        "applied": 1149,
+        "duplicate": 297,
+        "stale": 54
+      },
+      "events_with_numeric_input_changes": 1124,
+      "computed_nodes_in_full_forward_pass": 208,
+      "nodes_not_bitwise_equal_to_full_recompute": 0,
+      "max_absolute_error": 0.0,
+      "mean_nodes_recomputed_all_events": 155.86133333333333,
+      "mean_nodes_recomputed_when_numeric_input_changes": 208.0,
+      "mean_fraction_recomputed_when_numeric_input_changes": 1.0,
+      "node_evaluations_incremental": 233792,
+      "node_evaluations_full_rebuild_each_event": 312000
+    }
+  ]
+}

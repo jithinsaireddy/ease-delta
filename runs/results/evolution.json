@@ -1,0 +1,994 @@
+{
+  "H7_supported": false,
+  "champion": "refined-216c7bbde3ec97c7",
+  "edge_version": "edge-5739087bb98e2f4c",
+  "feedback_rate": 0.3,
+  "hypothesis": "H7",
+  "primary_stream": "snli.test",
+  "streams": {
+    "snli.test": {
+      "H7a_improves": false,
+      "H7b_holds": true,
+      "H7b_max_regression_drop_evolving": 0.0,
+      "H7c_holds": true,
+      "H7c_max_regression_drop_corrupted": 0.0,
+      "corrupted": {
+        "accuracy": 0.7183428338762216,
+        "accuracy_by_tenth": [
+          0.7039674465920651,
+          0.7121057985757884,
+          0.7141403865717192,
+          0.7446592065106816,
+          0.7209775967413442,
+          0.7158859470468432,
+          0.7311608961303462,
+          0.714867617107943,
+          0.709775967413442,
+          0.7158859470468432
+        ],
+        "adopted": 0,
+        "consolidations": [
+          {
+            "adopted": false,
+            "after_items": 1000,
+            "chosen": "champion",
+            "feedback": 341,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 96
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'mnli.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 2.8793392181396484
+          },
+          {
+            "adopted": false,
+            "after_items": 2250,
+            "chosen": "champion",
+            "feedback": 708,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 202
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'mnli.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 3.540079116821289
+          },
+          {
+            "adopted": false,
+            "after_items": 3250,
+            "chosen": "champion",
+            "feedback": 1014,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 300
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'mnli.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 4.601152658462524
+          },
+          {
+            "adopted": false,
+            "after_items": 4500,
+            "chosen": "champion",
+            "feedback": 1387,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 412
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'mnli.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 6.040135860443115
+          },
+          {
+            "adopted": false,
+            "after_items": 5750,
+            "chosen": "champion",
+            "feedback": 1758,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 519
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'mnli.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 6.543127775192261
+          },
+          {
+            "adopted": false,
+            "after_items": 7000,
+            "chosen": "champion",
+            "feedback": 2102,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 633
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'mnli.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 7.802418947219849
+          },
+          {
+            "adopted": false,
+            "after_items": 8000,
+            "chosen": "champion",
+            "feedback": 2412,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 714
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'mnli.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 5.853886842727661
+          },
+          {
+            "adopted": false,
+            "after_items": 9000,
+            "chosen": "champion",
+            "feedback": 2719,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 815
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'mnli.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 3.6343259811401367
+          }
+        ],
+        "nll": 0.8122802221821602,
+        "versions": [
+          {
+            "created": 1790748237.229492,
+            "name": "trained",
+            "note": "trained champion",
+            "parent": null,
+            "version": "v-216c7bbde3ec97c7-6f6ca5e5"
+          }
+        ]
+      },
+      "corrupted_vs_frozen": {
+        "accuracy_a": 0.7176302931596091,
+        "accuracy_b": 0.7176302931596091,
+        "difference": 0.0,
+        "first_half_accuracy_a": 0.7190553745928339,
+        "first_half_accuracy_b": 0.7190553745928339,
+        "hi": 0.0,
+        "lo": 0.0,
+        "second_half_items": 4912
+      },
+      "evolving": {
+        "accuracy": 0.7183428338762216,
+        "accuracy_by_tenth": [
+          0.7039674465920651,
+          0.7121057985757884,
+          0.7141403865717192,
+          0.7446592065106816,
+          0.7209775967413442,
+          0.7158859470468432,
+          0.7311608961303462,
+          0.714867617107943,
+          0.709775967413442,
+          0.7158859470468432
+        ],
+        "adopted": 0,
+        "consolidations": [
+          {
+            "adopted": false,
+            "after_items": 1000,
+            "chosen": "champion",
+            "feedback": 341,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 96
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 1.1040501594543457
+          },
+          {
+            "adopted": false,
+            "after_items": 2250,
+            "chosen": "champion",
+            "feedback": 708,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 202
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 1.290585994720459
+          },
+          {
+            "adopted": false,
+            "after_items": 3250,
+            "chosen": "champion",
+            "feedback": 1014,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 300
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 1.4835479259490967
+          },
+          {
+            "adopted": false,
+            "after_items": 4500,
+            "chosen": "champion",
+            "feedback": 1387,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 412
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 1.7252171039581299
+          },
+          {
+            "adopted": false,
+            "after_items": 5750,
+            "chosen": "champion",
+            "feedback": 1758,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 519
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 2.3942389488220215
+          },
+          {
+            "adopted": false,
+            "after_items": 7000,
+            "chosen": "champion",
+            "feedback": 2102,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 633
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 2.8104681968688965
+          },
+          {
+            "adopted": false,
+            "after_items": 8000,
+            "chosen": "champion",
+            "feedback": 2412,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 714
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 3.6833019256591797
+          },
+          {
+            "adopted": false,
+            "after_items": 9000,
+            "chosen": "champion",
+            "feedback": 2719,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 815
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 5.5540931224823
+          }
+        ],
+        "nll": 0.8122802221821602,
+        "versions": [
+          {
+            "created": 1790748216.8623612,
+            "name": "trained",
+            "note": "trained champion",
+            "parent": null,
+            "version": "v-216c7bbde3ec97c7-6f6ca5e5"
+          }
+        ]
+      },
+      "evolving_vs_frozen": {
+        "accuracy_a": 0.7176302931596091,
+        "accuracy_b": 0.7176302931596091,
+        "difference": 0.0,
+        "first_half_accuracy_a": 0.7190553745928339,
+        "first_half_accuracy_b": 0.7190553745928339,
+        "hi": 0.0,
+        "lo": 0.0,
+        "second_half_items": 4912
+      },
+      "frozen": {
+        "accuracy": 0.7183428338762216,
+        "accuracy_by_tenth": [
+          0.7039674465920651,
+          0.7121057985757884,
+          0.7141403865717192,
+          0.7446592065106816,
+          0.7209775967413442,
+          0.7158859470468432,
+          0.7311608961303462,
+          0.714867617107943,
+          0.709775967413442,
+          0.7158859470468432
+        ],
+        "adopted": 0,
+        "consolidations": [],
+        "nll": 0.8122802221821602,
+        "versions": [
+          {
+            "created": 1790748216.805417,
+            "name": "trained",
+            "note": "trained champion",
+            "parent": null,
+            "version": "v-216c7bbde3ec97c7-6f6ca5e5"
+          }
+        ]
+      },
+      "items": 9824,
+      "seconds": 62.4,
+      "verified": 2944
+    },
+    "wanli.test": {
+      "H7a_improves": true,
+      "H7b_holds": true,
+      "H7b_max_regression_drop_evolving": 0.0030000000000000027,
+      "H7c_holds": true,
+      "H7c_max_regression_drop_corrupted": 0.0,
+      "corrupted": {
+        "accuracy": 0.6046,
+        "accuracy_by_tenth": [
+          0.628,
+          0.628,
+          0.582,
+          0.594,
+          0.608,
+          0.586,
+          0.608,
+          0.608,
+          0.59,
+          0.614
+        ],
+        "adopted": 0,
+        "consolidations": [
+          {
+            "adopted": false,
+            "after_items": 1250,
+            "chosen": "champion",
+            "feedback": 365,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 99
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'mnli.dev', 'unrelated.dev']; refiner: fails regression on ['vitaminc.dev', 'unrelated.dev']; refiner+memory: fails regression on ['vitaminc.dev', 'unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 3.5556719303131104
+          },
+          {
+            "adopted": false,
+            "after_items": 2500,
+            "chosen": "champion",
+            "feedback": 718,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 191
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'mnli.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 4.349143981933594
+          },
+          {
+            "adopted": false,
+            "after_items": 3500,
+            "chosen": "champion",
+            "feedback": 1020,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 275
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'mnli.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 4.813051223754883
+          },
+          {
+            "adopted": false,
+            "after_items": 4500,
+            "chosen": "champion",
+            "feedback": 1357,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 372
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.8
+            },
+            "reason": "memory: fails regression on ['vitaminc.dev', 'mnli.dev', 'unrelated.dev']; refiner: fails regression on ['unrelated.dev']; refiner+memory: fails regression on ['unrelated.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.7136,
+              "unrelated.dev": 0.998,
+              "vitaminc.dev": 0.8432
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.0,
+              "unrelated.dev": 0.0,
+              "vitaminc.dev": 0.0
+            },
+            "seconds": 4.969732999801636
+          }
+        ],
+        "nll": 0.998820760886867,
+        "versions": [
+          {
+            "created": 1790748303.514406,
+            "name": "trained",
+            "note": "trained champion",
+            "parent": null,
+            "version": "v-216c7bbde3ec97c7-6f6ca5e5"
+          }
+        ]
+      },
+      "corrupted_vs_frozen": {
+        "accuracy_a": 0.6012,
+        "accuracy_b": 0.6012,
+        "difference": 0.0,
+        "first_half_accuracy_a": 0.608,
+        "first_half_accuracy_b": 0.608,
+        "hi": 0.0,
+        "lo": 0.0,
+        "second_half_items": 2500
+      },
+      "evolving": {
+        "accuracy": 0.6932,
+        "accuracy_by_tenth": [
+          0.628,
+          0.628,
+          0.65,
+          0.712,
+          0.724,
+          0.702,
+          0.69,
+          0.718,
+          0.77,
+          0.71
+        ],
+        "adopted": 2,
+        "consolidations": [
+          {
+            "adopted": true,
+            "after_items": 1250,
+            "chosen": "memory",
+            "feedback": 365,
+            "holdout_gain": {
+              "gain": 0.20192789995946914,
+              "hi": 0.33394144301812706,
+              "lo": 0.07528595985467314,
+              "n": 99
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.6,
+              "min_votes": 1,
+              "tau": 0.6
+            },
+            "reason": "passed the regression gate and improved held-out NLL",
+            "regression_accuracy": {
+              "mnli.dev": 0.852,
+              "unrelated.dev": 0.997,
+              "vitaminc.dev": 0.846
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.13839999999999997,
+              "unrelated.dev": -0.0010000000000000009,
+              "vitaminc.dev": 0.0028000000000000247
+            },
+            "seconds": 2.3467650413513184
+          },
+          {
+            "adopted": false,
+            "after_items": 2500,
+            "chosen": "champion",
+            "feedback": 718,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 191
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.6,
+              "min_votes": 1,
+              "tau": 0.6
+            },
+            "reason": "memory: no reliable held-out gain (lower bound 0.0000); refiner: no reliable held-out gain (lower bound -0.0055); refiner+memory: no reliable held-out gain (lower bound -0.0485)",
+            "regression_accuracy": {
+              "mnli.dev": 0.8524,
+              "unrelated.dev": 0.9976666666666667,
+              "vitaminc.dev": 0.8462
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.13880000000000003,
+              "unrelated.dev": -0.0003333333333332966,
+              "vitaminc.dev": 0.0030000000000000027
+            },
+            "seconds": 1.7086000442504883
+          },
+          {
+            "adopted": true,
+            "after_items": 3500,
+            "chosen": "refiner+memory",
+            "feedback": 1020,
+            "holdout_gain": {
+              "gain": 0.0744076544899569,
+              "hi": 0.13741238932393118,
+              "lo": 0.013468357639830862,
+              "n": 275
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.6
+            },
+            "reason": "passed the regression gate and improved held-out NLL",
+            "regression_accuracy": {
+              "mnli.dev": 0.887,
+              "unrelated.dev": 0.995,
+              "vitaminc.dev": 0.8476
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.1734,
+              "unrelated.dev": -0.0030000000000000027,
+              "vitaminc.dev": 0.0044000000000000705
+            },
+            "seconds": 1.8244709968566895
+          },
+          {
+            "adopted": false,
+            "after_items": 4500,
+            "chosen": "champion",
+            "feedback": 1357,
+            "holdout_gain": {
+              "gain": 0.0,
+              "hi": 0.0,
+              "lo": 0.0,
+              "n": 372
+            },
+            "memory": {
+              "exact_confidence": 0.995,
+              "k": 8,
+              "lam_max": 0.0,
+              "min_votes": 1,
+              "tau": 0.6
+            },
+            "reason": "memory: no reliable held-out gain (lower bound 0.0000); refiner: fails regression on ['vitaminc.dev', 'mnli.dev']; refiner+memory: fails regression on ['vitaminc.dev', 'mnli.dev']",
+            "regression_accuracy": {
+              "mnli.dev": 0.887,
+              "unrelated.dev": 0.995,
+              "vitaminc.dev": 0.8476
+            },
+            "regression_accuracy_change_vs_trained": {
+              "mnli.dev": 0.1734,
+              "unrelated.dev": -0.0030000000000000027,
+              "vitaminc.dev": 0.0044000000000000705
+            },
+            "seconds": 3.8423550128936768
+          }
+        ],
+        "nll": 0.7668918072621341,
+        "versions": [
+          {
+            "created": 1790748299.5842931,
+            "name": "refiner+memory",
+            "note": "wanli.test/evolving: after 1020 verified readings",
+            "parent": "v-216c7bbde3ec97c7-ce904012",
+            "version": "v-471c5dc400978120-264452e7"
+          },
+          {
+            "created": 1790748295.875956,
+            "name": "memory",
+            "note": "wanli.test/evolving: after 365 verified readings",
+            "parent": "v-216c7bbde3ec97c7-6f6ca5e5",
+            "version": "v-216c7bbde3ec97c7-ce904012"
+          },
+          {
+            "created": 1790748293.324522,
+            "name": "trained",
+            "note": "trained champion",
+            "parent": null,
+            "version": "v-216c7bbde3ec97c7-6f6ca5e5"
+          }
+        ]
+      },
+      "evolving_vs_frozen": {
+        "accuracy_a": 0.718,
+        "accuracy_b": 0.6012,
+        "difference": 0.1168,
+        "first_half_accuracy_a": 0.6684,
+        "first_half_accuracy_b": 0.608,
+        "hi": 0.1372,
+        "lo": 0.0976,
+        "second_half_items": 2500
+      },
+      "frozen": {
+        "accuracy": 0.6046,
+        "accuracy_by_tenth": [
+          0.628,
+          0.628,
+          0.582,
+          0.594,
+          0.608,
+          0.586,
+          0.608,
+          0.608,
+          0.59,
+          0.614
+        ],
+        "adopted": 0,
+        "consolidations": [],
+        "nll": 0.998820760886867,
+        "versions": [
+          {
+            "created": 1790748293.143759,
+            "name": "trained",
+            "note": "trained champion",
+            "parent": null,
+            "version": "v-216c7bbde3ec97c7-6f6ca5e5"
+          }
+        ]
+      },
+      "items": 5000,
+      "seconds": 28.7,
+      "verified": 1514
+    }
+  }
+}

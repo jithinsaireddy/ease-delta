@@ -1,0 +1,99 @@
+{
+  "a": {
+    "dir": "runs/stage_a/final",
+    "examples": 900000
+  },
+  "b": {
+    "additional_examples": 200000,
+    "by_source": {
+      "mnli": 53858,
+      "unrelated": 40033,
+      "vitaminc": 80064,
+      "wanli": 26045
+    },
+    "dir": "runs/diag_more_training/final"
+  },
+  "note": "Diagnostic; exploratory. Development sets only. B is A trained further on the same mixture.",
+  "sets": {
+    "mnli.dev": {
+      "accuracy_a": 0.8852776362710137,
+      "accuracy_b": 0.8814060112073357,
+      "accuracy_difference": {
+        "hi": -0.0004075394803871625,
+        "lo": -0.007437595517065716,
+        "value": -0.003871625063678044
+      },
+      "mcnemar_p": 0.03662674634540448,
+      "n": 9815,
+      "nll_a": 0.3095618429628356,
+      "nll_b": 0.32747888543160675,
+      "nll_difference": {
+        "hi": 0.022827397535074755,
+        "lo": 0.01314376596548744,
+        "value": 0.01791704246877119
+      },
+      "only_a_right": 176,
+      "only_b_right": 138
+    },
+    "snli.dev": {
+      "accuracy_a": 0.8086666666666666,
+      "accuracy_b": 0.813,
+      "accuracy_difference": {
+        "hi": 0.011666666666666667,
+        "lo": -0.0033333333333333335,
+        "value": 0.004333333333333333
+      },
+      "mcnemar_p": 0.3052427781333528,
+      "n": 3000,
+      "nll_a": 0.5148656796673585,
+      "nll_b": 0.5301556727858245,
+      "nll_difference": {
+        "hi": 0.02632763562743349,
+        "lo": 0.00427419489311799,
+        "value": 0.015289993118466105
+      },
+      "only_a_right": 62,
+      "only_b_right": 75
+    },
+    "unrelated.dev": {
+      "accuracy_a": 0.9956666666666667,
+      "accuracy_b": 0.9973333333333333,
+      "accuracy_difference": {
+        "hi": 0.0033333333333333335,
+        "lo": 0.0,
+        "value": 0.0016666666666666668
+      },
+      "mcnemar_p": 0.125,
+      "n": 3000,
+      "nll_a": 0.011160792724743834,
+      "nll_b": 0.009605048694700023,
+      "nll_difference": {
+        "hi": 0.0002092640124184111,
+        "lo": -0.00327652102239506,
+        "value": -0.0015557440300438107
+      },
+      "only_a_right": 1,
+      "only_b_right": 6
+    },
+    "vitaminc.dev": {
+      "accuracy_a": 0.85502416263956,
+      "accuracy_b": 0.8501916347275454,
+      "accuracy_difference": {
+        "hi": -0.0014997500416597234,
+        "lo": -0.0084985835694051,
+        "value": -0.004832527912014664
+      },
+      "mcnemar_p": 0.007040750835507646,
+      "n": 6001,
+      "nll_a": 0.4568680998507929,
+      "nll_b": 0.497741659312767,
+      "nll_difference": {
+        "hi": 0.04744933243533212,
+        "lo": 0.03392042480373347,
+        "value": 0.040873559461974004
+      },
+      "only_a_right": 69,
+      "only_b_right": 40
+    }
+  }
+}

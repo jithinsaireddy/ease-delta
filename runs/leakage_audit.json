@@ -1,0 +1,94 @@
+{
+  "eval_sets": {
+    "anli_r1.test": {
+      "claims_in_train": 0,
+      "evidence_in_train": 0,
+      "pairs_in_train": 0,
+      "rows": 1000
+    },
+    "anli_r2.test": {
+      "claims_in_train": 0,
+      "evidence_in_train": 0,
+      "pairs_in_train": 0,
+      "rows": 1000
+    },
+    "anli_r3.test": {
+      "claims_in_train": 2,
+      "evidence_in_train": 0,
+      "pairs_in_train": 0,
+      "rows": 1200
+    },
+    "mnli.dev": {
+      "claims_in_train": 76,
+      "evidence_in_train": 319,
+      "pairs_in_train": 1,
+      "rows": 9815
+    },
+    "mnli_mm.test": {
+      "claims_in_train": 24,
+      "evidence_in_train": 21,
+      "pairs_in_train": 0,
+      "rows": 9832
+    },
+    "snli.dev": {
+      "claims_in_train": 544,
+      "evidence_in_train": 12,
+      "pairs_in_train": 1,
+      "rows": 3000
+    },
+    "snli.test": {
+      "claims_in_train": 1647,
+      "evidence_in_train": 33,
+      "pairs_in_train": 0,
+      "rows": 9824
+    },
+    "vitaminc.dev": {
+      "claims_in_train": 10,
+      "evidence_in_train": 10,
+      "pairs_in_train": 0,
+      "rows": 6001
+    },
+    "vitaminc.test": {
+      "claims_in_train": 74,
+      "evidence_in_train": 81,
+      "pairs_in_train": 0,
+      "rows": 55197
+    },
+    "wanli.test": {
+      "claims_in_train": 222,
+      "evidence_in_train": 72,
+      "pairs_in_train": 14,
+      "rows": 5000
+    }
+  },
+  "pools": {
+    "stage_b": {
+      "atoms": 40299,
+      "claims_in_train": 1211,
+      "evidence_in_train": 337,
+      "pairs": 68752,
+      "pairs_in_train": 0,
+      "vitaminc_atoms": 28590,
+      "vitaminc_atoms_whose_page_is_in_train": 328
+    },
+    "test": {
+      "atoms": 52317,
+      "claims_in_train": 1930,
+      "evidence_in_train": 207,
+      "pairs": 79851,
+      "pairs_in_train": 14,
+      "vitaminc_atoms": 27661,
+      "vitaminc_atoms_whose_page_is_in_train": 279
+    }
+  },
+  "stage_b_vs_test": {
+    "test_claims_in_stage_b": 230,
+    "test_pairs_in_stage_b": 0
+  },
+  "train_rows": {
+    "mnli": 392702,
+    "snli": 549367,
+    "vitaminc": 370653,
+    "wanli": 102885
+  }
+}

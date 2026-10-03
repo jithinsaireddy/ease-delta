@@ -213,7 +213,9 @@ def main(argv: list[str] | None = None) -> int:
     ckpt = latest_checkpoint(run) if args.resume else None
     if ckpt is not None:
         model = EdgeModel.load(ckpt)
-        state = torch.load(ckpt / "trainer_state.pt", map_location="cpu", weights_only=False)
+        # The state holds tensors and plain containers only, so the restricted loader is enough and
+        # a checkpoint from somewhere else cannot run code on load.
+        state = torch.load(ckpt / "trainer_state.pt", map_location="cpu", weights_only=True)
     else:
         if args.resume:
             print("no checkpoint found; starting from the pretrained encoder", flush=True)

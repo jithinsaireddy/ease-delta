@@ -1,0 +1,136 @@
+{
+  "T1_minus_T2_detection": 0.42500000000000004,
+  "by_type": {
+    "T1": {
+      "auroc_vs_controls": 0.955455,
+      "detection_hi": 0.825,
+      "detection_lo": 0.71,
+      "detection_rate": 0.77,
+      "mean_p_refutes": 0.5373197377783089,
+      "n": 200,
+      "top_label": {
+        "NEI": 0.435,
+        "REFUTES": 0.56,
+        "SUPPORTS": 0.005
+      }
+    },
+    "T2": {
+      "auroc_vs_controls": 0.8798475,
+      "detection_hi": 0.41,
+      "detection_lo": 0.28,
+      "detection_rate": 0.345,
+      "mean_p_refutes": 0.23806178401448969,
+      "n": 200,
+      "top_label": {
+        "NEI": 0.815,
+        "REFUTES": 0.18,
+        "SUPPORTS": 0.005
+      }
+    },
+    "all": {
+      "auroc_vs_controls": 0.91765125,
+      "detection_hi": 0.605,
+      "detection_lo": 0.5075,
+      "detection_rate": 0.5575,
+      "mean_p_refutes": 0.38769076089639926,
+      "n": 400,
+      "top_label": {
+        "NEI": 0.625,
+        "REFUTES": 0.37,
+        "SUPPORTS": 0.005
+      }
+    }
+  },
+  "controls_top_label": {
+    "NEI": 0.9775,
+    "REFUTES": 0.017,
+    "SUPPORTS": 0.0055
+  },
+  "edge_version": "edge-5739087bb98e2f4c",
+  "examples_lowest_and_highest": [
+    {
+      "detected": false,
+      "new": "I\u2019m filling out the paperwork for my long-term move to Tokyo next spring, so I\u2019ve been ruthless about downsizing\u2014only two suitcases\u2019 worth is coming with me, and everything else is getting sold or don",
+      "old": "I usually keep the traditional woven baskets from Ghana on the top shelf so they don't get crushed by heavier items.",
+      "p_refutes": 0.0029952300771308557,
+      "type": "T2"
+    },
+    {
+      "detected": false,
+      "new": "I\u2019m still getting used to this condo\u2014it is much smaller than the house I used to live before.",
+      "old": "I keep a few emergency rations and water jugs stored in the garage in case I am unable to travel to the store.",
+      "p_refutes": 0.005432248414889831,
+      "type": "T2"
+    },
+    {
+      "detected": false,
+      "new": "I finally caved and bought one of those tiny apartments with almost no storage\u2014between the downsizing and the building\u2019s strict clutter rules, I spent the weekend photographing everything I\u2019m keeping ",
+      "old": "I generally avoid streaming subscriptions since I prefer owning physical copies of my movies and music.",
+      "p_refutes": 0.005497967635469736,
+      "type": "T2"
+    },
+    {
+      "detected": false,
+      "new": "Since the thyroid surgery last fall, my endocrinologist has been tweaking my levothyroxine dose every few weeks, and I\u2019m still trying to get my energy and temperature swings to settle down.",
+      "old": "I've been hovering around 150 pounds lately, which is where I usually sit.",
+      "p_refutes": 0.006861146512891431,
+      "type": "T2"
+    },
+    {
+      "detected": true,
+      "new": "Ever since I moved up to this mountain town, I\u2019ve had to take it easy on hikes because the thin air hits me pretty fast.",
+      "old": "I'm settled in the coastal lowlands, so I'm consistently at sea level.",
+      "p_refutes": 0.974027829263464,
+      "type": "T1"
+    },
+    {
+      "detected": true,
+      "new": "Since the hand injury last year, I\u2019ve switched to collecting and listening to vinyl records as my main pastime, and that\u2019s what I plan my free time around now.",
+      "old": "Woodworking is my main passion, and I prioritize spending my free time creating furniture.",
+      "p_refutes": 0.9758059545277593,
+      "type": "T1"
+    },
+    {
+      "detected": true,
+      "new": "Ever since the dry season settled in, the air indoors feels crisp and my wooden table has started to get those tiny static shocks when I wipe it down.",
+      "old": "The humidity is so constant that surfaces stay damp all the time.",
+      "p_refutes": 0.9776892812240867,
+      "type": "T1"
+    },
+    {
+      "detected": true,
+      "new": "I\u2019m feeling a lot more flexible with my day-to-day purchases lately since I\u2019ve got around fifteen grand sitting in my checking account right now.",
+      "old": "I'm keeping my spending strict because I have about two thousand dollars in liquid funds to work with.",
+      "p_refutes": 0.9794362433726413,
+      "type": "T1"
+    }
+  ],
+  "false_positive_rate_on_controls": 0.05,
+  "hypothesis": "H9 (exploratory)",
+  "not_comparable_with": "accuracies reported in the STALE paper (different task, different scoring)",
+  "pairs": {
+    "conflict": 400,
+    "control": 2000
+  },
+  "prediction_held": true,
+  "prediction_made_in_advance": "T2 detection substantially lower than T1",
+  "proposer": {
+    "auroc_conflict_vs_control": {
+      "T1": 0.9680274724960327,
+      "T2": 0.9035775065422058
+    },
+    "controls_kept": 0.0255,
+    "links_missed": {
+      "T1": 0.275,
+      "T2": 0.68
+    },
+    "mean_similarity": {
+      "T1": 0.41140663623809814,
+      "T2": 0.2553882896900177,
+      "controls": 0.06704189628362656
+    },
+    "threshold": 0.31
+  },
+  "temperature": 1.2267689667098833,
+  "threshold_on_p_refutes": 0.2071446916197821
+}

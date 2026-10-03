@@ -1,0 +1,34 @@
+# Stage A with a larger encoder. Pre-registered in docs/PREREGISTRATION_LARGE.md before training.
+# Same corpora, mixture, number of examples, sequence length and schedule shape as configs/stage_a.yaml.
+# Learning rate and weight decay follow the ModernBERT paper's MNLI setting for the large model
+# (Warner et al., 2024, Table 6: LR 3e-5, WD 1e-5, 1 epoch); the head keeps the 5x ratio of the base run.
+run_dir: runs/stage_a_large
+eval_cache: runs/eval_cache
+encoder_name: answerdotai/ModernBERT-large
+msg_dim: 128
+pooling: cls
+dropout: 0.1
+max_len: 256
+batch_size: 32            # 16 if a 50-step pilot shows batch 32 does not fit in memory (plan, section 2)
+total_examples: 900000
+lr: 3.0e-5
+head_lr: 1.5e-4
+weight_decay: 0.01
+warmup_frac: 0.05
+grad_clip: 1.0
+label_smoothing: 0.0
+seed: 1234
+mixture:
+  vitaminc: 0.40
+  mnli: 0.27
+  wanli: 0.13
+  unrelated: 0.20
+shuffle_buffer: 1000000   # spans every corpus; a smaller buffer shuffles only locally
+pool_batches: 50
+pad_multiple: 8
+log_every: 50
+eval_every: 2000
+ckpt_every: 1000
+dev_sets: [vitaminc.dev, mnli.dev, unrelated.dev, snli.dev]
+dev_limit: 2000
+empty_cache_every: 200

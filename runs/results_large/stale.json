@@ -1,0 +1,136 @@
+{
+  "T1_minus_T2_detection": 0.435,
+  "by_type": {
+    "T1": {
+      "auroc_vs_controls": 0.974895,
+      "detection_hi": 0.93,
+      "detection_lo": 0.84,
+      "detection_rate": 0.885,
+      "mean_p_refutes": 0.6227242771911302,
+      "n": 200,
+      "top_label": {
+        "NEI": 0.34,
+        "REFUTES": 0.655,
+        "SUPPORTS": 0.005
+      }
+    },
+    "T2": {
+      "auroc_vs_controls": 0.89828,
+      "detection_hi": 0.52,
+      "detection_lo": 0.385,
+      "detection_rate": 0.45,
+      "mean_p_refutes": 0.23266890688630787,
+      "n": 200,
+      "top_label": {
+        "NEI": 0.795,
+        "REFUTES": 0.2,
+        "SUPPORTS": 0.005
+      }
+    },
+    "all": {
+      "auroc_vs_controls": 0.9365875,
+      "detection_hi": 0.715,
+      "detection_lo": 0.62,
+      "detection_rate": 0.6675,
+      "mean_p_refutes": 0.4276965920387191,
+      "n": 400,
+      "top_label": {
+        "NEI": 0.5675,
+        "REFUTES": 0.4275,
+        "SUPPORTS": 0.005
+      }
+    }
+  },
+  "controls_top_label": {
+    "NEI": 0.982,
+    "REFUTES": 0.013,
+    "SUPPORTS": 0.005
+  },
+  "edge_version": "edge-2e659683f3e9a846",
+  "examples_lowest_and_highest": [
+    {
+      "detected": false,
+      "new": "I spent half of Saturday at the county clerk\u2019s office getting the deed and homeowner\u2019s insurance transferred\u2014closing was a blur, but at least the keys are finally in my pocket.",
+      "old": "Lately, I've been directing most of my disposable income toward saving for a new roof.",
+      "p_refutes": 0.0024608444678953325,
+      "type": "T2"
+    },
+    {
+      "detected": false,
+      "new": "I need to swing by the county clerk this week\u2014my marriage license paperwork has to be signed off by the priest who\u2019s doing the ceremony, and he said he can\u2019t submit it until we\u2019ve finished the parish ",
+      "old": "For the member spotlight, could you make sure to mention that I identify as a practicing Buddhist?",
+      "p_refutes": 0.002614320916322063,
+      "type": "T2"
+    },
+    {
+      "detected": false,
+      "new": "I finally got around to signing the closing papers this morning\u2014after all the packing, it still feels strange hearing my footsteps echo in an empty hallway.",
+      "old": "The neighbors next door and I have been on friendly terms for years, so we make a point to check in on each other regularly.",
+      "p_refutes": 0.0026962855732764997,
+      "type": "T2"
+    },
+    {
+      "detected": false,
+      "new": "I finally let my buddy set up a Bumble profile for me last night; trying to figure out how dating apps work as a single guy in his forties is honestly pretty overwhelming.",
+      "old": "I\u2019m currently looking at a few rentals in the Blue Ridge Mountains, but I\u2019ll need to coordinate with my wife to see which weekend aligns best with her firm's project deadlines before I book anything.",
+      "p_refutes": 0.0027479538815096943,
+      "type": "T1"
+    },
+    {
+      "detected": true,
+      "new": "Ever since my schedule shifted, I\u2019ve been getting a reliable two-hour stretch to myself most evenings, and it\u2019s been nice actually settling into one thing.",
+      "old": "I never seem to get a solid chunk of free time; it's always just bits and pieces.",
+      "p_refutes": 0.9851459848772353,
+      "type": "T1"
+    },
+    {
+      "detected": true,
+      "new": "I just wrapped up my master\u2019s program last month, so now I\u2019m focusing on settling into my full-time job.",
+      "old": "I haven't finished my education yet; I'm currently an undergraduate student.",
+      "p_refutes": 0.9858480358439162,
+      "type": "T1"
+    },
+    {
+      "detected": true,
+      "new": "Since the hand injury last year, I\u2019ve switched to collecting and listening to vinyl records as my main pastime, and that\u2019s what I plan my free time around now.",
+      "old": "Woodworking is my main passion, and I prioritize spending my free time creating furniture.",
+      "p_refutes": 0.9873412342516733,
+      "type": "T1"
+    },
+    {
+      "detected": true,
+      "new": "I\u2019ve been on a big nonfiction kick lately\u2014mostly biographies and history\u2014so that\u2019s what I\u2019ve been checking out from the library.",
+      "old": "I'm keeping my reading list pretty strictly to science fiction novels these days.",
+      "p_refutes": 0.987882623498491,
+      "type": "T1"
+    }
+  ],
+  "false_positive_rate_on_controls": 0.05,
+  "hypothesis": "H9 (exploratory)",
+  "not_comparable_with": "accuracies reported in the STALE paper (different task, different scoring)",
+  "pairs": {
+    "conflict": 400,
+    "control": 2000
+  },
+  "prediction_held": true,
+  "prediction_made_in_advance": "T2 detection substantially lower than T1",
+  "proposer": {
+    "auroc_conflict_vs_control": {
+      "T1": 0.9680274724960327,
+      "T2": 0.9035775065422058
+    },
+    "controls_kept": 0.0255,
+    "links_missed": {
+      "T1": 0.275,
+      "T2": 0.68
+    },
+    "mean_similarity": {
+      "T1": 0.41140663623809814,
+      "T2": 0.2553882896900177,
+      "controls": 0.06704189628362656
+    },
+    "threshold": 0.31
+  },
+  "temperature": 1.2032868014395317,
+  "threshold_on_p_refutes": 0.10680167002414989
+}

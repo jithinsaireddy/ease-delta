@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use EASE-Delta, please cite it as below."
+title: "EASE-Delta: revision-aware decision computation"
+version: 0.1.0
+date-released: 2026-10-02
+license: Apache-2.0
+repository-code: "https://github.com/jithinsaireddy/ease-delta"
+authors:
+  - family-names: "Pothireddy"
+    given-names: "Jithin"
+abstract: >-
+  Keeps a task's decisions current as its evidence is added, corrected or withdrawn. A
+  fine-tuned encoder reads each (requirement, record) pair once; exact code handles versions,
+  precedence, logic and planning, so a change re-reads only what it touches. Results, including
+  hypotheses that were not supported, are in docs/RESULTS.md.

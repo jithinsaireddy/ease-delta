@@ -1,0 +1,216 @@
+{
+  "examples": [
+    {
+      "claim": "The current version of the press release is approved by the client.",
+      "joint": "SATISFIED",
+      "kind": "match",
+      "records": [
+        "We have the client's sign-off on version 2 of the press release.",
+        "The latest version of the press release is version 2."
+      ],
+      "separate": "SATISFIED",
+      "truth": "SATISFIED"
+    },
+    {
+      "claim": "The current version of the press release is approved by the client.",
+      "joint": "SATISFIED",
+      "kind": "differ",
+      "records": [
+        "We have the client's sign-off on version 2 of the press release.",
+        "The latest version of the press release is version 6."
+      ],
+      "separate": "SATISFIED",
+      "truth": "VIOLATED"
+    },
+    {
+      "claim": "The current version of the press release is approved by the client.",
+      "joint": "VIOLATED",
+      "kind": "only_approval",
+      "records": [
+        "We have the client's sign-off on version 2 of the press release."
+      ],
+      "separate": "VIOLATED",
+      "truth": "UNRESOLVED"
+    },
+    {
+      "claim": "The current version of the press release is approved by the client.",
+      "joint": "UNRESOLVED",
+      "kind": "only_latest",
+      "records": [
+        "The latest version of the press release is version 8."
+      ],
+      "separate": "UNRESOLVED",
+      "truth": "UNRESOLVED"
+    },
+    {
+      "claim": "The client has approved the latest version of the press release.",
+      "joint": "UNRESOLVED",
+      "kind": "match",
+      "records": [
+        "The client approved version 8 of the press release.",
+        "The press release was updated; the current version is version 8."
+      ],
+      "separate": "UNRESOLVED",
+      "truth": "SATISFIED"
+    },
+    {
+      "claim": "The client has approved the latest version of the press release.",
+      "joint": "SATISFIED",
+      "kind": "differ",
+      "records": [
+        "The client approved version 8 of the press release.",
+        "The press release was updated; the current version is version 9."
+      ],
+      "separate": "UNRESOLVED",
+      "truth": "VIOLATED"
+    },
+    {
+      "claim": "The client has approved the latest version of the press release.",
+      "joint": "UNRESOLVED",
+      "kind": "only_approval",
+      "records": [
+        "The client approved version 8 of the press release."
+      ],
+      "separate": "UNRESOLVED",
+      "truth": "UNRESOLVED"
+    },
+    {
+      "claim": "The client has approved the latest version of the press release.",
+      "joint": "UNRESOLVED",
+      "kind": "only_latest",
+      "records": [
+        "The press release was updated; the current version is version 7."
+      ],
+      "separate": "UNRESOLVED",
+      "truth": "UNRESOLVED"
+    }
+  ],
+  "experiment": "X1 (exploratory, not pre-registered)",
+  "n": 800,
+  "systems": {
+    "dense reader (B2)": {
+      "differ": {
+        "CONFLICT": 0.0,
+        "SATISFIED": 0.54,
+        "UNRESOLVED": 0.0,
+        "VIOLATED": 0.46,
+        "correct": 0.46,
+        "n": 200,
+        "truth": "VIOLATED"
+      },
+      "match": {
+        "CONFLICT": 0.0,
+        "SATISFIED": 1.0,
+        "UNRESOLVED": 0.0,
+        "VIOLATED": 0.0,
+        "correct": 1.0,
+        "n": 200,
+        "truth": "SATISFIED"
+      },
+      "only_approval": {
+        "CONFLICT": 0.0,
+        "SATISFIED": 0.915,
+        "UNRESOLVED": 0.085,
+        "VIOLATED": 0.0,
+        "correct": 0.085,
+        "n": 200,
+        "truth": "UNRESOLVED"
+      },
+      "only_latest": {
+        "CONFLICT": 0.0,
+        "SATISFIED": 0.0,
+        "UNRESOLVED": 1.0,
+        "VIOLATED": 0.0,
+        "correct": 1.0,
+        "n": 200,
+        "truth": "UNRESOLVED"
+      },
+      "overall_correct": 0.63625,
+      "unsafe_rate": 0.485,
+      "unsafe_rate_when_versions_differ": 0.54
+    },
+    "joint, same edge model": {
+      "differ": {
+        "CONFLICT": 0.0,
+        "SATISFIED": 0.26,
+        "UNRESOLVED": 0.08,
+        "VIOLATED": 0.66,
+        "correct": 0.66,
+        "n": 200,
+        "truth": "VIOLATED"
+      },
+      "match": {
+        "CONFLICT": 0.0,
+        "SATISFIED": 0.65,
+        "UNRESOLVED": 0.35,
+        "VIOLATED": 0.0,
+        "correct": 0.65,
+        "n": 200,
+        "truth": "SATISFIED"
+      },
+      "only_approval": {
+        "CONFLICT": 0.0,
+        "SATISFIED": 0.565,
+        "UNRESOLVED": 0.395,
+        "VIOLATED": 0.04,
+        "correct": 0.395,
+        "n": 200,
+        "truth": "UNRESOLVED"
+      },
+      "only_latest": {
+        "CONFLICT": 0.0,
+        "SATISFIED": 0.0,
+        "UNRESOLVED": 1.0,
+        "VIOLATED": 0.0,
+        "correct": 1.0,
+        "n": 200,
+        "truth": "UNRESOLVED"
+      },
+      "overall_correct": 0.67625,
+      "unsafe_rate": 0.275,
+      "unsafe_rate_when_versions_differ": 0.26
+    },
+    "separate (E)": {
+      "differ": {
+        "CONFLICT": 0.0,
+        "SATISFIED": 0.825,
+        "UNRESOLVED": 0.165,
+        "VIOLATED": 0.01,
+        "correct": 0.01,
+        "n": 200,
+        "truth": "VIOLATED"
+      },
+      "match": {
+        "CONFLICT": 0.0,
+        "SATISFIED": 0.825,
+        "UNRESOLVED": 0.165,
+        "VIOLATED": 0.01,
+        "correct": 0.825,
+        "n": 200,
+        "truth": "SATISFIED"
+      },
+      "only_approval": {
+        "CONFLICT": 0.0,
+        "SATISFIED": 0.565,
+        "UNRESOLVED": 0.395,
+        "VIOLATED": 0.04,
+        "correct": 0.395,
+        "n": 200,
+        "truth": "UNRESOLVED"
+      },
+      "only_latest": {
+        "CONFLICT": 0.0,
+        "SATISFIED": 0.0,
+        "UNRESOLVED": 1.0,
+        "VIOLATED": 0.0,
+        "correct": 1.0,
+        "n": 200,
+        "truth": "UNRESOLVED"
+      },
+      "overall_correct": 0.5575,
+      "unsafe_rate": 0.4633333333333333,
+      "unsafe_rate_when_versions_differ": 0.825
+    }
+  },
+  "wording": "templated; 10 subjects x 3 claim, 3 approval and 3 latest-version phrasings"
+}

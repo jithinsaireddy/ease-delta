@@ -1,0 +1,15 @@
+services:
+  ease:
+    build: .
+    ports:
+      - "127.0.0.1:8791:8791"      # put a TLS-terminating reverse proxy in front for anything beyond this machine
+    environment:
+      EASE_MULTI: "1"
+      EASE_ADMIN_KEY: "${EASE_ADMIN_KEY:?set EASE_ADMIN_KEY in the environment or a .env file}"
+    volumes:
+      - ./release:/models:ro
+      - ease-data:/data
+    restart: unless-stopped
+    mem_limit: 6g
+volumes:
+  ease-data:

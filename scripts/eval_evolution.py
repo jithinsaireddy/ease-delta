@@ -60,7 +60,8 @@ def replay_rows(atoms, n, seed):
 
 
 def run_stream(name, stream: Readings, order, feedback_mask, champion: Bundle, regression, replay, gate: GateConfig,
-               corrupt: float, block: int, consolidate_every: int, seed: int, store_dir: Path, evolve: bool):
+               corrupt: float, block: int, consolidate_every: int, seed: int, store_dir: Path, evolve: bool,
+               set_suites=None):
     rng = np.random.default_rng(seed)
     bundle = champion
     store = VersionStore(store_dir)
@@ -73,6 +74,10 @@ def run_stream(name, stream: Readings, order, feedback_mask, champion: Bundle, r
     since = 0
     events = []
     base_reg = {k: score(champion.read(r, None), r.labels) for k, r in regression.items()}
+    if set_suites:
+        from ease.evolve.consolidate import score_sets, set_status_probs
+        for k, su in set_suites.items():
+            base_reg[f"sets:{k}"] = score_sets(set_status_probs(champion, su, None), su.labels)
     for s in range(0, n, block):
         ix = order[s : s + block]
         part = stream.take(ix)
@@ -95,8 +100,12 @@ def run_stream(name, stream: Readings, order, feedback_mask, champion: Bundle, r
             since = 0
             m = stream.take(fb_ix)
             fb = Readings(m.pairs, np.asarray(fb_labels, np.int64), m.logits, m.msgs)
-            new, rep = consolidate(bundle, fb, regression, replay, gate)
+            new, rep = consolidate(bundle, fb, regression, replay, gate, set_suites=set_suites)
             reg_after = {k: score(new.read(r, fb), r.labels) for k, r in regression.items()}
+            if set_suites:
+                from ease.evolve.consolidate import score_sets, set_status_probs
+                for k, su in set_suites.items():
+                    reg_after[f"sets:{k}"] = score_sets(set_status_probs(new, su, fb), su.labels)
             ev = {"after_items": int(s + len(ix)), "feedback": len(fb), "adopted": rep.adopted, "chosen": rep.chosen,
                   "reason": rep.reason, "memory": dict(new.memory.__dict__),
                   "regression_accuracy": {k: v["accuracy"] for k, v in reg_after.items()},
@@ -141,6 +150,10 @@ def main() -> int:
     ap.add_argument("--out", default="runs/results/evolution.json")
     ap.add_argument("--work", default="runs/results/work/evolution")
     ap.add_argument("--limit", type=int, default=None, help="dry run: cap every set at this many rows")
+    ap.add_argument("--champion", choices=("refined", "rules"), default="refined",
+                    help="start from the trained refiner (H7) or from calibrated rules written as a refiner (X4)")
+    ap.add_argument("--set-suites", default=None, help="regression_sets.npz for the set-level gate check")
+    ap.add_argument("--train-context", action="store_true")
     a = ap.parse_args()
     cap = (lambda rows: rows[: a.limit]) if a.limit else (lambda rows: rows)
 
@@ -149,7 +162,17 @@ def main() -> int:
     scorer = ModelScorer(a.edge, batch_size=128)
     sb = read_json(Path(a.stage_b) / "summary.json")
     agg = load_aggregator([r for r in sb["runs"] if r["kind"] == "refined"][0]["dir"])
-    champion = Bundle(agg.refiner, MemoryConfig(), "trained")
+    if a.champion == "rules":
+        from ease.aggregate import Calibration, RefinedAggregator, rule_refiner
+
+        cal = read_json(Path(a.stage_b) / "rule_calibration.json")
+        agg = RefinedAggregator(rule_refiner(Calibration(cal["temperature"], tuple(cal["bias"]))))
+    champion = Bundle(agg.refiner, MemoryConfig(), a.champion)
+    set_suites = None
+    if a.set_suites:
+        from ease.evolve.consolidate import load_set_suites
+
+        set_suites = load_set_suites(a.set_suites)
 
     regression = {}
     for name in ("vitaminc.dev", "mnli.dev", "unrelated.dev"):
@@ -160,9 +183,11 @@ def main() -> int:
     scorer.cache.clear()
     print("regression sets:", {k: len(v) for k, v in regression.items()}, "replay:", len(replay), flush=True)
 
-    out = {"hypothesis": "H7", "edge_version": scorer.version, "champion": agg.version,
+    out = {"hypothesis": "H7" if a.champion == "refined" and not a.set_suites else "X4 (exploratory)",
+           "edge_version": scorer.version, "champion": a.champion, "champion_version": agg.version,
+           "set_suites": a.set_suites, "train_context": a.train_context,
            "feedback_rate": a.feedback_rate, "streams": {}}
-    gate = GateConfig(min_feedback=60) if a.limit else GateConfig()
+    gate = GateConfig(min_feedback=60 if a.limit else 200, train_context=a.train_context)
     for sname in a.streams:
         rows = cap(load_eval_set(a.eval_cache, sname))
         stream = readings_of(scorer, rows)
@@ -175,7 +200,7 @@ def main() -> int:
         for rname, corrupt, evolve in (("frozen", 0.0, False), ("evolving", 0.0, True), ("corrupted", 0.5, True)):
             runs[rname] = run_stream(f"{sname}/{rname}", stream, order, mask, champion, regression, replay, gate,
                                      corrupt, a.block, a.consolidate_every, a.seed + 1,
-                                     Path(a.work) / sname / rname, evolve)
+                                     Path(a.work) / sname / rname, evolve, set_suites)
         entry = {"items": len(stream), "verified": int(mask.sum()), "seconds": round(time.time() - t0, 1)}
         for rname, r in runs.items():
             c = r["correct"]

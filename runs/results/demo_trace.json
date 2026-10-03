@@ -1,0 +1,4019 @@
+{
+  "note": "One hand-written scenario; an illustration, not an estimate of error rates.",
+  "runs": [
+    {
+      "action_disposition_correct": "21/24",
+      "events": [
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The signed NDA is filed.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.999,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "design_approved": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.999,
+                "VIOLATED": 0.001
+              },
+              "truth": "UNRESOLVED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.999,
+                "VIOLATED": 0.001
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.513,
+                "UNRESOLVED": 0.486,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The client approves the design.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.016,
+                "UNRESOLVED": 0.95,
+                "VIOLATED": 0.034
+              },
+              "truth": "UNRESOLVED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.781,
+                "UNRESOLVED": 0.216,
+                "VIOLATED": 0.003
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.999,
+                "VIOLATED": 0.001
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.898,
+                "UNRESOLVED": 0.101,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The client confirms the date.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.929,
+                "UNRESOLVED": 0.069,
+                "VIOLATED": 0.002
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.749,
+                "UNRESOLVED": 0.249,
+                "VIOLATED": 0.002
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.999,
+                "VIOLATED": 0.001
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.944,
+                "UNRESOLVED": 0.055,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "An unrelated message arrives.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.953,
+                "UNRESOLVED": 0.046,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.807,
+                "UNRESOLVED": 0.19,
+                "VIOLATED": 0.003
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.998,
+                "VIOLATED": 0.001
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.956,
+                "UNRESOLVED": 0.043,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The deposit is paid.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.956,
+                "UNRESOLVED": 0.043,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.831,
+                "UNRESOLVED": 0.166,
+                "VIOLATED": 0.003
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.912,
+                "UNRESOLVED": 0.087,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.962,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The same approval email is delivered a second time.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.956,
+                "UNRESOLVED": 0.043,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.831,
+                "UNRESOLVED": 0.166,
+                "VIOLATED": 0.003
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.912,
+                "UNRESOLVED": 0.087,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.962,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The client withdraws the approval.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.964,
+                "UNRESOLVED": 0.031,
+                "VIOLATED": 0.005
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.125,
+                "UNRESOLVED": 0.568,
+                "VIOLATED": 0.307
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.913,
+                "UNRESOLVED": 0.086,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.961,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "A late copy of the original approval arrives from an archive.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.964,
+                "UNRESOLVED": 0.031,
+                "VIOLATED": 0.005
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.125,
+                "UNRESOLVED": 0.568,
+                "VIOLATED": 0.307
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.913,
+                "UNRESOLVED": 0.086,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.961,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The delivery date moves.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.022,
+                "UNRESOLVED": 0.139,
+                "VIOLATED": 0.839
+              },
+              "truth": "VIOLATED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.214,
+                "UNRESOLVED": 0.365,
+                "VIOLATED": 0.42
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.915,
+                "UNRESOLVED": 0.084,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.961,
+                "UNRESOLVED": 0.038,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The revised design is approved.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.528,
+                "UNRESOLVED": 0.12,
+                "VIOLATED": 0.351
+              },
+              "truth": "VIOLATED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.802,
+                "UNRESOLVED": 0.135,
+                "VIOLATED": 0.063
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.913,
+                "UNRESOLVED": 0.086,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.962,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "A new date is confirmed.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.944,
+                "UNRESOLVED": 0.055,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.783,
+                "UNRESOLVED": 0.214,
+                "VIOLATED": 0.004
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.911,
+                "UNRESOLVED": 0.088,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.962,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The payment record is withdrawn: the transfer bounced.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.932,
+                "UNRESOLVED": 0.067,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.759,
+                "UNRESOLVED": 0.237,
+                "VIOLATED": 0.003
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.999,
+                "VIOLATED": 0.001
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.956,
+                "UNRESOLVED": 0.044,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        }
+      ],
+      "false_ready": 0,
+      "predicate_status_correct": "45/48",
+      "system": "E (refined, seed 1)",
+      "threshold": 0.5
+    },
+    {
+      "action_disposition_correct": "24/24",
+      "events": [
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The signed NDA is filed.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.001,
+                "UNRESOLVED": 0.996,
+                "VIOLATED": 0.003
+              },
+              "truth": "UNRESOLVED"
+            },
+            "design_approved": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.002,
+                "UNRESOLVED": 0.991,
+                "VIOLATED": 0.007
+              },
+              "truth": "UNRESOLVED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.001,
+                "UNRESOLVED": 0.994,
+                "VIOLATED": 0.005
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.954,
+                "UNRESOLVED": 0.043,
+                "VIOLATED": 0.002
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The client approves the design.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.049,
+                "UNRESOLVED": 0.887,
+                "VIOLATED": 0.063
+              },
+              "truth": "UNRESOLVED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.794,
+                "UNRESOLVED": 0.188,
+                "VIOLATED": 0.018
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.001,
+                "UNRESOLVED": 0.992,
+                "VIOLATED": 0.006
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.936,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.022
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The client confirms the date.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.954,
+                "UNRESOLVED": 0.04,
+                "VIOLATED": 0.006
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.794,
+                "UNRESOLVED": 0.183,
+                "VIOLATED": 0.023
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.002,
+                "UNRESOLVED": 0.986,
+                "VIOLATED": 0.011
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.923,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.035
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "An unrelated message arrives.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.954,
+                "UNRESOLVED": 0.039,
+                "VIOLATED": 0.006
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.794,
+                "UNRESOLVED": 0.183,
+                "VIOLATED": 0.023
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.003,
+                "UNRESOLVED": 0.985,
+                "VIOLATED": 0.012
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.923,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.035
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The deposit is paid.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.955,
+                "UNRESOLVED": 0.038,
+                "VIOLATED": 0.007
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.794,
+                "UNRESOLVED": 0.182,
+                "VIOLATED": 0.024
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.905,
+                "UNRESOLVED": 0.084,
+                "VIOLATED": 0.011
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.914,
+                "UNRESOLVED": 0.041,
+                "VIOLATED": 0.045
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The same approval email is delivered a second time.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.955,
+                "UNRESOLVED": 0.038,
+                "VIOLATED": 0.007
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.794,
+                "UNRESOLVED": 0.182,
+                "VIOLATED": 0.024
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.905,
+                "UNRESOLVED": 0.084,
+                "VIOLATED": 0.011
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.914,
+                "UNRESOLVED": 0.041,
+                "VIOLATED": 0.045
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The client withdraws the approval.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.816,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.147
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.158,
+                "UNRESOLVED": 0.254,
+                "VIOLATED": 0.588
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.905,
+                "UNRESOLVED": 0.084,
+                "VIOLATED": 0.011
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.919,
+                "UNRESOLVED": 0.041,
+                "VIOLATED": 0.04
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "A late copy of the original approval arrives from an archive.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.816,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.147
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.158,
+                "UNRESOLVED": 0.254,
+                "VIOLATED": 0.588
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.905,
+                "UNRESOLVED": 0.084,
+                "VIOLATED": 0.011
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.919,
+                "UNRESOLVED": 0.041,
+                "VIOLATED": 0.04
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The delivery date moves.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.014,
+                "UNRESOLVED": 0.021,
+                "VIOLATED": 0.965
+              },
+              "truth": "VIOLATED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.153,
+                "UNRESOLVED": 0.084,
+                "VIOLATED": 0.763
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.907,
+                "UNRESOLVED": 0.085,
+                "VIOLATED": 0.008
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.928,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.03
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The revised design is approved.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.404,
+                "UNRESOLVED": 0.014,
+                "VIOLATED": 0.582
+              },
+              "truth": "VIOLATED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.78,
+                "UNRESOLVED": 0.071,
+                "VIOLATED": 0.15
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.907,
+                "UNRESOLVED": 0.085,
+                "VIOLATED": 0.008
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.93,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.028
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "A new date is confirmed.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.978,
+                "UNRESOLVED": 0.017,
+                "VIOLATED": 0.005
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.757,
+                "UNRESOLVED": 0.217,
+                "VIOLATED": 0.027
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.906,
+                "UNRESOLVED": 0.085,
+                "VIOLATED": 0.009
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.925,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.034
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The payment record is withdrawn: the transfer bounced.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.978,
+                "UNRESOLVED": 0.018,
+                "VIOLATED": 0.005
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.757,
+                "UNRESOLVED": 0.218,
+                "VIOLATED": 0.026
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.003,
+                "UNRESOLVED": 0.987,
+                "VIOLATED": 0.01
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.934,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.024
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        }
+      ],
+      "false_ready": 0,
+      "predicate_status_correct": "48/48",
+      "system": "B1-soft (calibrated rules)",
+      "threshold": 0.5
+    },
+    {
+      "action_disposition_correct": "24/24",
+      "events": [
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The signed NDA is filed.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "design_approved": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The client approves the design.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The client confirms the date.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "An unrelated message arrives.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The deposit is paid.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The same approval email is delivered a second time.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The client withdraws the approval.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 1.0
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "A late copy of the original approval arrives from an archive.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 1.0
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The delivery date moves.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 1.0
+              },
+              "truth": "VIOLATED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 1.0
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The revised design is approved.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 1.0
+              },
+              "truth": "VIOLATED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "A new date is confirmed.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The payment record is withdrawn: the transfer bounced.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        }
+      ],
+      "false_ready": 0,
+      "predicate_status_correct": "48/48",
+      "system": "B1-hard (top label per record)",
+      "threshold": 0.5
+    },
+    {
+      "action_disposition_correct": "15/24",
+      "events": [
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The signed NDA is filed.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.999,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "design_approved": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.999,
+                "VIOLATED": 0.001
+              },
+              "truth": "UNRESOLVED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.999,
+                "VIOLATED": 0.001
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.513,
+                "UNRESOLVED": 0.486,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The client approves the design.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.016,
+                "UNRESOLVED": 0.95,
+                "VIOLATED": 0.034
+              },
+              "truth": "UNRESOLVED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.781,
+                "UNRESOLVED": 0.216,
+                "VIOLATED": 0.003
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.999,
+                "VIOLATED": 0.001
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.898,
+                "UNRESOLVED": 0.101,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The client confirms the date.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.929,
+                "UNRESOLVED": 0.069,
+                "VIOLATED": 0.002
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.749,
+                "UNRESOLVED": 0.249,
+                "VIOLATED": 0.002
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.999,
+                "VIOLATED": 0.001
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.944,
+                "UNRESOLVED": 0.055,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "An unrelated message arrives.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.953,
+                "UNRESOLVED": 0.046,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.807,
+                "UNRESOLVED": 0.19,
+                "VIOLATED": 0.003
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.998,
+                "VIOLATED": 0.001
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.956,
+                "UNRESOLVED": 0.043,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The deposit is paid.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.956,
+                "UNRESOLVED": 0.043,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.831,
+                "UNRESOLVED": 0.166,
+                "VIOLATED": 0.003
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.912,
+                "UNRESOLVED": 0.087,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.962,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The same approval email is delivered a second time.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.956,
+                "UNRESOLVED": 0.043,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.831,
+                "UNRESOLVED": 0.166,
+                "VIOLATED": 0.003
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.912,
+                "UNRESOLVED": 0.087,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.962,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The client withdraws the approval.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.964,
+                "UNRESOLVED": 0.031,
+                "VIOLATED": 0.005
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.125,
+                "UNRESOLVED": 0.568,
+                "VIOLATED": 0.307
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.913,
+                "UNRESOLVED": 0.086,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.961,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "A late copy of the original approval arrives from an archive.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.964,
+                "UNRESOLVED": 0.031,
+                "VIOLATED": 0.005
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.125,
+                "UNRESOLVED": 0.568,
+                "VIOLATED": 0.307
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.913,
+                "UNRESOLVED": 0.086,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.961,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The delivery date moves.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.022,
+                "UNRESOLVED": 0.139,
+                "VIOLATED": 0.839
+              },
+              "truth": "VIOLATED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.214,
+                "UNRESOLVED": 0.365,
+                "VIOLATED": 0.42
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.915,
+                "UNRESOLVED": 0.084,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.961,
+                "UNRESOLVED": 0.038,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The revised design is approved.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.528,
+                "UNRESOLVED": 0.12,
+                "VIOLATED": 0.351
+              },
+              "truth": "VIOLATED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.802,
+                "UNRESOLVED": 0.135,
+                "VIOLATED": 0.063
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.913,
+                "UNRESOLVED": 0.086,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.962,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "A new date is confirmed.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.944,
+                "UNRESOLVED": 0.055,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.783,
+                "UNRESOLVED": 0.214,
+                "VIOLATED": 0.004
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.911,
+                "UNRESOLVED": 0.088,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.962,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The payment record is withdrawn: the transfer bounced.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.932,
+                "UNRESOLVED": 0.067,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.759,
+                "UNRESOLVED": 0.237,
+                "VIOLATED": 0.003
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.999,
+                "VIOLATED": 0.001
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.956,
+                "UNRESOLVED": 0.044,
+                "VIOLATED": 0.001
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        }
+      ],
+      "false_ready": 0,
+      "predicate_status_correct": "45/48",
+      "system": "E (refined, seed 1)",
+      "threshold": 0.9
+    },
+    {
+      "action_disposition_correct": "18/24",
+      "events": [
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The signed NDA is filed.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.001,
+                "UNRESOLVED": 0.996,
+                "VIOLATED": 0.003
+              },
+              "truth": "UNRESOLVED"
+            },
+            "design_approved": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.002,
+                "UNRESOLVED": 0.991,
+                "VIOLATED": 0.007
+              },
+              "truth": "UNRESOLVED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.001,
+                "UNRESOLVED": 0.994,
+                "VIOLATED": 0.005
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.954,
+                "UNRESOLVED": 0.043,
+                "VIOLATED": 0.002
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The client approves the design.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.049,
+                "UNRESOLVED": 0.887,
+                "VIOLATED": 0.063
+              },
+              "truth": "UNRESOLVED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.794,
+                "UNRESOLVED": 0.188,
+                "VIOLATED": 0.018
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.001,
+                "UNRESOLVED": 0.992,
+                "VIOLATED": 0.006
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.936,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.022
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The client confirms the date.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.954,
+                "UNRESOLVED": 0.04,
+                "VIOLATED": 0.006
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.794,
+                "UNRESOLVED": 0.183,
+                "VIOLATED": 0.023
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.002,
+                "UNRESOLVED": 0.986,
+                "VIOLATED": 0.011
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.923,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.035
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "An unrelated message arrives.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.954,
+                "UNRESOLVED": 0.039,
+                "VIOLATED": 0.006
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.794,
+                "UNRESOLVED": 0.183,
+                "VIOLATED": 0.023
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.003,
+                "UNRESOLVED": 0.985,
+                "VIOLATED": 0.012
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.923,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.035
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The deposit is paid.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.955,
+                "UNRESOLVED": 0.038,
+                "VIOLATED": 0.007
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.794,
+                "UNRESOLVED": 0.182,
+                "VIOLATED": 0.024
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.905,
+                "UNRESOLVED": 0.084,
+                "VIOLATED": 0.011
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.914,
+                "UNRESOLVED": 0.041,
+                "VIOLATED": 0.045
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The same approval email is delivered a second time.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.955,
+                "UNRESOLVED": 0.038,
+                "VIOLATED": 0.007
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.794,
+                "UNRESOLVED": 0.182,
+                "VIOLATED": 0.024
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.905,
+                "UNRESOLVED": 0.084,
+                "VIOLATED": 0.011
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.914,
+                "UNRESOLVED": 0.041,
+                "VIOLATED": 0.045
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The client withdraws the approval.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.816,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.147
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.158,
+                "UNRESOLVED": 0.254,
+                "VIOLATED": 0.588
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.905,
+                "UNRESOLVED": 0.084,
+                "VIOLATED": 0.011
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.919,
+                "UNRESOLVED": 0.041,
+                "VIOLATED": 0.04
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "A late copy of the original approval arrives from an archive.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.816,
+                "UNRESOLVED": 0.037,
+                "VIOLATED": 0.147
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.158,
+                "UNRESOLVED": 0.254,
+                "VIOLATED": 0.588
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.905,
+                "UNRESOLVED": 0.084,
+                "VIOLATED": 0.011
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.919,
+                "UNRESOLVED": 0.041,
+                "VIOLATED": 0.04
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The delivery date moves.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.014,
+                "UNRESOLVED": 0.021,
+                "VIOLATED": 0.965
+              },
+              "truth": "VIOLATED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.153,
+                "UNRESOLVED": 0.084,
+                "VIOLATED": 0.763
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.907,
+                "UNRESOLVED": 0.085,
+                "VIOLATED": 0.008
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.928,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.03
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The revised design is approved.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.404,
+                "UNRESOLVED": 0.014,
+                "VIOLATED": 0.582
+              },
+              "truth": "VIOLATED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.78,
+                "UNRESOLVED": 0.071,
+                "VIOLATED": 0.15
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.907,
+                "UNRESOLVED": 0.085,
+                "VIOLATED": 0.008
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.93,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.028
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "A new date is confirmed.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.978,
+                "UNRESOLVED": 0.017,
+                "VIOLATED": 0.005
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.757,
+                "UNRESOLVED": 0.217,
+                "VIOLATED": 0.027
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.906,
+                "UNRESOLVED": 0.085,
+                "VIOLATED": 0.009
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.925,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.034
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The payment record is withdrawn: the transfer bounced.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.978,
+                "UNRESOLVED": 0.018,
+                "VIOLATED": 0.005
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.757,
+                "UNRESOLVED": 0.218,
+                "VIOLATED": 0.026
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.003,
+                "UNRESOLVED": 0.987,
+                "VIOLATED": 0.01
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.934,
+                "UNRESOLVED": 0.042,
+                "VIOLATED": 0.024
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        }
+      ],
+      "false_ready": 0,
+      "predicate_status_correct": "48/48",
+      "system": "B1-soft (calibrated rules)",
+      "threshold": 0.9
+    },
+    {
+      "action_disposition_correct": "24/24",
+      "events": [
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The signed NDA is filed.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "design_approved": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The client approves the design.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The client confirms the date.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "An unrelated message arrives.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The deposit is paid.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The same approval email is delivered a second time.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The client withdraws the approval.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 1.0
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "A late copy of the original approval arrives from an archive.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 1.0
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The delivery date moves.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 1.0
+              },
+              "truth": "VIOLATED"
+            },
+            "design_approved": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 1.0
+              },
+              "truth": "VIOLATED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "The revised design is approved.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "VIOLATED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 1.0
+              },
+              "truth": "VIOLATED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "BLOCKED",
+              "truth": "BLOCKED"
+            }
+          },
+          "event": "A new date is confirmed.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        },
+        {
+          "actions": {
+            "send_packet": {
+              "model": "READY",
+              "truth": "READY"
+            },
+            "send_payment_reminder": {
+              "model": "NEEDS_INFO",
+              "truth": "NEEDS_INFO"
+            }
+          },
+          "event": "The payment record is withdrawn: the transfer bounced.",
+          "predicates": {
+            "date_confirmed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "design_approved": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            },
+            "invoice_paid": {
+              "model": "UNRESOLVED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 0.0,
+                "UNRESOLVED": 1.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "UNRESOLVED"
+            },
+            "nda_signed": {
+              "model": "SATISFIED",
+              "p": {
+                "CONFLICT": 0.0,
+                "SATISFIED": 1.0,
+                "UNRESOLVED": 0.0,
+                "VIOLATED": 0.0
+              },
+              "truth": "SATISFIED"
+            }
+          }
+        }
+      ],
+      "false_ready": 0,
+      "predicate_status_correct": "48/48",
+      "system": "B1-hard (top label per record)",
+      "threshold": 0.9
+    }
+  ]
+}

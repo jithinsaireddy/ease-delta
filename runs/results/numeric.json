@@ -1,0 +1,45 @@
+{
+  "note": "A claim counts as a comparison if it contains a digit and a comparative phrase.",
+  "sets": {
+    "vitaminc.dev": {
+      "no number": {
+        "accuracy": 0.8338264299802761,
+        "hi": 0.8505917159763313,
+        "lo": 0.8175542406311637,
+        "n": 2028
+      },
+      "number with comparison": {
+        "accuracy": 0.8656417112299465,
+        "hi": 0.8780080213903744,
+        "lo": 0.8536096256684492,
+        "n": 2992
+      },
+      "number, no comparison": {
+        "accuracy": 0.8664627930682977,
+        "hi": 0.8878695208970439,
+        "lo": 0.8450560652395515,
+        "n": 981
+      }
+    },
+    "vitaminc.test": {
+      "no number": {
+        "accuracy": 0.8927023001820288,
+        "hi": 0.8961773953334436,
+        "lo": 0.8890608969055105,
+        "n": 30215
+      },
+      "number with comparison": {
+        "accuracy": 0.9233220338983051,
+        "hi": 0.9275254237288135,
+        "lo": 0.9192542372881356,
+        "n": 14750
+      },
+      "number, no comparison": {
+        "accuracy": 0.8986512900703675,
+        "hi": 0.9046129788897577,
+        "lo": 0.8926896012509773,
+        "n": 10232
+      }
+    }
+  }
+}

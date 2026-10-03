@@ -1,0 +1,30 @@
+# Diagnostic: does more training of the same model help?
+# Continues the released edge model for 200k more examples with a fresh, lower learning-rate cycle.
+# Evaluated on development sets only. The result is an estimate of the marginal gain of more
+# training; it is not a released model.
+run_dir: runs/diag_more_training
+eval_cache: runs/eval_cache
+init_from: runs/stage_a/final
+encoder_name: answerdotai/ModernBERT-base
+msg_dim: 128
+pooling: cls
+dropout: 0.1
+max_len: 256
+batch_size: 32
+total_examples: 200000
+lr: 1.5e-5
+head_lr: 1.5e-5
+weight_decay: 0.01
+warmup_frac: 0.05
+grad_clip: 1.0
+seed: 777
+mixture:
+  vitaminc: 0.40
+  mnli: 0.27
+  wanli: 0.13
+  unrelated: 0.20
+shuffle_buffer: 1000000
+eval_every: 1250
+ckpt_every: 100000
+dev_sets: [vitaminc.dev, mnli.dev, unrelated.dev, snli.dev]
+dev_limit: 2000

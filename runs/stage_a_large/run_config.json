@@ -1,0 +1,65 @@
+{
+  "config": {
+    "batch_size": 32,
+    "ckpt_every": 1000,
+    "dev_limit": 2000,
+    "dev_sets": [
+      "vitaminc.dev",
+      "mnli.dev",
+      "unrelated.dev",
+      "snli.dev"
+    ],
+    "device": "",
+    "dropout": 0.1,
+    "empty_cache_every": 200,
+    "encoder_name": "answerdotai/ModernBERT-large",
+    "eval_cache": "runs/eval_cache",
+    "eval_every": 2000,
+    "grad_clip": 1.0,
+    "head_lr": 0.00015,
+    "init_from": "",
+    "label_smoothing": 0.0,
+    "local_sources": {},
+    "log_every": 50,
+    "lr": 3e-05,
+    "max_len": 256,
+    "mix_every": 500,
+    "mix_tolerance": 0.12,
+    "mixture": {
+      "mnli": 0.27,
+      "unrelated": 0.2,
+      "vitaminc": 0.4,
+      "wanli": 0.13
+    },
+    "msg_dim": 128,
+    "pad_multiple": 8,
+    "pool_batches": 50,
+    "pooling": "cls",
+    "run_dir": "runs/stage_a_large",
+    "seed": 1234,
+    "shuffle_buffer": 1000000,
+    "total_examples": 900000,
+    "warmup_frac": 0.05,
+    "weight_decay": 0.01
+  },
+  "device": "mps",
+  "licences": {
+    "mnli": "cc-by-3.0 / cc-by-sa-3.0 / mit / other (per genre)",
+    "unrelated": "derived: texts drawn from the real sources above",
+    "vitaminc": "cc-by-sa-3.0",
+    "wanli": "cc-by-4.0"
+  },
+  "machine": {
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "parameters": 394913539,
+  "total_steps": 28125,
+  "versions": {
+    "datasets": "5.0.1",
+    "python": "3.12.8",
+    "torch": "2.14.0",
+    "transformers": "5.17.0"
+  },
+  "warmup_steps": 1406
+}

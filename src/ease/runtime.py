@@ -29,7 +29,8 @@ import numpy as np
 from ease.aggregate import RefinedAggregator, RuleAggregator
 from ease.engine import Engine, EngineConfig, pair_key
 from ease.evolve.aggregator import EvolvingAggregator
-from ease.evolve.consolidate import Bundle, GateConfig, Readings, VersionStore, consolidate, load_readings
+from ease.evolve.consolidate import (Bundle, GateConfig, Readings, VersionStore, consolidate, load_readings,
+                                    load_set_suites)
 from ease.evolve.memory import CorrectionMemory, MemoryConfig
 from ease.evolve.threshold import ThresholdTracker
 from ease.ledger import Event, Ledger
@@ -95,7 +96,7 @@ class PersistentEdgeCache(dict):
 
 class Runtime:
     def __init__(self, data_dir: str | Path, scorer, base_aggregator=None, limits: Optional[Limits] = None,
-                 gate: Optional[GateConfig] = None, alpha: float = 0.05, eta: float = 0.02, tau: float = 0.9,
+                 gate: Optional[GateConfig] = None, alpha: float = 0.05, eta: float = 0.05, tau: float = 0.9,
                  regression_suite: Optional[str | Path] = None):
         self.dir = Path(data_dir)
         self.regression_suite = Path(regression_suite) if regression_suite else None
@@ -359,12 +360,14 @@ class Runtime:
             self.audit.log(kind="export_feedback", rows=len(latest), skipped=skipped)
             return {"rows": len(latest), "skipped_because_record_changed_or_gone": skipped, "path": str(path)}
 
-    def consolidate(self, regression: dict[str, Readings], replay: Optional[Readings] = None) -> dict:
+    def consolidate(self, regression: dict[str, Readings], replay: Optional[Readings] = None,
+                    set_suites: Optional[dict] = None) -> dict:
         """Try to learn from accumulated feedback. Adopts the result only if the gate passes."""
         with self.lock:
             if self.bundle is None:
                 return {"adopted": False, "reason": "no trained refiner is loaded; nothing to consolidate"}
-            new, rep = consolidate(self.bundle, self.feedback_readings(), regression, replay, self.gate)
+            new, rep = consolidate(self.bundle, self.feedback_readings(), regression, replay, self.gate,
+                                   set_suites=set_suites)
             if rep.adopted:
                 self.versions.save(new, rep, note=f"adopted after {rep.feedback} verified readings")
                 self._load_bundle()
@@ -383,7 +386,12 @@ class Runtime:
                                                 "as safe; nothing was changed"}
         sets = load_readings(self.regression_suite)
         replay = sets.pop("replay", None)
-        return self.consolidate(sets, replay)
+        suites_path = self.regression_suite.parent / "regression_sets.npz"
+        if not suites_path.exists():
+            return {"adopted": False, "reason": "no set-level regression suite (regression_sets.npz) is configured; "
+                                                "a change could be fine on single readings and wrong on whole tasks, "
+                                                "so nothing was changed"}
+        return self.consolidate(sets, replay, load_set_suites(suites_path))
 
     def rollback(self) -> dict:
         with self.lock:

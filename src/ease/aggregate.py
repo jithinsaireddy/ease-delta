@@ -260,6 +260,33 @@ class EdgeRefiner(nn.Module):
         return F.softmax(base + self.out(h), dim=-1)
 
 
+def rule_refiner(calibration: Calibration, msg_dim: int = 128, hidden: int = 96, seed: int = 0) -> EdgeRefiner:
+    """Calibrated rules written as a refiner: temperature and bias set, the learned correction zero.
+
+    It computes exactly what RuleAggregator(calibration) computes, and it can be the starting point
+    of gated consolidation (ease/evolve/consolidate.py), which may later learn a correction if held-out
+    feedback shows that one helps.
+
+    The hidden layers do not affect the output while the last layer is zero. They are drawn from
+    `seed`, not from the global generator, so the same calibration always gives the same weights,
+    the same version and the same file."""
+    ref = EdgeRefiner(RefinerConfig(msg_dim=msg_dim, hidden=hidden)).double()  # float32 would round T and b
+    g = torch.Generator().manual_seed(seed)
+    with torch.no_grad():
+        for lin in (ref.inp, ref.mid):  # the range nn.Linear uses by default
+            bound = 1.0 / float(np.sqrt(lin.in_features))
+            lin.weight.copy_((torch.rand(lin.weight.shape, generator=g, dtype=torch.float64) * 2 - 1) * bound)
+            lin.bias.copy_((torch.rand(lin.bias.shape, generator=g, dtype=torch.float64) * 2 - 1) * bound)
+        ref.log_t.fill_(float(np.log(calibration.temperature)))
+        ref.bias.copy_(torch.tensor(calibration.bias, dtype=ref.bias.dtype))
+        ref.out.weight.zero_()
+        ref.out.bias.zero_()
+        if ref.ctx is not None:  # rules ignore the rest of the set; so does any correction learned later
+            ref.ctx.weight.zero_()
+            ref.ctx.bias.zero_()
+    return ref.eval()
+
+
 class RefinedAggregator(Aggregator):
     def __init__(self, refiner: EdgeRefiner, version: Optional[str] = None):
         self.refiner = refiner.double().eval()
