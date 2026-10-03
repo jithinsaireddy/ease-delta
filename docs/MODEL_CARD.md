@@ -16,7 +16,7 @@ tags:
 
 # Model card: EASE-Delta
 
-Generated 2026-10-03T09:44:00+00:00 by `scripts/package_release.py`. Figures are read from `runs/results/`. Full results, including hypotheses that were not supported: `docs/RESULTS.md`.
+Generated 2026-10-03T16:43:31+00:00 by `scripts/package_release.py`. Figures are read from `runs/results/`. Full results, including hypotheses that were not supported: `docs/RESULTS.md`.
 
 ## What it is
 

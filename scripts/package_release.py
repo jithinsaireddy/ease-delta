@@ -138,6 +138,15 @@ def main() -> int:
         "files": files,
     }
     (out / "MANIFEST.json").write_text(json.dumps(manifest, indent=2))
+    # The Hub counts a download of a repository that names no library each time its root config.json is
+    # fetched (huggingface.co/docs/hub/models-download-stats). The model's own config lives in edge/, so
+    # without this file downloads of the published model are never counted.
+    (out / "config.json").write_text(json.dumps({
+        "ease_delta": {"edge_config": "edge/edge_config.json", "aggregator": "aggregator/", "settings": "settings.json",
+                       "edge_version": manifest["edge_version"], "backbone": manifest["backbone"],
+                       "code": "https://github.com/jithinsaireddy/ease-delta"},
+        "note": "Not a transformers model: load it with the ease package (ease serve --model edge --aggregator aggregator)."},
+        indent=2))
 
     edge, eps = load(R / "edge.json"), load(R / "episodes.json")
     exact, timing, stale, _evo = load(R / "exactness.json"), load(R / "timing.json"), load(R / "stale.json"), load(R / "evolution.json")
