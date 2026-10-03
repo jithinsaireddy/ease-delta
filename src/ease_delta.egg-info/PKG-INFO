@@ -1,0 +1,219 @@
+Metadata-Version: 2.4
+Name: ease-delta
+Version: 0.1.0
+Summary: EASE-Delta: revision-aware decision computation (versioned evidence, incremental neural-symbolic inference, gated self-evolution)
+License: Apache-2.0
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: torch>=2.6
+Requires-Dist: transformers>=4.48
+Requires-Dist: datasets>=4.0
+Requires-Dist: huggingface_hub
+Requires-Dist: safetensors
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: scikit-learn
+Requires-Dist: pyyaml
+Requires-Dist: tqdm
+Requires-Dist: fastapi
+Requires-Dist: uvicorn
+Requires-Dist: pydantic>=2
+Requires-Dist: psutil
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: hypothesis; extra == "dev"
+Requires-Dist: httpx; extra == "dev"
+Requires-Dist: matplotlib; extra == "dev"
+
+# EASE-Delta
+
+Keeps a task's decisions current as its evidence changes.
+
+You declare what must be true before something can be done ("the client approved the design",
+"the delivery date is confirmed"). Messages and documents arrive, get corrected, get withdrawn.
+EASE-Delta reads each one against each requirement, remembers the reading, and after every change
+tells you which actions are ready, which are blocked and why, and which single question is worth
+asking. When one record changes it re-reads that record and nothing else.
+
+It proposes. It never sends, pays, submits or executes anything.
+
+**Read `docs/RESULTS.md` before relying on it.** That file reports every measurement, including
+the hypotheses that were not supported. `docs/LIMITATIONS.md` lists what was never measured,
+starting with the most important: no person has used this, so whether it saves anyone time is
+unknown.
+
+## How it works
+
+```
+evidence event ──> ledger (exact)            versions, withdrawals, duplicates, conflicts
+                     │
+                     ▼
+      edge model (learned, 149M)             one (claim, record) pair -> supports / refutes / settles nothing
+                     │   cached per pair
+                     ▼
+      refiner (learned, 41K) ──> precedence policy (exact, differentiable)
+                     │
+                     ▼
+      requirement logic (exact)              AND / OR / NOT / k-of-n over three-valued statuses
+                     │
+                     ▼
+      planner (exact)                        what is ready, what to ask, what need not be asked
+```
+
+Learned parts interpret language. Exact parts handle identity, versions, precedence, logic and
+arithmetic. Every quantity a decision depends on, including the model weights and the schema, is a
+node in one dependency graph, so a change to any of them recomputes what it reaches and nothing
+else (`docs/PROOFS.md`).
+
+## Quick start
+
+```bash
+cd ~/ease
+source .venv/bin/activate
+pytest                      # the test suite; needs no model and no network
+```
+
+After training (below), or with a trained model in `release/`:
+
+```bash
+ease demo  --model release/edge --aggregator release/aggregator
+ease serve --model release/edge --aggregator release/aggregator --data ~/.ease
+```
+
+The demo plays a client hand-off through twelve events: approvals, a withdrawal, a duplicate, a
+late copy of an old message, a changed date, a bounced payment. It prints what the model actually
+concluded at each step.
+
+`ease serve` also serves a page at `http://127.0.0.1:8791/` for doing the same by hand: declare a
+task, paste messages, see what is ready and why, and correct a reading the model got wrong. The
+page loads nothing from the internet.
+
+**Write passages that say who is speaking.** The reader sees only a record's text, never its
+metadata. "We approve the design" does not establish that *the client* approved. "Email from the
+client: we approve the design" does. `POST /tasks/{id}/documents` takes an `attribution` and puts
+it in front of every passage it cuts from a document.
+
+### API
+
+```bash
+curl -s localhost:8791/tasks -H 'content-type: application/json' -d '{
+  "task_id": "handoff",
+  "predicates": [{"id": "approved", "text": "The client has approved the design.", "prior": 0.3, "ask_cost": 0.2}],
+  "actions": [{"id": "send", "description": "Send the packet", "requires": "approved", "value_success": 10, "cost_failure": 25}]
+}'
+
+curl -s localhost:8791/tasks/handoff/events -H 'content-type: application/json' -d '{
+  "record_id": "email-14", "revision": 1, "source_id": "client", "authority": 2, "valid_from": 1,
+  "text": "We approve the design as presented, please go ahead."
+}'
+
+curl -s localhost:8791/tasks/handoff/explain/send      # which records the answer rests on
+curl -s localhost:8791/tasks/handoff/question          # what is worth asking, and what is not
+curl -s localhost:8791/tasks/handoff/verify            # cached state == full rebuild?
+```
+
+| Endpoint | Purpose |
+|---|---|
+| `POST /tasks` | declare a task |
+| `POST /tasks/{id}/events` | add, correct or withdraw a record (`"text": null` withdraws) |
+| `POST /tasks/{id}/documents` | split a document into attributed passages and deliver them; a revision withdraws passages that are gone |
+| `GET /tasks/{id}` | statuses, beliefs, records, endorsement threshold |
+| `GET /tasks/{id}/explain/{action}` | the predicates and records an assessment rests on |
+| `GET /tasks/{id}/question` | the question with the highest value, and questions that cannot matter |
+| `POST /tasks/{id}/certificate` | can any answer to these questions change this proposal? |
+| `POST /tasks/{id}/readings` | a person states what a record establishes; takes effect at once |
+| `DELETE /readings/{item}` | withdraw that statement; behaviour returns exactly to what it was |
+| `POST /tasks/{id}/endorsements/{action}`, `POST /tasks/{id}/verdicts` | report whether an endorsed action was right |
+| `POST /evolve/consolidate`, `POST /evolve/rollback` | learn from accumulated feedback behind a gate; undo |
+| `PUT /tasks/{id}/schema`, `POST /tasks/{id}/clock` | change the requirements; advance time |
+
+### Python
+
+```python
+from ease.engine import Engine
+from ease.ledger import Event
+from ease.schema import Action, Predicate, TaskSchema
+from ease.scorer import ModelScorer
+from ease.aggregate import load_aggregator
+
+schema = TaskSchema("handoff",
+    [Predicate("approved", "The client has approved the design.", prior=0.3)],
+    [], [Action("send", "Send the packet", "approved")])
+engine = Engine(schema, ModelScorer("release/edge", canonical=True), load_aggregator("release/aggregator"))
+
+report = engine.deliver(Event("email-14", 1, "We approve the design as presented.",
+                              source_id="client", authority=2, valid_from=1.0))
+print(report.changed_actions, engine.assessment("send").disposition)
+```
+
+## Learning after deployment
+
+The 149M-parameter encoder is never updated in use. What changes is small, versioned and
+reversible.
+
+| Mechanism | Takes effect | Safeguard |
+|---|---|---|
+| Correction memory | next query | an item can be deleted, restoring earlier behaviour exactly; nothing is generalised to similar cases until a gate has shown on held-out feedback that it helps |
+| Endorsement threshold | after each verdict | realised error rate among endorsed actions is bounded for every sequence of cases (`docs/PROOFS.md`, T5) |
+| Consolidation | on request | adopted only if a regression suite does not get worse and held-out feedback improves; every version keeps its parent and can be rolled back |
+
+## Training
+
+Everything runs on one Apple-silicon laptop. Data is streamed from the Hugging Face Hub; nothing
+is downloaded in full.
+
+```bash
+python -m ease.train.stage_a --config configs/stage_a.yaml      # edge model, about 2.5 h
+bash scripts/run_experiments.sh                                 # everything else, about 5 h
+```
+
+| Corpus | Licence | Use |
+|---|---|---|
+| VitaminC | CC BY-SA 3.0 | train, test |
+| MNLI | CC BY 3.0 / CC BY-SA 3.0 / MIT / other, by genre | train, test |
+| WANLI | CC BY 4.0 | train, test |
+| SNLI | CC BY-SA 4.0 | evaluation only (its labelling convention is wrong for evidence) |
+| ANLI | CC BY-NC 4.0 | evaluation only (non-commercial) |
+| STALE | CC BY 4.0 | evaluation only |
+
+Training resumes exactly after an interruption (`--resume`): the data stream's state is part of
+every checkpoint.
+
+## Layout
+
+```
+src/ease/
+  ledger.py        versioned evidence, order-independent merge
+  graph.py         incremental evaluation with early cutoff
+  schema.py        predicates, gates, actions
+  logic.py         exact three-valued and probabilistic evaluation
+  scorer.py        edge model inference and caching; canonical shapes
+  aggregate.py     precedence policy; rule, refined and neural aggregators
+  engine.py        ties the above together
+  planner.py       value of information; stability certificates
+  proposer.py      dependency proposals with a conformal miss bound (off by default)
+  evolve/          memory, threshold tracker, gated consolidation, versions
+  ingest.py        documents into self-contained passages
+  runtime.py       persistence, limits, audit log
+  service/api.py   local HTTP API
+  service/ui.html  local page; no external resources
+  data/            streaming corpora, atoms, episode generator
+  train/           stage_a (edge), stage_b (aggregators), dense (baseline)
+  eval/            metrics and the evaluation harness
+scripts/           one script per pre-registered hypothesis, and the report generator
+docs/
+  PREREGISTRATION.md   hypotheses and decision rules, written before any test evaluation
+  RESULTS.md           generated from the measurements
+  DEVIATIONS.md        what was done differently from the plan
+  LIMITATIONS.md       what was not measured and what can break
+  PROOFS.md            what is proved, under which assumptions, and which test checks it
+  RESEARCH.md          sources, checked; prior art; findings that changed the design
+  MODEL_CARD.md
+tests/             property-based and unit tests
+```
+
+## Licence
+
+Code: Apache-2.0. Model weights derive from ModernBERT-base (Apache-2.0) and from corpora under
+the licences above; VitaminC and part of MNLI are share-alike. Take advice before redistributing
+weights commercially.

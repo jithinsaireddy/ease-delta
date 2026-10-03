@@ -1,0 +1,34 @@
+# Stage A: edge function (claim x evidence -> SUPPORTS / REFUTES / NEI + message vector)
+# Training corpora are restricted to licences that allow unrestricted use of the resulting weights.
+# "unrelated" is synthetic: claim of one example crossed with evidence of another, labelled NEI.
+# SNLI is evaluated on but not trained on (its same-scene convention mislabels unrelated content).
+run_dir: runs/stage_a
+eval_cache: runs/eval_cache
+encoder_name: answerdotai/ModernBERT-base
+msg_dim: 128
+pooling: cls
+dropout: 0.1
+max_len: 256
+batch_size: 32
+total_examples: 900000
+lr: 4.0e-5
+head_lr: 2.0e-4
+weight_decay: 0.01
+warmup_frac: 0.05
+grad_clip: 1.0
+label_smoothing: 0.0
+seed: 1234
+mixture:
+  vitaminc: 0.40
+  mnli: 0.27
+  wanli: 0.13
+  unrelated: 0.20
+shuffle_buffer: 1000000   # spans every corpus; a smaller buffer shuffles only locally
+pool_batches: 50
+pad_multiple: 8
+log_every: 50
+eval_every: 2000
+ckpt_every: 1000
+dev_sets: [vitaminc.dev, mnli.dev, unrelated.dev, snli.dev]
+dev_limit: 2000
+empty_cache_every: 200

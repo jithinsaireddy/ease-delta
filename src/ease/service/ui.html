@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EASE-Delta</title>
+<style>
+  :root {
+    --bg: #f6f5f1; --panel: #ffffff; --ink: #1c1b18; --muted: #6a675f; --line: #e2dfd6;
+    --ready: #1f7a4d; --ready-bg: #e3f3ea; --blocked: #a5321f; --blocked-bg: #fbe7e2;
+    --open: #8a6100; --open-bg: #fbf0d5; --accent: #2b4c7e; --accent-ink: #ffffff; --code: #f0eee7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #151513; --panel: #1e1e1b; --ink: #ecebe6; --muted: #a09d94; --line: #33322d;
+      --ready: #6fd3a0; --ready-bg: #173526; --blocked: #f09a88; --blocked-bg: #3d1d17;
+      --open: #e9c46a; --open-bg: #3a2f12; --accent: #8fb3ea; --accent-ink: #101418; --code: #262622;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { padding: 18px 16px 10px; max-width: 1180px; margin: 0 auto; }
+  header h1 { margin: 0; font-size: 20px; letter-spacing: -0.01em; }
+  header p { margin: 4px 0 0; color: var(--muted); max-width: 70ch; }
+  main { max-width: 1180px; margin: 0 auto; padding: 0 16px 60px; display: grid; gap: 16px;
+         grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+  @media (max-width: 860px) { main { grid-template-columns: minmax(0, 1fr); } }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+  section > h2 { margin: 0 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+  .full { grid-column: 1 / -1; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  label { display: block; font-size: 12px; color: var(--muted); margin: 8px 0 2px; }
+  input, select, textarea, button { font: inherit; color: inherit; }
+  input, select, textarea { width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: 7px; padding: 7px 9px; }
+  textarea { min-height: 84px; resize: vertical; }
+  textarea.code { font: 12.5px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; min-height: 190px; }
+  button { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 7px; padding: 7px 13px; cursor: pointer; font-weight: 600; }
+  button.quiet { background: transparent; color: var(--accent); border: 1px solid var(--line); font-weight: 500; }
+  button:disabled { opacity: 0.5; cursor: default; }
+  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 0.03em; }
+  .READY, .SATISFIED { color: var(--ready); background: var(--ready-bg); }
+  .BLOCKED, .VIOLATED { color: var(--blocked); background: var(--blocked-bg); }
+  .NEEDS_INFO, .UNRESOLVED, .CONFLICT { color: var(--open); background: var(--open-bg); }
+  .item { border-top: 1px solid var(--line); padding: 10px 0; }
+  .item:first-of-type { border-top: 0; padding-top: 2px; }
+  .item h3 { margin: 0 0 3px; font-size: 15px; font-weight: 600; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .claim { margin: 2px 0 6px; }
+  .bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--line); margin: 4px 0; }
+  .bar span { display: block; height: 100%; }
+  .bar .s { background: var(--ready); } .bar .v { background: var(--blocked); } .bar .u { background: var(--open); }
+  .rec { background: var(--code); border-radius: 7px; padding: 7px 9px; margin: 6px 0 0; font-size: 13.5px; overflow-wrap: anywhere; }
+  .rec .meta { color: var(--muted); font-size: 12px; margin-bottom: 2px; }
+  .rec .fix { margin-top: 5px; }
+  .rec .fix button { padding: 2px 8px; font-size: 12px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; padding: 4px 8px 4px 0; border-top: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+  th { color: var(--muted); font-weight: 500; font-size: 12px; border-top: 0; }
+  .note { border-left: 3px solid var(--accent); padding: 6px 10px; background: var(--code); border-radius: 0 7px 7px 0; margin: 8px 0 0; font-size: 13.5px; }
+  .err { border-left-color: var(--blocked); color: var(--blocked); }
+  .tablewrap { overflow-x: auto; }
+  code { background: var(--code); padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>EASE-Delta</h1>
+  <p>Declare what must be true. Add messages and documents as they arrive, change or are withdrawn.
+     The assistant tells you what is ready, what is blocked and why. It proposes; it never sends or executes anything.</p>
+</header>
+<main>
+  <section class="full">
+    <h2>Task</h2>
+    <div class="row">
+      <select id="task" aria-label="Task" style="max-width: 320px"></select>
+      <button class="quiet" id="refresh">Refresh</button>
+      <button class="quiet" id="new">New task</button>
+      <button class="quiet" id="verify">Check against full rebuild</button>
+      <span class="muted" id="threshold"></span>
+    </div>
+    <div id="create" hidden>
+      <label for="schema">Task definition (JSON)</label>
+      <textarea id="schema" class="code" spellcheck="false"></textarea>
+      <div class="row" style="margin-top: 8px"><button id="createBtn">Create</button><button class="quiet" id="cancel">Cancel</button></div>
+    </div>
+    <div id="message"></div>
+  </section>
+
+  <section>
+    <h2>What can be done</h2>
+    <div id="actions"><p class="muted">No task selected.</p></div>
+    <div id="question"></div>
+  </section>
+
+  <section>
+    <h2>Add or change evidence</h2>
+    <div class="grid2">
+      <div><label for="rid">Record id</label><input id="rid" placeholder="email-14" autocomplete="off"></div>
+      <div><label for="rev">Revision</label><input id="rev" type="number" min="0" value="1"></div>
+      <div><label for="src">Source</label><input id="src" placeholder="client" autocomplete="off"></div>
+      <div><label for="auth">Authority (0-9)</label><input id="auth" type="number" min="0" max="9" value="1"></div>
+    </div>
+    <label for="text">Text</label>
+    <textarea id="text" placeholder="Paste the passage. Leave empty and press Withdraw to retract the record."></textarea>
+    <div class="row" style="margin-top: 8px">
+      <button id="deliver">Deliver</button>
+      <button class="quiet" id="withdraw">Withdraw record</button>
+    </div>
+    <div id="change"></div>
+  </section>
+
+  <section>
+    <h2>What must be true</h2>
+    <div id="predicates"><p class="muted">No task selected.</p></div>
+  </section>
+
+  <section>
+    <h2>Records</h2>
+    <div class="tablewrap"><table id="records"><thead><tr><th>Record</th><th>Revision</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+  </section>
+</main>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
+const pct = (x) => (100 * x).toFixed(0) + "%";
+let current = null, schemaCache = {};
+
+const EXAMPLE = {
+  task_id: "client-handoff",
+  predicates: [
+    {id: "design_approved", text: "The client has approved the design that is being delivered.", prior: 0.3, ask_cost: 0.2},
+    {id: "date_confirmed", text: "The delivery date has been confirmed by the client.", prior: 0.5, ask_cost: 0.2},
+    {id: "nda_signed", text: "The non-disclosure agreement has been signed by both parties.", prior: 0.6, ask_cost: 0.5}
+  ],
+  gates: [{id: "packet_ready", op: "AND", children: ["design_approved", "date_confirmed", "nda_signed"]}],
+  actions: [{id: "send_packet", description: "Send the delivery packet to the client", requires: "packet_ready", value_success: 10, cost_failure: 25}]
+};
+
+async function api(path, options) {
+  const r = await fetch(path, options);
+  const body = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(typeof body.detail === "string" ? body.detail : JSON.stringify(body.detail || body));
+  return body;
+}
+const post = (path, data) => api(path, {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify(data || {})});
+
+function say(text, isError) {
+  const m = $("message"); m.replaceChildren();
+  if (text) m.append(el("div", "note" + (isError ? " err" : ""), text));
+}
+
+async function loadTasks(select) {
+  const {tasks} = await api("/tasks");
+  const s = $("task"); s.replaceChildren();
+  if (!tasks.length) s.append(new Option("no tasks yet", ""));
+  for (const t of tasks) s.append(new Option(t, t));
+  if (select && tasks.includes(select)) s.value = select;
+  current = s.value || null;
+  await render();
+}
+
+function bar(p) {
+  const b = el("div", "bar");
+  b.setAttribute("role", "img");
+  b.setAttribute("aria-label", `satisfied ${pct(p.SATISFIED)}, violated ${pct(p.VIOLATED)}, open ${pct(p.UNRESOLVED + p.CONFLICT)}`);
+  for (const [cls, v] of [["s", p.SATISFIED], ["v", p.VIOLATED], ["u", p.UNRESOLVED + p.CONFLICT]]) {
+    const s = el("span", cls); s.style.width = (100 * v) + "%"; b.append(s);
+  }
+  return b;
+}
+
+async function render() {
+  const actions = $("actions"), preds = $("predicates"), tbody = $("records").querySelector("tbody");
+  $("question").replaceChildren(); tbody.replaceChildren();
+  if (!current) { actions.replaceChildren(el("p", "muted", "No task selected.")); preds.replaceChildren(el("p", "muted", "No task selected.")); return; }
+  let st;
+  try { st = await api(`/tasks/${encodeURIComponent(current)}`); } catch (e) { say(e.message, true); return; }
+  const t = st.threshold;
+  $("threshold").textContent = `Endorses at confidence ≥ ${Math.max(0.5, t.tau).toFixed(2)} · ${t.verdicts} verdicts, error rate ${pct(t.error_rate)} (bound ${pct(t.bound)})`;
+
+  actions.replaceChildren();
+  for (const [id, a] of Object.entries(st.assessments)) {
+    const item = el("div", "item");
+    const h = el("h3"); h.append(el("span", "", id), el("span", "badge " + a.disposition, a.disposition.replace("_", " ")));
+    item.append(h);
+    item.append(el("div", "muted", `confidence ${pct(a.confidence)} · chance of success ${pct(a.p_success)} · expected value ${a.expected_utility.toFixed(2)}`));
+    if (a.disposition === "READY" && a.needs_approval) item.append(el("div", "note", "Ready to propose. Nothing happens until you approve it yourself."));
+    if (a.note) item.append(el("div", "note", a.note));
+    const why = el("button", "quiet", "Why?"); why.style.marginTop = "6px";
+    why.onclick = () => explain(id, item, why);
+    item.append(why);
+    actions.append(item);
+  }
+  if (!Object.keys(st.assessments).length) actions.append(el("p", "muted", "This task declares no actions."));
+
+  preds.replaceChildren();
+  for (const [id, b] of Object.entries(st.beliefs)) {
+    const item = el("div", "item");
+    const h = el("h3"); h.append(el("span", "", id), el("span", "badge " + b.status, b.status));
+    item.append(h, bar(b.probabilities));
+    item.append(el("div", "muted", `satisfied ${pct(b.probabilities.SATISFIED)} · violated ${pct(b.probabilities.VIOLATED)} · open ${pct(b.probabilities.UNRESOLVED + b.probabilities.CONFLICT)}`
+      + (b.decisive.length ? ` · rests on ${b.decisive.join(", ")}` : "")));
+    preds.append(item);
+  }
+
+  for (const [rid, r] of Object.entries(st.records)) {
+    const tr = el("tr");
+    tr.append(el("td", "", rid), el("td", "", String(r.revision)), el("td", "", r.status));
+    tr.style.cursor = "pointer";
+    tr.onclick = () => { $("rid").value = rid; $("rev").value = r.revision + 1; $("text").focus(); };
+    tbody.append(tr);
+  }
+  if (!Object.keys(st.records).length) { const tr = el("tr"); const td = el("td", "muted", "No records yet."); td.colSpan = 3; tr.append(td); tbody.append(tr); }
+
+  try {
+    const q = await api(`/tasks/${encodeURIComponent(current)}/question`);
+    const box = $("question");
+    if (q.question) {
+      const n = el("div", "note");
+      n.append(el("strong", "", "Worth asking: "), document.createTextNode(q.question.texts.join("  ·  ")));
+      n.append(el("div", "muted", `expected gain ${q.question.gross_gain.toFixed(2)}, cost of asking ${q.question.cost.toFixed(2)}`));
+      box.append(n);
+    }
+    const skip = Object.entries(q.unnecessary).filter(([, v]) => v.length);
+    for (const [a, v] of skip) box.append(el("div", "note", `No answer about ${v.join(", ")} can change the proposal for ${a}, so it is not asked.`));
+  } catch (e) { /* the question is advisory; the rest of the page stands without it */ }
+}
+
+async function explain(actionId, item, button) {
+  button.disabled = true;
+  try {
+    const ex = await api(`/tasks/${encodeURIComponent(current)}/explain/${encodeURIComponent(actionId)}`);
+    for (const p of ex.predicates) {
+      const block = el("div"); block.style.marginTop = "8px";
+      const h = el("div"); h.append(el("span", "badge " + p.status, p.status), document.createTextNode(" " + p.text));
+      block.append(h);
+      if (!p.records.length) block.append(el("div", "muted", `No record settles this. ${p.records_compared} compared.`));
+      for (const r of p.records) {
+        const rec = el("div", "rec");
+        rec.append(el("div", "meta", `${r.record_id} · revision ${r.revision} · ${r.source_id || "unknown source"} · authority ${r.authority}` + (r.span ? ` · ${r.span}` : "")));
+        rec.append(el("div", "", r.text));
+        const fix = el("div", "fix row");
+        fix.append(el("span", "muted", "Read wrongly? This record"));
+        for (const [label, value] of [["supports it", "supports"], ["refutes it", "refutes"], ["settles nothing", "settles_nothing"]]) {
+          const b = el("button", "quiet", label);
+          b.onclick = async () => {
+            try {
+              const out = await post(`/tasks/${encodeURIComponent(current)}/readings`, {record_id: r.record_id, predicate_id: p.predicate, establishes: value});
+              say(`Recorded (item ${out.memory_item}). It takes effect now and can be withdrawn.`);
+              await render();
+            } catch (e) { say(e.message, true); }
+          };
+          fix.append(b);
+        }
+        rec.append(fix);
+        block.append(rec);
+      }
+      item.append(block);
+    }
+    item.append(el("div", "muted", ex.note));
+  } catch (e) { say(e.message, true); button.disabled = false; }
+}
+
+async function deliver(withdraw) {
+  if (!current) { say("Create or select a task first.", true); return; }
+  const text = $("text").value.trim();
+  if (!withdraw && !text) { say("Enter the text of the record, or use Withdraw.", true); return; }
+  const body = {record_id: $("rid").value.trim(), revision: Number($("rev").value), text: withdraw ? null : text,
+                source_id: $("src").value.trim(), authority: Number($("auth").value), valid_from: Date.now() / 1000};
+  if (!body.record_id) { say("A record needs an id.", true); return; }
+  try {
+    const out = await post(`/tasks/${encodeURIComponent(current)}/events`, body);
+    const c = out.change, box = $("change"); box.replaceChildren();
+    const n = el("div", "note");
+    n.append(el("div", "", `Ledger: ${c.ledger.outcome}. Pairs read: ${c.edges_scored}. Nodes recomputed: ${c.propagation.total_recomputed}. ${(1000 * c.seconds).toFixed(0)} ms.`));
+    if (!c.ledger.changed) n.append(el("div", "muted", "Nothing changed, so nothing was recomputed."));
+    for (const [a, from, to] of c.changed_actions) n.append(el("div", "", `${a}: ${from.replace("_", " ")} → ${to.replace("_", " ")}`));
+    box.append(n);
+    say("");
+    await render();
+  } catch (e) { say(e.message, true); }
+}
+
+$("task").onchange = () => { current = $("task").value || null; render(); };
+$("refresh").onclick = () => loadTasks(current);
+$("new").onclick = () => { $("create").hidden = false; if (!$("schema").value) $("schema").value = JSON.stringify(EXAMPLE, null, 2); $("schema").focus(); };
+$("cancel").onclick = () => { $("create").hidden = true; };
+$("createBtn").onclick = async () => {
+  let body;
+  try { body = JSON.parse($("schema").value); } catch (e) { say("That is not valid JSON: " + e.message, true); return; }
+  try { await post("/tasks", body); $("create").hidden = true; say(`Task ${body.task_id} created.`); await loadTasks(body.task_id); }
+  catch (e) { say(e.message, true); }
+};
+$("deliver").onclick = () => deliver(false);
+$("withdraw").onclick = () => deliver(true);
+$("verify").onclick = async () => {
+  if (!current) return;
+  try {
+    const v = await api(`/tasks/${encodeURIComponent(current)}/verify`);
+    say(`${v.computed_nodes} cached values compared with a full rebuild: ${v.not_bitwise_equal} differ (largest difference ${v.max_abs_difference.toExponential(2)}).`, v.not_bitwise_equal > 0);
+  } catch (e) { say(e.message, true); }
+};
+loadTasks().catch((e) => say(e.message, true));
+</script>
+</body>
+</html>
