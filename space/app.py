@@ -337,4 +337,6 @@ failed, is in the [results report]({RESULTS}).
     read_btn.click(read_passage, [claim, passage], [ours, theirs])
 
 if __name__ == "__main__":
-    demo.queue(default_concurrency_limit=4).launch(css=CSS, theme=gr.themes.Soft())
+    # EASE_SHARE=1 prints a temporary public link (for running the demo from a notebook, e.g. on Colab)
+    demo.queue(default_concurrency_limit=4).launch(css=CSS, theme=gr.themes.Soft(),
+                                                   share=os.environ.get("EASE_SHARE") == "1")
