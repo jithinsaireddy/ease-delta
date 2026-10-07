@@ -8,9 +8,9 @@
 [![demo](https://img.shields.io/badge/demo-in_your_browser-3b4fd8)](https://jithinsaireddy.github.io/ease-delta/)
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jithinsaireddy/ease-delta/blob/main/examples/try_ease_delta.ipynb)
 [![models](https://img.shields.io/badge/%F0%9F%A4%97%20models-ease--delta-ffcc4d)](https://huggingface.co/jithinpothireddy21/ease-delta)
-[![python](https://img.shields.io/badge/python-3.11%2B-blue)](pyproject.toml)
-[![code licence](https://img.shields.io/badge/code-Apache--2.0-blue)](LICENSE)
-[![weights licence](https://img.shields.io/badge/weights-CC_BY--SA_4.0-lightgrey)](docs/licenses/CC-BY-SA-4.0.txt)
+[![python](https://img.shields.io/badge/python-3.11%2B-blue)](https://github.com/jithinsaireddy/ease-delta/blob/main/pyproject.toml)
+[![code licence](https://img.shields.io/badge/code-Apache--2.0-blue)](https://github.com/jithinsaireddy/ease-delta/blob/main/LICENSE)
+[![weights licence](https://img.shields.io/badge/weights-CC_BY--SA_4.0-lightgrey)](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/licenses/CC-BY-SA-4.0.txt)
 
 </div>
 
@@ -22,8 +22,8 @@ question is worth asking**. It proposes; it never sends, pays or executes anythi
 
 <p align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/story-dark.png">
-  <img src="docs/assets/story-light.png" alt="A client hand-off, step 7 of 12: the client withdraws the approval, and send_packet goes from needs info to blocked, resting on that email" width="860">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jithinsaireddy/ease-delta/main/docs/assets/story-dark.png">
+  <img src="https://raw.githubusercontent.com/jithinsaireddy/ease-delta/main/docs/assets/story-light.png" alt="A client hand-off, step 7 of 12: the client withdraws the approval, and send_packet goes from needs info to blocked, resting on that email" width="860">
 </picture>
 </p>
 
@@ -73,7 +73,7 @@ task.add("mail-3", "Email from Acme: we withdraw our approval; the colours are w
 print(task.explain("send_packet"))                 # ...resting on mail-3, revision 1
 ```
 
-That output is real: [`examples/quickstart.py`](examples/quickstart.py) runs it. Start from a
+That output is real: [`examples/quickstart.py`](https://github.com/jithinsaireddy/ease-delta/blob/main/examples/quickstart.py) runs it. Start from a
 template instead of writing requirements: `Tracker.from_template("client-onboarding", reader=reader, client="Acme")`.
 
 ## Workflows it fits
@@ -109,7 +109,7 @@ reader({"text": "The deposit invoice has been paid.",                       # cl
 ```
 
 It also loads in sentence-transformers' `CrossEncoder`, and the base model has ONNX weights for
-onnxruntime and Transformers.js. See [the reader guide](docs/reader.md).
+onnxruntime and Transformers.js. See [the reader guide](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/reader.md).
 
 ## Why it is built this way
 
@@ -139,12 +139,12 @@ message ──> ledger (exact)        revisions, withdrawals, duplicates, stale 
           planner (exact)         ready / blocked / needs info; the question worth asking
 ```
 
-More in [concepts](docs/concepts.md) and [design](docs/DESIGN.md).
+More in [concepts](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/concepts.md) and [design](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/DESIGN.md).
 
 ## Results
 
 Measured on an Apple M4 Max against plans written and hashed before any test data was read
-([`PREREGISTRATION.md`](docs/PREREGISTRATION.md), [`PREREGISTRATION_LARGE.md`](docs/PREREGISTRATION_LARGE.md)).
+([`PREREGISTRATION.md`](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/PREREGISTRATION.md), [`PREREGISTRATION_LARGE.md`](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/PREREGISTRATION_LARGE.md)).
 Tasks are generated; their text is human-written (Wikipedia revisions and NLI corpora). Hypotheses
 that failed are reported as failed.
 
@@ -157,13 +157,13 @@ that failed are reported as failed.
 | Reader on VitaminC test (claims against Wikipedia revisions) | 91.5% |
 | Cached state against a full rebuild | 0 of 195,434 values differed |
 
-Every number, with intervals: [results at a glance](docs/results-summary.md) and the generated
-[full report](docs/RESULTS.md).
+Every number, with intervals: [results at a glance](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/results-summary.md) and the generated
+[full report](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/RESULTS.md).
 
 ## What it does not do yet
 
 - **It has not been measured with people.** Whether it saves anyone time is the next question
-  ([study design](docs/NEXT_STEPS.md)), not a claim.
+  ([study design](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/NEXT_STEPS.md)), not a claim.
 - **English only**, short passages (256 tokens; documents are cut into attributed passages).
 - **Messages on the same subject that settle nothing** are still read as decisive about one time
   in five. When several requirements are of one kind (one per speaker, say), tell it which one a
@@ -172,7 +172,7 @@ Every number, with intervals: [results at a glance](docs/results-summary.md) and
 - **Conflicts that follow from a consequence** ("broke a leg" against "cycles to work") are mostly missed.
 - It reports what messages say, not whether they are true.
 
-The full list: [LIMITATIONS.md](docs/LIMITATIONS.md).
+The full list: [LIMITATIONS.md](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/LIMITATIONS.md).
 
 ## Models
 
@@ -187,18 +187,18 @@ The full list: [LIMITATIONS.md](docs/LIMITATIONS.md).
 
 | | |
 |---|---|
-| [Getting started](docs/getting-started.md) | install, first task, templates, emails, confirmations, keeping state |
-| [Concepts](docs/concepts.md) | requirements, records, readings, statuses, questions, corrections |
-| [Python API](docs/python-api.md) | `EvidenceReader`, `Tracker`, requirement expressions, templates |
-| [HTTP API](docs/http-api.md) | every endpoint, with examples |
-| [Reader guide](docs/reader.md) | the reader with transformers, CrossEncoder, ONNX, the browser |
-| [Deployment](docs/DEPLOYMENT.md) | one person, or many teams behind keys; Docker; backups |
-| [FAQ](docs/faq.md) | accuracy, privacy, licences, GPUs, languages, how it learns |
-| [Research](docs/README.md#research) | results, pre-registrations, deviations, proofs, design, sources |
+| [Getting started](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/getting-started.md) | install, first task, templates, emails, confirmations, keeping state |
+| [Concepts](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/concepts.md) | requirements, records, readings, statuses, questions, corrections |
+| [Python API](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/python-api.md) | `EvidenceReader`, `Tracker`, requirement expressions, templates |
+| [HTTP API](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/http-api.md) | every endpoint, with examples |
+| [Reader guide](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/reader.md) | the reader with transformers, CrossEncoder, ONNX, the browser |
+| [Deployment](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/DEPLOYMENT.md) | one person, or many teams behind keys; Docker; backups |
+| [FAQ](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/faq.md) | accuracy, privacy, licences, GPUs, languages, how it learns |
+| [Research](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/README.md#research) | results, pre-registrations, deviations, proofs, design, sources |
 
 ## Contributing and citing
 
-Issues and pull requests are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md). The most useful
+Issues and pull requests are welcome: see [CONTRIBUTING.md](https://github.com/jithinsaireddy/ease-delta/blob/main/CONTRIBUTING.md). The most useful
 contribution right now is real (anonymised) correspondence where it reads wrongly.
 
 ```bibtex

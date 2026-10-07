@@ -1,14 +1,16 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "ease-delta"
 version = "0.2.0"
-description = "EASE-Delta: revision-aware decision computation (versioned evidence, incremental neural-symbolic inference, gated self-evolution)"
+description = "Keep decisions current as the facts change: an exact, incremental engine around a claim-vs-evidence reader"
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "Apache-2.0" }
+keywords = ["nli", "fact-verification", "modernbert", "incremental-computation", "decision-support", "rag"]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 dependencies = [
   "torch>=2.6",
   "transformers>=4.48",
@@ -22,6 +24,13 @@ dependencies = [
   "uvicorn",
   "pydantic>=2",
 ]
+
+[project.urls]
+Homepage = "https://jithinsaireddy.github.io/ease-delta/"
+Documentation = "https://github.com/jithinsaireddy/ease-delta/blob/main/docs/README.md"
+Source = "https://github.com/jithinsaireddy/ease-delta"
+Models = "https://huggingface.co/jithinpothireddy21/ease-delta"
+Changelog = "https://github.com/jithinsaireddy/ease-delta/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = ["pytest", "hypothesis", "httpx", "ruff"]
