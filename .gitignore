@@ -53,3 +53,4 @@ release/*
 !release/MANIFEST.json
 release_base/*
 !release_base/MANIFEST.json
+exports/
