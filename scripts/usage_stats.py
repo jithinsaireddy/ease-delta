@@ -2,9 +2,11 @@
 
     python scripts/usage_stats.py
 
-Hub: downloads (last 30 days and all time), likes, discussions. GitHub: stars, forks, watchers,
-issues, pull requests, and the owner-only traffic figures (views and clones over the last 14
-days, referrers). The GitHub traffic calls need `gh` logged in as the repository owner.
+Hub: downloads (last 30 days and all time), likes and discussions of the two systems and the two
+readers, and likes of the demo Space. GitHub: stars, forks, watchers, issues, pull requests, and
+the owner-only traffic figures (views and clones over the last 14 days, referrers). The GitHub
+traffic calls need `gh` logged in as the repository owner. GitHub Pages keeps no visitor counts
+for the demo page, and the Hub API reports none for the Space.
 
 What the numbers mean: a Hub download is counted when the repository's root config.json is
 fetched, so one person running `hf download` counts once; the counter lags by up to a day.
@@ -17,7 +19,9 @@ import json
 import subprocess
 import sys
 
-MODELS = ("jithinpothireddy21/ease-delta", "jithinpothireddy21/ease-delta-base")
+MODELS = ("jithinpothireddy21/ease-delta", "jithinpothireddy21/ease-delta-base",
+          "jithinpothireddy21/ease-delta-reader", "jithinpothireddy21/ease-delta-reader-base")
+SPACE = "jithinpothireddy21/ease-delta-demo"
 REPO = "jithinsaireddy/ease-delta"
 
 
@@ -34,7 +38,12 @@ def hub() -> None:
         print(f"{r}: {'private' if i.private else 'public'}; downloads last 30 days {i.downloads}, "
               f"all time {getattr(i, 'downloads_all_time', '?')}; likes {i.likes}; discussions {n_disc}; "
               f"last modified {i.last_modified:%Y-%m-%d %H:%M}")
-    print(f"pages: https://huggingface.co/{MODELS[0]}  https://huggingface.co/{MODELS[1]}")
+    try:
+        sp = api.space_info(SPACE)
+        print(f"{SPACE} (Space): likes {sp.likes}; the Hub API reports no visit counts")
+    except Exception as e:  # noqa: BLE001
+        print(f"{SPACE} (Space): could not read ({type(e).__name__})")
+    print("pages: " + "  ".join(f"https://huggingface.co/{r}" for r in MODELS))
 
 
 def gh(args: list[str]) -> dict | list | None:
