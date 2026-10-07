@@ -142,3 +142,23 @@ def test_a_confirmation_is_exact_and_a_later_message_can_still_overturn_it():
         assert t.status().blocked == ["go"], "the later message wins at equal authority"
         with pytest.raises(KeyError):
             t.confirm("nonexistent", by="x")
+
+
+def test_feedback_on_a_proposal_moves_the_readiness_bar(tmp_path):
+    reader = oracle_reader()
+    with Tracker.define({"approved": APPROVED}, {"go": "approved"}, reader, data_dir=str(tmp_path / "~x")) as t:
+        assert t.ready_at == 0.9
+        t.add("mail-1", "Email from Acme: we approve the design, please go ahead.")
+        assert t.status().ready == ["go"]
+        assert t.endorse("go")
+        bar = t.verdict("go", was_wrong=True)
+        assert bar > 0.9 and t.ready_at == bar, "a wrong endorsement raises the bar"
+        with pytest.raises(KeyError):
+            t.verdict("go", was_wrong=False)  # nothing awaits a verdict any more
+
+
+def test_data_dir_expands_the_home_directory(monkeypatch, tmp_path):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    t = Tracker.define({"approved": APPROVED}, {"go": "approved"}, oracle_reader(), data_dir="~/ease-data")
+    t.close()
+    assert (tmp_path / "ease-data" / "tasks").exists()

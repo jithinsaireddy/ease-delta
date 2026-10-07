@@ -1,0 +1,42 @@
+name: Misreading
+description: A message was read as supporting, refuting or settling nothing when it did not
+labels: [misreading]
+body:
+  - type: markdown
+    attributes:
+      value: "Thank you: these become evaluation data. Please anonymise names, companies and anything private."
+  - type: textarea
+    id: requirement
+    attributes:
+      label: Requirement (claim)
+      placeholder: The client has approved the final design.
+    validations: {required: true}
+  - type: textarea
+    id: message
+    attributes:
+      label: Message or passage
+      placeholder: "Email from the client: ..."
+    validations: {required: true}
+  - type: dropdown
+    id: got
+    attributes:
+      label: What it said
+      options: [supports, refutes, not enough info]
+    validations: {required: true}
+  - type: dropdown
+    id: should
+    attributes:
+      label: What it should have said
+      options: [supports, refutes, not enough info]
+    validations: {required: true}
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      placeholder: jithinpothireddy21/ease-delta
+  - type: dropdown
+    id: licence
+    attributes:
+      label: May this example be added to a public evaluation set (CC BY 4.0)?
+      options: ["Yes", "No, use it only to understand the problem"]
+    validations: {required: true}

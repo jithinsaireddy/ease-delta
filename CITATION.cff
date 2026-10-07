@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use EASE-Delta, please cite it as below."
 title: "EASE-Delta: revision-aware decision computation"
-version: 0.1.0
-date-released: 2026-10-02
+version: 0.2.0
+date-released: 2026-10-07
 license: Apache-2.0
 repository-code: "https://github.com/jithinsaireddy/ease-delta"
 authors:

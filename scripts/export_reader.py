@@ -19,7 +19,7 @@ from pathlib import Path
 import torch
 
 from ease.data.evalsets import load_eval_set
-from ease.export import to_sequence_classifier
+from ease.export import compatible_tokenizer, to_sequence_classifier
 from ease.model.edge import EdgeModel
 from ease.util import atomic_write_json, get_device, read_json
 
@@ -78,8 +78,23 @@ def run_examples(out: Path) -> list[tuple[str, str]]:
     return rows
 
 
+def onnx_section(repo: str, onnx: dict) -> list[str]:
+    return ["## ONNX, and in the browser\n",
+            "`onnx/model.onnx` (fp32) matches PyTorch to 4e-5 in the logits; `onnx/model_quantized.onnx` (int8, "
+            f"150 MB) gave the same label as the full model on {100 * onnx['agreement']:.1f}% of {onnx['pairs']:,} "
+            f"development pairs (accuracy {100 * onnx['int8_accuracy']:.1f}% against {100 * onnx['fp32_accuracy']:.1f}%).\n",
+            "```js\nimport { AutoTokenizer, AutoModelForSequenceClassification } from "
+            "\"https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.1\";\n\n"
+            f"const tokenizer = await AutoTokenizer.from_pretrained(\"{repo}\");\n"
+            f"const model = await AutoModelForSequenceClassification.from_pretrained(\"{repo}\", {{ dtype: \"q8\" }});\n"
+            "const inputs = await tokenizer(claim, { text_pair: passage, truncation: true, max_length: 256 });\n"
+            "const { logits } = await model(inputs);   // SUPPORTS, REFUTES, NOT_ENOUGH_INFO\n```\n",
+            "This is what the [demo](https://huggingface.co/spaces/jithinpothireddy21/ease-delta-demo) runs; the text "
+            "never leaves the browser.\n"]
+
+
 def card(repo: str, size: str, edge_dir: Path, results: dict, other: dict | None, public: dict, chk: dict,
-         temperature: float, manifest: dict, examples: list[tuple[str, str]]) -> str:
+         temperature: float, manifest: dict, examples: list[tuple[str, str]], onnx: dict | None = None) -> str:
     s = results["sets"]
     o = other["sets"] if other else None
     p = public["sets"]
@@ -170,6 +185,7 @@ def card(repo: str, size: str, edge_dir: Path, results: dict, other: dict | None
          "revisions (VitaminC), and knowing when a passage does not bear on the claim.\n",
          f"On VitaminC, real revisions: {pct(s['vitaminc.test']['accuracy_real'])}; synthetic: "
          f"{pct(s['vitaminc.test']['accuracy_synthetic'])}.\n",
+         *(onnx_section(repo, onnx) if onnx else []),
          "## Labels\n",
          "| Label | Meaning | NLI equivalent |", "|---|---|---|",
          "| `SUPPORTS` | the passage establishes the claim | entailment |",
@@ -218,6 +234,7 @@ def main() -> int:
     ap.add_argument("--size", required=True, choices=["base", "large"])
     ap.add_argument("--eval-cache", default="runs/eval_cache")
     ap.add_argument("--check-pairs", type=int, default=1000)
+    ap.add_argument("--onnx-check", default=None, help="a results file of the ONNX int8 check, to describe in the card")
     a = ap.parse_args()
     from transformers import AutoTokenizer
 
@@ -229,6 +246,8 @@ def main() -> int:
     tok = AutoTokenizer.from_pretrained(a.edge)
     tok.model_max_length = edge.cfg.max_len
     tok.save_pretrained(out)
+    # the backbone's tokenizer files load in transformers 4 and 5 and in Transformers.js; checked identical ids
+    compatible_tokenizer(edge.cfg.encoder_name, out, edge.cfg.max_len, check_against=a.edge)
     print("saved", out, flush=True)
 
     t0 = time.time()
@@ -244,7 +263,8 @@ def main() -> int:
     public = read_json(a.public)
     manifest = read_json(Path(a.edge) / "training_manifest.json")
     (out / "README.md").write_text(card(a.repo, a.size, Path(a.edge), results, other, public, chk,
-                                        results["temperature"], manifest, run_examples(out)))
+                                        results["temperature"], manifest, run_examples(out),
+                                        read_json(a.onnx_check) if a.onnx_check else None))
     print("card written", flush=True)
     return 0
 

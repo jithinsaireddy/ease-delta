@@ -318,7 +318,7 @@ duplicate, an old copy), nothing is read at all.
 |---|---|
 | Correct ready / blocked / needs-info decisions on generated tasks | 91.6% (standard), 86.8% (larger tasks) |
 | Cached state equal to a full rebuild | 0 of 195,434 values differed |
-| Work per change compared with re-reading the task | 2-6% of the tokens |
+| Work per change compared with re-reading the task | about 2-7% of the tokens |
 | Unrelated passages read as evidence | 0.6% (a public NLI model: 45%) |
 
 What it does not do yet: it has not been measured with people, it reads English only, and messages on the same

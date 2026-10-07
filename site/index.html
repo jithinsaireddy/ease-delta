@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EASE-Delta: keep decisions current</title>
+<meta name="description" content="EASE-Delta keeps a task's decisions current as its messages change: it reads each message against each requirement once, re-reads only what changed, and says what is ready, blocked, or worth asking. Open model and code.">
+<meta property="og:title" content="EASE-Delta: keep decisions current as the facts change">
+<meta property="og:description" content="Messages arrive, get corrected, get withdrawn. EASE-Delta keeps every ready / blocked decision current, re-reading only what changed. Try the reader in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://jithinsaireddy.github.io/ease-delta/social.png">
+<meta property="og:url" content="https://jithinsaireddy.github.io/ease-delta/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jithinsaireddy.github.io/ease-delta/social.png">
+<style>
+  :root {
+    --bg: #f7f7f4; --panel: #ffffff; --ink: #18181b; --muted: #5f5f66; --line: #e4e4de; --soft: #f0f0ec;
+    --accent: #3b4fd8; --accent-ink: #ffffff; --accent-soft: #e8ebfd;
+    --ready: #1f7a4d; --ready-bg: #e1f3e9; --blocked: #b23a24; --blocked-bg: #fbe6e1; --open: #8a6100; --open-bg: #fbf0d3;
+    --code: #f1f1ec;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121214; --panel: #1b1b1f; --ink: #ececef; --muted: #a2a2aa; --line: #2e2e34; --soft: #232328;
+      --accent: #8b9cff; --accent-ink: #0d1020; --accent-soft: #252b4d;
+      --ready: #6ad39e; --ready-bg: #163326; --blocked: #f0937f; --blocked-bg: #3b1d17; --open: #e6c060; --open-bg: #362c11;
+      --code: #232328;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color: var(--accent); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  header.hero { padding: 64px 0 28px; }
+  .eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  h1 { font-size: clamp(32px, 5vw, 50px); line-height: 1.08; letter-spacing: -0.02em; margin: 10px 0 16px; }
+  .lede { font-size: 19px; color: var(--muted); max-width: 64ch; margin: 0 0 24px; }
+  .cta { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 9px; font-weight: 600; font-size: 15px;
+         text-decoration: none; border: 1px solid var(--line); color: var(--ink); background: var(--panel); cursor: pointer; }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+  .btn:disabled { opacity: .55; cursor: default; }
+  section { padding: 34px 0; }
+  h2 { font-size: 26px; letter-spacing: -0.01em; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 20px; max-width: 70ch; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+  .grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 860px) { .grid2, .grid4 { grid-template-columns: minmax(0, 1fr); } }
+  label { display: block; font-size: 13px; color: var(--muted); font-weight: 600; margin: 0 0 6px; }
+  textarea { width: 100%; font: inherit; color: inherit; background: var(--soft); border: 1px solid var(--line); border-radius: 9px; padding: 10px 12px; resize: vertical; }
+  textarea:focus-visible, .btn:focus-visible, .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+  .chip { font: inherit; font-size: 13px; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--soft); color: var(--ink); cursor: pointer; }
+  .result { margin-top: 16px; }
+  .rrow { display: grid; grid-template-columns: 150px 1fr 56px; align-items: center; gap: 10px; margin: 8px 0; font-size: 14px; }
+  .track { height: 10px; background: var(--soft); border-radius: 6px; overflow: hidden; border: 1px solid var(--line); }
+  .fill { height: 100%; width: 0; transition: width .35s ease; }
+  .fill.s { background: var(--ready); } .fill.r { background: var(--blocked); } .fill.n { background: var(--open); }
+  .verdict { font-size: 22px; font-weight: 700; margin: 4px 0 2px; }
+  .muted { color: var(--muted); font-size: 14px; }
+  .note { font-size: 13px; color: var(--muted); border-left: 3px solid var(--accent); padding: 4px 0 4px 10px; margin-top: 14px; }
+  .progress { height: 4px; background: var(--soft); border-radius: 2px; overflow: hidden; margin-top: 10px; display: none; }
+  .progress > div { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .badge { display: inline-block; padding: 1px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: .03em; }
+  .b-READY, .b-SATISFIED { color: var(--ready); background: var(--ready-bg); }
+  .b-BLOCKED, .b-VIOLATED { color: var(--blocked); background: var(--blocked-bg); }
+  .b-NEEDS_INFO, .b-UNRESOLVED, .b-CONFLICT { color: var(--open); background: var(--open-bg); }
+  .story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 16px; }
+  @media (max-width: 860px) { .story { grid-template-columns: minmax(0, 1fr); } }
+  .steps { list-style: none; margin: 0; padding: 0; max-height: 560px; overflow: auto; }
+  .steps li { padding: 9px 10px; border-radius: 9px; cursor: pointer; border: 1px solid transparent; }
+  .steps li.on { background: var(--accent-soft); border-color: var(--line); }
+  .steps .t { font-weight: 600; font-size: 14px; }
+  .steps .m { font-size: 13px; color: var(--muted); margin-top: 2px; overflow-wrap: anywhere; }
+  .kv { font-size: 12px; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .item { border-top: 1px solid var(--line); padding: 9px 0; }
+  .item:first-child { border-top: 0; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 600; font-size: 14px; }
+  .bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--soft); margin: 6px 0 2px; }
+  .bar span { display: block; height: 100%; transition: width .35s ease; }
+  .bar .s { background: var(--ready); } .bar .v { background: var(--blocked); } .bar .u { background: var(--open); }
+  .h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 700; margin: 4px 0 8px; }
+  .ask { border-left: 3px solid var(--accent); background: var(--soft); padding: 8px 10px; border-radius: 0 8px 8px 0; font-size: 14px; margin: 10px 0; }
+  .changed { font-size: 14px; margin: 8px 0 0; }
+  .feature h3 { margin: 0 0 6px; font-size: 16px; }
+  .feature p { margin: 0; color: var(--muted); font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { text-align: left; padding: 9px 10px; border-top: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 13px; color: var(--muted); font-weight: 600; border-top: 0; }
+  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; }
+  pre { background: var(--code); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; overflow-x: auto; font: 13.5px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; margin: 0; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+  .tab { font: inherit; font-size: 14px; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+  .tab[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+  ul.limits { margin: 0; padding-left: 20px; color: var(--muted); }
+  ul.limits li { margin: 4px 0; }
+  body.capture header.hero, body.capture section:not(#story), body.capture footer, body.capture #story .sub { display: none; }
+  body.capture #story { padding: 26px 0 30px; }
+  body.capture .steps { max-height: 640px; }
+  footer { padding: 30px 0 60px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); margin-top: 20px; }
+  .tablewrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Open model and code &middot; Apache-2.0 code &middot; CC BY-SA 4.0 weights</div>
+    <h1>Keep decisions current<br>as the facts change.</h1>
+    <p class="lede">You say what must be true before something can be done. Messages arrive, get corrected, get withdrawn.
+      EASE-Delta reads each message against each requirement once, re-reads only what a change touches, and tells you
+      what is ready, what is blocked and why, and which single question is worth asking. It proposes; it never acts.</p>
+    <div class="cta">
+      <a class="btn primary" href="#reader">Try the reader in your browser</a>
+      <a class="btn" href="#story">Watch a task stay current</a>
+      <a class="btn" href="https://github.com/jithinsaireddy/ease-delta">GitHub</a>
+      <a class="btn" href="https://colab.research.google.com/github/jithinsaireddy/ease-delta/blob/main/examples/try_ease_delta.ipynb">Open in Colab</a>
+    </div>
+  </header>
+
+  <section id="reader">
+    <h2>Does this passage support the claim?</h2>
+    <p class="sub">The reader at the heart of EASE-Delta answers <i>supports</i>, <i>refutes</i> or <i>not enough info</i>, and it was trained to
+      say <i>not enough info</i> when a passage is about something else. It runs here, in your browser: the text you type is not sent anywhere.</p>
+    <div class="card">
+      <div class="grid2">
+        <div><label for="claim">Claim</label><textarea id="claim" rows="3">The deposit invoice has been paid.</textarea></div>
+        <div><label for="passage">Passage</label><textarea id="passage" rows="3">Office notice: the kitchen will be closed on Friday for maintenance.</textarea></div>
+      </div>
+      <div class="chips" id="chips" aria-label="Examples"></div>
+      <div class="row" style="margin-top:16px">
+        <button class="btn primary" id="readBtn">Read</button>
+        <span class="muted" id="readStatus">The first read downloads the model once (about 150 MB), then it is cached.</span>
+      </div>
+      <div class="progress" id="progress"><div></div></div>
+      <div class="result" id="result" hidden>
+        <div class="verdict" id="verdict"></div>
+        <div class="rrow"><span>supports</span><div class="track"><div class="fill s" id="fs"></div></div><span class="kv" id="ps"></span></div>
+        <div class="rrow"><span>refutes</span><div class="track"><div class="fill r" id="fr"></div></div><span class="kv" id="pr"></span></div>
+        <div class="rrow"><span>not enough info</span><div class="track"><div class="fill n" id="fn"></div></div><span class="kv" id="pn"></span></div>
+      </div>
+      <div class="note">This page runs the 149M base reader, compressed to 8 bits for the browser; on 3,000 development pairs it gave the same answer as the
+        full model 98.1% of the time. On passages from unrelated documents, the reader gives a decisive answer 0.6&ndash;0.8% of the time; a widely used public
+        NLI model, in the same evaluation, 45%. <a href="https://github.com/jithinsaireddy/ease-delta/blob/main/docs/RESULTS.md">Results</a></div>
+    </div>
+  </section>
+
+  <section id="story">
+    <h2>Watch a task stay current</h2>
+    <p class="sub">A client hand-off: four requirements, two actions, twelve events, including a duplicate, a late copy of an old message, a
+      withdrawal and a bounced payment. Each state below is what the released 395M model produced. It is a recording; nothing was edited.</p>
+    <div class="story">
+      <div class="card">
+        <div class="row" style="margin-bottom:10px">
+          <button class="btn" id="prev" aria-label="Previous step">&larr;</button>
+          <button class="btn primary" id="play">Play</button>
+          <button class="btn" id="next" aria-label="Next step">&rarr;</button>
+          <span class="muted" id="stepNo"></span>
+        </div>
+        <ol class="steps" id="steps"></ol>
+      </div>
+      <div class="card" id="state" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What makes it different</h2>
+    <p class="sub">Learned parts read language. Exact code handles versions, precedence, logic and planning.</p>
+    <div class="grid4">
+      <div class="card feature"><h3>Re-reads only what changed</h3><p>Readings are cached per (requirement, message). A change re-reads the pairs it touches: about 2&ndash;7% of the tokens of re-reading the task. Duplicates and stale copies cost nothing.</p></div>
+      <div class="card feature"><h3>Exact, and reversible</h3><p>The cached state equals a full rebuild bit for bit (0 of 195,434 values differed). A person's correction takes effect at once and can be undone exactly.</p></div>
+      <div class="card feature"><h3>Knows when a message is irrelevant</h3><p>Trained with unrelated passages as <i>not enough info</i>: 0.6% read as evidence, against 45% for a public NLI model.</p></div>
+      <div class="card feature"><h3>Explains, asks, never acts</h3><p>Every proposal shows the records it rests on. It names the one question worth its cost, and a READY action still waits for a person.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Measured, and pre-registered</h2>
+    <p class="sub">Hypotheses and decision rules were written and hashed before any test data was read; the failures are reported too. Tasks are generated; their text is human-written.</p>
+    <div class="card tablewrap">
+      <table>
+        <tr><th>What was measured</th><th>Result</th></tr>
+        <tr><td>Correct ready / blocked / needs-info decisions</td><td class="num">91.6% standard tasks &middot; 86.8% larger tasks</td></tr>
+        <tr><td>Against a dense reader of the whole task (same backbone and training)</td><td class="num">+2.2 to +5.5 points, fewer stale decisions</td></tr>
+        <tr><td>Larger reader (395M) against the base reader (149M)</td><td class="num">+2.0 and +2.2 points, close to the prediction made beforehand</td></tr>
+        <tr><td>Update after a change, Apple M4 Max</td><td class="num">59 ms GPU &middot; 0.2&ndash;0.6 s CPU</td></tr>
+        <tr><td>VitaminC test (claims against Wikipedia revisions)</td><td class="num">91.5%</td></tr>
+        <tr><td>Conflicts that follow only from a consequence</td><td class="num">45% recognised (a known weakness)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="use">
+    <h2>Use it</h2>
+    <p class="sub">Python 3.11 or later. The model downloads from the Hugging Face Hub on first use.</p>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-tab="py">Track a task</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="hf">Only the reader</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="http">HTTP service</button>
+    </div>
+<pre id="tab-py">pip install "ease-delta @ git+https://github.com/jithinsaireddy/ease-delta"
+
+from ease import EvidenceReader, Tracker
+
+reader = EvidenceReader.from_pretrained()          # jithinpothireddy21/ease-delta
+task = Tracker.define(
+    requirements={"approved": "Acme has approved the final design.",
+                  "date": "Acme has confirmed the delivery date."},
+    actions={"send_packet": "approved and date"},
+    reader=reader)
+task.add("mail-1", "Email from Acme: we approve the final design, please go ahead.")
+task.add("mail-2", "Email from Acme: we confirm delivery on 12 March.")
+print(task.status())                               # ready / blocked / needs info, and why
+task.update("mail-1", "Email from Acme: we withdraw our approval.")
+print(task.explain("send_packet"))</pre>
+<pre id="tab-hf" hidden>from transformers import pipeline
+
+reader = pipeline("text-classification", model="jithinpothireddy21/ease-delta-reader", top_k=None)
+reader({"text": "The client has approved the final design.",                   # claim first
+        "text_pair": "Email from the client: we approve the final design."},  # evidence second
+       truncation=True)
+# also: sentence_transformers.CrossEncoder("jithinpothireddy21/ease-delta-reader")</pre>
+<pre id="tab-http" hidden>ease serve --model release/edge --aggregator release/aggregator         # one person, 127.0.0.1:8791
+ease serve --model release/edge --aggregator release/aggregator --multi # workspaces with keys, quotas, webhooks
+
+curl -s localhost:8791/tasks/from-template -H 'content-type: application/json' \
+  -d '{"template": "client-onboarding", "task_id": "acme", "params": {"client": "Acme"}}'</pre>
+    <p class="muted" style="margin-top:12px">Docs: <a href="https://github.com/jithinsaireddy/ease-delta#readme">README</a> &middot;
+      <a href="https://github.com/jithinsaireddy/ease-delta/blob/main/docs/README.md">Guides</a> &middot;
+      Models: <a href="https://huggingface.co/jithinpothireddy21/ease-delta">system</a>,
+      <a href="https://huggingface.co/jithinpothireddy21/ease-delta-reader">reader</a>,
+      <a href="https://huggingface.co/jithinpothireddy21/ease-delta-reader-base">reader (base)</a></p>
+  </section>
+
+  <section>
+    <h2>What it does not do yet</h2>
+    <ul class="limits">
+      <li>It has not been measured with people. Whether it saves anyone time is the next question, not a claim.</li>
+      <li>English only. Messages on the same subject that settle nothing are still misread about one time in five; say which requirement a message concerns when you know.</li>
+      <li>Requirements such as &ldquo;the latest version&rdquo; need two records read together and are read unsafely; name the version instead.</li>
+      <li>It reports what messages say, not whether they are true.</li>
+    </ul>
+  </section>
+
+  <footer>
+    EASE-Delta by Jithin Pothireddy &middot; <a href="https://github.com/jithinsaireddy/ease-delta">github.com/jithinsaireddy/ease-delta</a> &middot;
+    no hosted model is called, and no comparison with any commercial product is claimed.
+  </footer>
+</div>
+
+<script type="module">
+const MODEL = "jithinpothireddy21/ease-delta-reader-base";
+const TEMPERATURE = 1.2268;  // fitted on development data (docs/RESULTS.md, section 2)
+const EXAMPLES = [
+  ["approves", "The client has approved the final design.", "Email from the client: we approve the final design, please go ahead."],
+  ["refuses", "The client has approved the final design.", "Email from the client: we cannot approve the design yet; the colours are wrong."],
+  ["unrelated", "The deposit invoice has been paid.", "Office notice: the kitchen will be closed on Friday for maintenance."],
+  ["a number", "The film grossed more than $550 million worldwide.", "The film went on to gross $545.5 million worldwide."],
+  ["a cancellation", "Ann Lee will speak at the conference.", "Ann Lee has had to cancel her trip and will not be at the conference."],
+  ["a test report", "The release passed all required tests.", "Test report for build 2.3: 412 passed, 3 failed (payments module)."],
+];
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
+
+for (const [name, c, p] of EXAMPLES) {
+  const b = el("button", "chip", name);
+  b.onclick = () => { $("claim").value = c; $("passage").value = p; read(); };
+  $("chips").append(b);
+}
+
+let tokenizer = null, model = null, loading = null;
+async function load() {
+  if (model) return;
+  if (loading) return loading;
+  loading = (async () => {
+    $("readStatus").textContent = "Downloading the model (once)...";
+    $("progress").style.display = "block";
+    const { AutoTokenizer, AutoModelForSequenceClassification, env } =
+      await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.1");
+    env.allowLocalModels = false;
+    const files = {};
+    const progress_callback = (x) => {
+      if (x.status === "progress" && x.total) { files[x.file] = [x.loaded, x.total]; }
+      const tot = Object.values(files).reduce((a, [, t]) => a + t, 0), got = Object.values(files).reduce((a, [l]) => a + l, 0);
+      if (tot) $("progress").firstElementChild.style.width = (100 * got / tot).toFixed(1) + "%";
+    };
+    tokenizer = await AutoTokenizer.from_pretrained(MODEL, { progress_callback });
+    model = await AutoModelForSequenceClassification.from_pretrained(MODEL, { dtype: "q8", device: "wasm", progress_callback });
+    $("progress").style.display = "none";
+  })();
+  return loading;
+}
+
+function softmax(z) { const m = Math.max(...z); const e = z.map((v) => Math.exp(v - m)); const s = e.reduce((a, b) => a + b, 0); return e.map((v) => v / s); }
+
+async function read() {
+  const claim = $("claim").value.trim(), passage = $("passage").value.trim();
+  if (!claim || !passage) { $("readStatus").textContent = "Enter a claim and a passage."; return; }
+  $("readBtn").disabled = true;
+  try {
+    await load();
+    $("readStatus").textContent = "Reading...";
+    const t0 = performance.now();
+    const inputs = await tokenizer(claim, { text_pair: passage, truncation: true, max_length: 256 });
+    const out = await model(inputs);
+    const z = Array.from(out.logits.data).map((v) => v / TEMPERATURE);
+    const [s, r, n] = softmax(z);
+    const names = ["supports", "refutes", "not enough info"], ps = [s, r, n];
+    const top = ps.indexOf(Math.max(...ps));
+    $("result").hidden = false;
+    $("verdict").textContent = names[top];
+    for (const [id, v] of [["s", s], ["r", r], ["n", n]]) { $("f" + id).style.width = (100 * v).toFixed(1) + "%"; $("p" + id).textContent = (100 * v).toFixed(1) + "%"; }
+    $("readStatus").textContent = `Read in your browser in ${(performance.now() - t0).toFixed(0)} ms.`;
+  } catch (e) {
+    $("readStatus").textContent = "The model could not run here: " + e.message;
+  } finally { $("readBtn").disabled = false; }
+}
+$("readBtn").onclick = read;
+
+// --- the recorded story ------------------------------------------------------
+let story = null, cur = 0, timer = null;
+const pct = (x) => (100 * x).toFixed(x > 0.999 || x < 0.001 ? 0 : 1) + "%";
+function renderState(i) {
+  cur = i;
+  const s = story.steps[i], box = $("state");
+  box.replaceChildren();
+  [...$("steps").children].forEach((li, j) => {
+    li.classList.toggle("on", j === i);
+    if (j === i) {  // keep the current step in view, two steps of context above it, aligned to an item's top
+      const list = $("steps"), anchor = list.children[Math.max(0, j - 2)];
+      list.scrollTop = Math.max(0, anchor.offsetTop - list.offsetTop);
+    }
+  });
+  $("stepNo").textContent = `step ${i} of ${story.steps.length - 1}`;
+  if (s.update) {
+    const u = s.update, ch = el("div", "changed");
+    ch.append(el("b", "", u.changed.length ? u.changed.map(([a, f, t]) => `${a}: ${f.replace("_", " ")} → ${t.replace("_", " ")}`).join("; ") : "No proposal changed."));
+    ch.append(el("div", "kv", `${u.outcome} · ${u.pairs_read} pair${u.pairs_read === 1 ? "" : "s"} read · ${u.milliseconds} ms`));
+    box.append(ch);
+  }
+  box.append(el("div", "h3", `What can be done · ready at ${Math.round(100 * story.ready_at)}% or more`));
+  for (const a of s.state.actions) {
+    const it = el("div", "item"), row = el("div", "row");
+    row.append(el("span", "id", a.id), el("span", "badge b-" + a.disposition, a.disposition.replace("_", " ")), el("span", "muted", `${(100 * a.confidence).toFixed(2)}% likely ready`));
+    it.append(row, el("div", "muted", a.description));
+    box.append(it);
+  }
+  if (s.state.question) box.append(el("div", "ask", "Worth asking: " + s.state.question.join(" · ")));
+  box.append(el("div", "h3", "What must be true"));
+  for (const r of s.state.requirements) {
+    const it = el("div", "item"), row = el("div", "row");
+    row.append(el("span", "id", r.id), el("span", "badge b-" + r.status, r.status));
+    const bar = el("div", "bar");
+    for (const [c, v] of [["s", r.satisfied], ["v", r.violated], ["u", r.open]]) { const sp = el("span", c); sp.style.width = (100 * v) + "%"; bar.append(sp); }
+    it.append(row, el("div", "", r.text), bar,
+      el("div", "kv", `satisfied ${pct(r.satisfied)} · violated ${pct(r.violated)} · open ${pct(r.open)}` + (r.rests_on.length ? ` · rests on ${r.rests_on.join(", ")}` : "")));
+    box.append(it);
+  }
+}
+async function initStory() {
+  story = await (await fetch("story.json")).json();
+  story.steps.forEach((s, i) => {
+    const li = el("li");
+    li.append(el("div", "t", `${i}. ${s.title}`));
+    if (s.event) li.append(el("div", "m", s.event.text === null ? `${s.event.record} withdrawn` : `“${s.event.text}”`));
+    li.onclick = () => { stop(); renderState(i); };
+    $("steps").append(li);
+  });
+  const q = new URLSearchParams(location.search), h = location.hash.match(/step=(\d+)/);
+  const start = Math.min(story.steps.length - 1, parseInt((q.get("step") || (h && h[1]) || "0"), 10) || 0);
+  if (q.get("capture") === "story") document.body.classList.add("capture");
+  renderState(start);
+  if (h) document.getElementById("story").scrollIntoView();
+}
+function stop() { if (timer) { clearInterval(timer); timer = null; $("play").textContent = "Play"; } }
+$("prev").onclick = () => { stop(); if (cur > 0) renderState(cur - 1); };
+$("next").onclick = () => { stop(); if (cur < story.steps.length - 1) renderState(cur + 1); };
+$("play").onclick = () => {
+  if (timer) { stop(); return; }
+  if (cur >= story.steps.length - 1) renderState(0);
+  $("play").textContent = "Pause";
+  timer = setInterval(() => { if (cur >= story.steps.length - 1) { stop(); return; } renderState(cur + 1); }, 1800);
+};
+initStory().catch((e) => { $("state").textContent = "Could not load the recording: " + e.message; });
+
+// --- code tabs ---------------------------------------------------------------
+for (const t of document.querySelectorAll(".tab")) {
+  t.onclick = () => {
+    for (const u of document.querySelectorAll(".tab")) { u.setAttribute("aria-selected", u === t ? "true" : "false"); $("tab-" + u.dataset.tab).hidden = u !== t; }
+  };
+}
+</script>
+</body>
+</html>

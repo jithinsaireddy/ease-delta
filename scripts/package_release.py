@@ -69,6 +69,7 @@ def main() -> int:
     ap.add_argument("--out", default="release")
     ap.add_argument("--force-rules", action="store_true",
                     help="ship calibrated rules whatever the refiner comparison says (the addendum's plan for the large model)")
+    ap.add_argument("--repo", default="jithinpothireddy21/ease-delta", help="the Hub repository the card describes")
     ap.add_argument("--weights-licence", default=None,
                     help="licence identifier for the weights as the Hugging Face Hub spells it, e.g. cc-by-sa-4.0. "
                          "The owner's decision: without it the card says the licence is not yet chosen")
@@ -80,6 +81,11 @@ def main() -> int:
     for f in Path(a.edge).iterdir():
         if f.is_file():
             shutil.copy2(f, out / "edge" / f.name)
+    # tokenizer files as the backbone publishes them, so transformers 4 and 5 both load them (checked: same ids)
+    from ease.export import compatible_tokenizer
+
+    edge_meta = load(Path(a.edge) / "edge_config.json")["edge"]
+    compatible_tokenizer(edge_meta["encoder_name"], out / "edge", edge_meta["max_len"], check_against=a.edge)
     sb = load(Path(a.stage_b) / "summary.json")
     run = [r for r in sb["runs"] if r["kind"] == "refined"][0]
     choice, why = choose_aggregator(R)
@@ -196,15 +202,23 @@ def main() -> int:
       "- Requirements that can only be settled by reading several records together.\n"
       "- Languages other than English.\n")
     w("## Use\n")
-    w("These files are read by the `ease` package: https://github.com/jithinsaireddy/ease-delta "
-      "(`pip install git+https://github.com/jithinsaireddy/ease-delta`, then download this repository into a "
-      "directory and point `--model` and `--aggregator` at its `edge/` and `aggregator/`).\n")
-    w("```bash\nease demo  --model edge --aggregator aggregator        # a client hand-off, twelve events\n"
-      "ease serve --model edge --aggregator aggregator        # local API and page on 127.0.0.1:8791\n```\n")
-    w("```python\nfrom ease.scorer import ModelScorer\n\nscorer = ModelScorer(\"edge\", canonical=True)\n"
-      "logits, message = scorer.score([(\"The client has approved the design.\",\n"
-      "                                 \"Email from the client: we approve the design as presented.\")])[0]\n"
-      "# logits: supports, refutes, settles nothing\n```\n")
+    w("**EASE-Delta keeps a task's decisions current as its messages change.** You say what must be true before "
+      "something can be done; messages arrive, get corrected, get withdrawn; it says what is ready, what is blocked "
+      "and why, and which question is worth asking. This repository holds the trained reader and the settings the "
+      "system runs with. [Code and documentation](https://github.com/jithinsaireddy/ease-delta) · "
+      "[demo in your browser](https://jithinsaireddy.github.io/ease-delta/) · "
+      "[Colab](https://colab.research.google.com/github/jithinsaireddy/ease-delta/blob/main/examples/try_ease_delta.ipynb)\n")
+    w("```bash\npip install \"ease-delta @ git+https://github.com/jithinsaireddy/ease-delta\"\n```\n")
+    w("```python\nfrom ease import EvidenceReader, Tracker\n\n"
+      f"reader = EvidenceReader.from_pretrained(\"{a.repo}\")      # downloads this repository once\n"
+      "reader.read(\"The client has approved the final design.\",\n"
+      "            \"Email from the client: we approve the final design, please go ahead.\")\n\n"
+      "task = Tracker.from_template(\"client-onboarding\", reader=reader, client=\"Acme\")\n"
+      "task.add(\"mail-1\", \"Email from Acme: the brief is attached, and the brand files are in the shared folder.\")\n"
+      "print(task.status())\n```\n")
+    w("To run the page and the HTTP API, download it (`hf download " + a.repo + " --local-dir release`) and run "
+      "`ease serve --model release/edge --aggregator release/aggregator`. For claim-against-passage reading in plain "
+      "`transformers`, use [`jithinpothireddy21/ease-delta-reader`](https://huggingface.co/jithinpothireddy21/ease-delta-reader).\n")
     w("## Training data\n")
     w("| Source | Examples | Licence | Obtained from |")
     w("|---|---:|---|---|")

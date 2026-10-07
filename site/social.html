@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>EASE-Delta social card</title>
+<style>
+  html, body { margin: 0; width: 1280px; height: 640px; overflow: hidden; }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; background: #f7f7f4; color: #18181b;
+         display: grid; grid-template-columns: 1fr 470px; gap: 40px; padding: 64px 72px; box-sizing: border-box; }
+  .eyebrow { font-size: 20px; letter-spacing: .1em; text-transform: uppercase; color: #3b4fd8; font-weight: 700; }
+  h1 { font-size: 66px; line-height: 1.04; letter-spacing: -0.025em; margin: 18px 0 22px; }
+  p { font-size: 25px; line-height: 1.4; color: #4f4f56; margin: 0; }
+  .url { position: absolute; left: 72px; bottom: 54px; font-size: 22px; color: #5f5f66; font-weight: 600; }
+  .card { background: #fff; border: 1px solid #e4e4de; border-radius: 22px; padding: 26px 28px; align-self: center; box-shadow: 0 10px 40px rgba(0,0,0,.06); }
+  .row { display: flex; align-items: center; gap: 12px; margin: 0 0 6px; }
+  .id { font-family: ui-monospace, Menlo, monospace; font-weight: 700; font-size: 20px; }
+  .b { font-size: 15px; font-weight: 800; letter-spacing: .04em; padding: 3px 12px; border-radius: 999px; }
+  .ready { color: #1f7a4d; background: #e1f3e9; } .blocked { color: #b23a24; background: #fbe6e1; } .open { color: #8a6100; background: #fbf0d3; }
+  .msg { font-size: 17px; color: #5f5f66; margin: 4px 0 16px; line-height: 1.35; }
+  .arrow { font-size: 17px; font-weight: 700; margin: 2px 0 14px; }
+  .bar { display: flex; height: 10px; border-radius: 6px; overflow: hidden; background: #f0f0ec; margin: 8px 0 18px; }
+  .bar span { display: block; height: 100%; }
+  .stats { display: flex; gap: 26px; margin-top: 34px; }
+  .stat b { display: block; font-size: 34px; letter-spacing: -0.02em; }
+  .stat span { font-size: 17px; color: #5f5f66; }
+</style></head>
+<body>
+  <div>
+    <div class="eyebrow">Open model and code</div>
+    <h1>EASE-Delta keeps decisions current as the facts change.</h1>
+    <p>Messages arrive, get corrected, get withdrawn. It re-reads only what changed, and says what is ready, what is blocked, and why.</p>
+    <div class="stats">
+      <div class="stat"><b>0 of 195,434</b><span>cached values off a full rebuild</span></div>
+      <div class="stat"><b>0.6%</b><span>unrelated passages read as evidence</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="msg">&ldquo;Email from the client: we are withdrawing our approval of the design until the colour palette is revised.&rdquo;</div>
+    <div class="arrow">send_packet &nbsp;<span class="b open">NEEDS INFO</span> &rarr; <span class="b blocked">BLOCKED</span></div>
+    <div class="row"><span class="id">design_approved</span><span class="b blocked">VIOLATED</span></div>
+    <div class="bar"><span style="width:10%;background:#1f7a4d"></span><span style="width:66%;background:#b23a24"></span><span style="width:24%;background:#c99a1c"></span></div>
+    <div class="row"><span class="id">date_confirmed</span><span class="b ready">SATISFIED</span></div>
+    <div class="bar"><span style="width:79%;background:#1f7a4d"></span><span style="width:18%;background:#b23a24"></span><span style="width:3%;background:#c99a1c"></span></div>
+    <div class="row"><span class="id">nda_signed</span><span class="b ready">SATISFIED</span></div>
+    <div class="bar" style="margin-bottom:4px"><span style="width:98%;background:#1f7a4d"></span><span style="width:1%;background:#b23a24"></span><span style="width:1%;background:#c99a1c"></span></div>
+  </div>
+  <div class="url">github.com/jithinsaireddy/ease-delta</div>
+</body></html>

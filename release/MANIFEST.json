@@ -1,6 +1,6 @@
 {
   "name": "EASE-Delta",
-  "created": "2026-10-03T16:43:29+00:00",
+  "created": "2026-10-07T19:34:28+00:00",
   "edge_version": "edge-2e659683f3e9a846",
   "aggregator": {
     "kind": "calibrated rules (refiner with zero correction)",
@@ -63,13 +63,17 @@
       "sha256": "d9543db70fa566a262a515965087fc6dcdfee22c4db375928409175db0583b41",
       "bytes": 7390623
     },
+    "edge/special_tokens_map.json": {
+      "sha256": "ea97ecdbcc73713039d8d64dbb05e3689495c96657fbd9a18f5bed381be81049",
+      "bytes": 694
+    },
     "edge/tokenizer.json": {
-      "sha256": "e0a696f1fbf0f2c7d212e8b9e133250d19bd1c7e5bc34fc91c59d008894dc7b1",
-      "bytes": 3583326
+      "sha256": "9fd55248d51d33976b324fc11592e28071da7d41e0e9401dfb7082e30574b7b1",
+      "bytes": 2132967
     },
     "edge/tokenizer_config.json": {
-      "sha256": "fb54f027372062b2ca52282efb04d178a8b57167a00cd8f4e816515823a2c016",
-      "bytes": 380
+      "sha256": "1519826ae013cf6b393196e769609e9d27b10400e1122b263dd240d838091538",
+      "bytes": 20808
     },
     "edge/training_manifest.json": {
       "sha256": "a359f8ff785681660e249d0e620a1f8238240946ac35f6486bb0b28b05e1b79b",

@@ -68,3 +68,47 @@ def to_sequence_classifier(edge, max_len: int | None = None):
         model.classifier.weight[:, :m].copy_(edge.classifier.weight)
         model.classifier.bias.copy_(edge.classifier.bias + edge.classifier.weight @ edge.norm.bias)
     return model
+
+
+def compatible_tokenizer(encoder_name: str, out_dir, model_max_length: int, check_against=None) -> None:
+    """Write the backbone's own tokenizer files into `out_dir`, with `model_max_length` set.
+
+    transformers 5 saves `"tokenizer_class": "TokenizersBackend"`, a name that transformers 4 and Transformers.js
+    do not know, so a tokenizer saved by it fails to load there. The backbone publishes the same vocabulary with
+    `"tokenizer_class": "PreTrainedTokenizerFast"`, which every version loads; fine-tuning does not change the
+    vocabulary. If `check_against` names a directory with a working tokenizer, the two must give identical ids
+    on a sample of texts, or nothing is written.
+    """
+    import json
+    import shutil
+    import tempfile
+    from pathlib import Path
+
+    from huggingface_hub import hf_hub_download
+
+    out = Path(out_dir)
+    with tempfile.TemporaryDirectory() as tmp:
+        stage = Path(tmp)
+        for name in ("tokenizer.json", "tokenizer_config.json", "special_tokens_map.json"):
+            try:
+                shutil.copy2(hf_hub_download(encoder_name, name), stage / name)
+            except Exception:
+                if name != "special_tokens_map.json":
+                    raise
+        cfg = json.loads((stage / "tokenizer_config.json").read_text())
+        cfg["model_max_length"] = int(model_max_length)
+        (stage / "tokenizer_config.json").write_text(json.dumps(cfg, indent=2))
+        if check_against is not None:
+            from transformers import AutoTokenizer
+
+            a, b = AutoTokenizer.from_pretrained(str(check_against)), AutoTokenizer.from_pretrained(str(stage))
+            samples = [("The client has approved the final design.", "Email from the client: we approve it, go ahead!"),
+                       ("Ünïcode, numbers 545,500 and $1.2m", "  spaces\tand\nnew lines; emoji 🙂 and 中文"),
+                       ("short", "x" * 3000)]
+            for c, e in samples:
+                ia = a(c, e, truncation=True, max_length=model_max_length)["input_ids"]
+                ib = b(c, e, truncation=True, max_length=model_max_length)["input_ids"]
+                if ia != ib:
+                    raise ValueError(f"the backbone's tokenizer gives different ids for {c!r}")
+        for f in stage.iterdir():
+            shutil.copy2(f, out / f.name)

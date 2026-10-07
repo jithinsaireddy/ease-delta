@@ -1,253 +1,215 @@
+<div align="center">
+
 # EASE-Delta
 
-Keeps a task's decisions current as its evidence changes.
+**Keep decisions current as the facts change.**
 
-You declare what must be true before something can be done ("the client approved the design",
-"the delivery date is confirmed"). Messages and documents arrive, get corrected, get withdrawn.
-EASE-Delta reads each one against each requirement, remembers the reading, and after every change
-tells you which actions are ready, which are blocked and why, and which single question is worth
-asking. When one record changes it re-reads that record and nothing else.
+[![tests](https://github.com/jithinsaireddy/ease-delta/actions/workflows/tests.yml/badge.svg)](https://github.com/jithinsaireddy/ease-delta/actions/workflows/tests.yml)
+[![demo](https://img.shields.io/badge/demo-in_your_browser-3b4fd8)](https://jithinsaireddy.github.io/ease-delta/)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jithinsaireddy/ease-delta/blob/main/examples/try_ease_delta.ipynb)
+[![models](https://img.shields.io/badge/%F0%9F%A4%97%20models-ease--delta-ffcc4d)](https://huggingface.co/jithinpothireddy21/ease-delta)
+[![python](https://img.shields.io/badge/python-3.11%2B-blue)](pyproject.toml)
+[![code licence](https://img.shields.io/badge/code-Apache--2.0-blue)](LICENSE)
+[![weights licence](https://img.shields.io/badge/weights-CC_BY--SA_4.0-lightgrey)](docs/licenses/CC-BY-SA-4.0.txt)
 
-It proposes. It never sends, pays, submits or executes anything.
+</div>
 
-**Read `docs/RESULTS.md` before relying on it.** That file reports every measurement, including
-the hypotheses that were not supported. `docs/LIMITATIONS.md` lists what was never measured,
-starting with the most important: no person has used this, so whether it saves anyone time is
-unknown.
+You say what must be true before something can be done: *the client approved the design*, *the
+delivery date is confirmed*, *the NDA is signed*. Messages arrive, get corrected, get withdrawn.
+EASE-Delta reads each message against each requirement once, re-reads only what a change touches,
+and after every change tells you **what is ready, what is blocked and why, and which single
+question is worth asking**. It proposes; it never sends, pays or executes anything.
 
-## Results in brief
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/story-dark.png">
+  <img src="docs/assets/story-light.png" alt="A client hand-off, step 7 of 12: the client withdraws the approval, and send_packet goes from needs info to blocked, resting on that email" width="860">
+</picture>
+</p>
 
-Measured on an Apple M4 Max against a plan written before any test data was read
-(`docs/PREREGISTRATION.md`). Tasks are generated; their text is human-written (Wikipedia
-revisions and NLI corpora). Brackets are 95% intervals over episodes. The release ships the
-larger reader (ModernBERT-large), chosen by a second plan also written before it was trained
-(`docs/PREREGISTRATION_LARGE.md`); rows that say "base reader" were measured with the 149M model
-and are kept as reported.
+## Try it
 
-| | Result |
-|---|---|
-| Exactness | 0 of 195,434 cached values differed from an independent full rebuild, with either reader |
-| Cost of an update | base reader: 16 ms median on tasks of 5 requirements and 11 records (full re-reading: 167 ms); 36 ms on tasks of 13 requirements and 34 records (960 ms). Shipped larger reader: 59 ms and 118 ms on the Apple GPU, 0.19 s and 0.58 s on its CPU |
-| Larger reader (shipped) | ModernBERT-large in place of base, same recipe: +2.0 accuracy points [+1.1, +2.9] on standard tasks and +2.2 [+0.7, +3.6] on larger ones, not worse on small ones; stale decisions 13.1% → 11.1% on standard tasks; it reads the record written for a requirement correctly 90.5% of the time (base 88.9%) at 2.7× the update time |
-| Against a dense reader with the same backbone, training and wrapper (base reader) | with the learned refiner: +3.6 accuracy points [+2.1, +5.1] and 3.9 points fewer stale decisions [1.4, 6.6] on standard tasks, at 6.5% of the tokens. On larger tasks +5.4 points [+2.0, +8.7], but the stale-decision difference was not significant, so that hypothesis is **not supported**. The shipped calibrated rules: +2.2 points [+0.6, +3.9] and 3.6 fewer stale decisions [1.0, 6.2] on standard tasks; +5.5 points [+2.3, +8.7] on larger ones |
-| Against a public NLI model in the same wrapper (base reader) | about +19 to +20 points; it reads 45% of unrelated documents as evidence, this model 0.8% |
-| Learned refiner | small gains on average, but one of three training seeds failed on larger tasks and all lose to calibrated rules on small tasks. **The release ships calibrated rules** |
-| Learning a policy instead of executing it | a recurrent network did as well as the executed policy: hypothesis **not supported** |
-| Self-evolution | exact corrections and a threshold with a proven error bound work as specified; gated consolidation adopted no change it could verify as safe: hypothesis **not supported** |
-| Dependency proposer | within its miss bound on the tasks it was calibrated for, just outside it on larger ones: **not supported**; off by default |
-| Conflicts that follow from a consequence | recognised 35% of the time by the base reader and 45% by the larger one, against 77% and 88.5% for direct conflicts |
-| "The latest version" | read **unsafely**: name the specific version in requirements |
-| Where the error comes from | with every reading correct, the exact parts were right at every step of every test task, with either reader. All error is the reader's: 89% (base) and 90.5% (large) correct on the record written for a requirement. Messages on the same subject that settle nothing are read as settling it 22% (base) and 20% (large) of the time |
-| More training | 200,000 more examples on the same corpora did not help (slightly worse on development data). A larger encoder was not trained |
-| Without a GPU | on this laptop's processor, with readings bit-exact there too: base reader 0.07 to 0.11 s per update on standard tasks and 0.22 to 0.29 s on larger ones (4 to 12 threads), 2.5 GB of memory; shipped larger reader 0.19 s and 0.58 s, 4.8 GB |
+| Where | What you get | Install |
+|---|---|---|
+| **[In your browser](https://jithinsaireddy.github.io/ease-delta/)** (also on [Hugging Face](https://huggingface.co/spaces/jithinpothireddy21/ease-delta-demo)) | the reader, running on your own machine; a recorded run of a full task | nothing |
+| **[In Colab](https://colab.research.google.com/github/jithinsaireddy/ease-delta/blob/main/examples/try_ease_delta.ipynb)** | the whole system, step by step, and the interactive demo | nothing |
+| **On your computer** | everything, with your own messages | `pip install "ease-delta @ git+https://github.com/jithinsaireddy/ease-delta"` |
 
-## How it works
-
-```
-evidence event ──> ledger (exact)            versions, withdrawals, duplicates, conflicts
-                     │
-                     ▼
-      edge model (learned, 395M)             one (claim, record) pair -> supports / refutes / settles nothing
-                     │   cached per pair
-                     ▼
-      calibration (2 numbers) ──> precedence policy (exact, differentiable)
-                     │
-                     ▼
-      requirement logic (exact)              AND / OR / NOT / k-of-n over three-valued statuses
-                     │
-                     ▼
-      planner (exact)                        what is ready, what to ask, what need not be asked
-```
-
-Learned parts interpret language. Exact parts handle identity, versions, precedence, logic and
-arithmetic. A learned refiner (41K parameters) can take the calibration step's place; it was
-trained and evaluated, and it is not the default (see Results in brief). Every quantity a decision depends on, including the model weights and the schema, is a
-node in one dependency graph, so a change to any of them recomputes what it reaches and nothing
-else (`docs/PROOFS.md`).
-
-## Quick start
-
-```bash
-git clone https://github.com/jithinsaireddy/ease-delta && cd ease-delta
-python3 -m venv .venv && source .venv/bin/activate      # Python 3.11 or later; developed on 3.12
-pip install -e ".[dev]"
-pytest                      # the test suite; needs no model and no network
-ruff check src scripts tests
-```
-
-The trained models are on the Hugging Face Hub: `jithinpothireddy21/ease-delta` (the shipped
-395M reader) and `jithinpothireddy21/ease-delta-base` (the 149M reader: 2.7 times faster, half
-the memory, about 2 points less accurate on tasks).
-
-```bash
-hf download jithinpothireddy21/ease-delta --local-dir release
-```
-
-Developed and run on macOS with Apple silicon only. `requirements-lock.txt` lists the exact
-versions used.
-
-After training (below), or with a trained model in `release/`:
-
-```bash
-ease demo  --model release/edge --aggregator release/aggregator
-ease serve --model release/edge --aggregator release/aggregator --data ~/.ease
-```
-
-The demo plays a client hand-off through twelve events: approvals, a withdrawal, a duplicate, a
-late copy of an old message, a changed date, a bounced payment. It prints what the model actually
-concluded at each step.
-
-`ease serve` also serves a page at `http://127.0.0.1:8791/` for doing the same by hand: start a
-task from a template (client hand-off, onboarding, campaign launch, event, support follow-up,
-software release, group trip), paste messages or import an email file, see what is ready and
-why, correct a reading the model got wrong, and send someone a one-question link to confirm a
-requirement. The page loads nothing from the internet.
-
-For several teams on one server, `ease serve --multi` gives each team a private workspace behind
-its own key, with quotas, signed webhooks and backups: see `docs/DEPLOYMENT.md`. A Dockerfile
-builds a CPU-only image.
-
-**Write passages that say who is speaking.** The reader sees only a record's text, never its
-metadata. "We approve the design" does not establish that *the client* approved. "Email from the
-client: we approve the design" does. `POST /tasks/{id}/documents` takes an `attribution` and puts
-it in front of every passage it cuts from a document.
-
-### API
-
-```bash
-curl -s localhost:8791/tasks -H 'content-type: application/json' -d '{
-  "task_id": "handoff",
-  "predicates": [{"id": "approved", "text": "The client has approved the design.", "prior": 0.3, "ask_cost": 0.2}],
-  "actions": [{"id": "send", "description": "Send the packet", "requires": "approved", "value_success": 10, "cost_failure": 25}]
-}'
-
-curl -s localhost:8791/tasks/handoff/events -H 'content-type: application/json' -d '{
-  "record_id": "email-14", "revision": 1, "source_id": "client", "authority": 2, "valid_from": 1,
-  "text": "We approve the design as presented, please go ahead."
-}'
-
-curl -s localhost:8791/tasks/handoff/explain/send      # which records the answer rests on
-curl -s localhost:8791/tasks/handoff/question          # what is worth asking, and what is not
-curl -s localhost:8791/tasks/handoff/verify            # cached state == full rebuild?
-```
-
-| Endpoint | Purpose |
-|---|---|
-| `POST /tasks` | declare a task |
-| `POST /tasks/{id}/events` | add, correct or withdraw a record (`"text": null` withdraws) |
-| `POST /tasks/{id}/documents` | split a document into attributed passages and deliver them; a revision withdraws passages that are gone |
-| `GET /tasks/{id}` | statuses, beliefs, records, endorsement threshold |
-| `GET /tasks/{id}/explain/{action}` | the predicates and records an assessment rests on |
-| `GET /tasks/{id}/question` | the question with the highest value, and questions that cannot matter |
-| `POST /tasks/{id}/certificate` | can any answer to these questions change this proposal? |
-| `POST /tasks/{id}/readings` | a person states what a record establishes; takes effect at once |
-| `DELETE /readings/{item}` | withdraw that statement; behaviour returns exactly to what it was |
-| `POST /tasks/{id}/endorsements/{action}`, `POST /tasks/{id}/verdicts` | report whether an endorsed action was right |
-| `POST /evolve/consolidate`, `POST /evolve/rollback` | learn from accumulated feedback behind a gate; undo |
-| `PUT /tasks/{id}/schema`, `POST /tasks/{id}/clock` | change the requirements; advance time |
-| `GET /templates`, `POST /tasks/from-template` | start a task from a workflow template |
-| `POST /tasks/{id}/import` | an `.eml`, `.mbox`, `.txt` or `.md` file as attributed passages |
-| `POST /tasks/{id}/confirmations`, `GET/POST /confirm/{workspace}/{token}` | a one-question link for someone to confirm a requirement; the answer is read exactly |
-| `GET /workspace`, `PUT /workspace/webhook` | quota and usage; a signed webhook when a proposal changes |
-| `/admin/...` | workspaces, keys, quotas and backups (`--multi` with an admin key) |
-
-### Python
+## Ten lines
 
 ```python
-from ease.engine import Engine
-from ease.ledger import Event
-from ease.schema import Action, Predicate, TaskSchema
-from ease.scorer import ModelScorer
-from ease.aggregate import load_aggregator
+from ease import EvidenceReader, Tracker
 
-schema = TaskSchema("handoff",
-    [Predicate("approved", "The client has approved the design.", prior=0.3)],
-    [], [Action("send", "Send the packet", "approved")])
-engine = Engine(schema, ModelScorer("release/edge", canonical=True), load_aggregator("release/aggregator"))
-
-report = engine.deliver(Event("email-14", 1, "We approve the design as presented.",
-                              source_id="client", authority=2, valid_from=1.0))
-print(report.changed_actions, engine.assessment("send").disposition)
+reader = EvidenceReader.from_pretrained()          # downloads jithinpothireddy21/ease-delta once
+task = Tracker.define(
+    requirements={"approved": "Acme has approved the final design.",
+                  "date": "Acme has confirmed the delivery date.",
+                  "nda": "The non-disclosure agreement has been signed by both parties."},
+    actions={"send_packet": "approved and date and nda"},
+    reader=reader)
+task.add("mail-1", "Email from Acme: we approve the final design, please go ahead.", about=["approved"])
+task.add("mail-2", "Email from Acme: we confirm delivery on 12 March.", about=["date"])
+task.add("nda", "The NDA has been signed by Acme and countersigned by us.", about=["nda"])
+print(task.status())
 ```
 
-## Learning after deployment
+```
+Actions
+  send_packet   NEEDS INFO   86.3% likely ready
+Requirements
+  approved      SATISFIED   satisfied 0.95  violated 0.00  open 0.04  rests on mail-1
+  date          SATISFIED   satisfied 0.96  violated 0.00  open 0.04  rests on mail-2
+  nda           SATISFIED   satisfied 0.94  violated 0.01  open 0.05  rests on nda
+Worth asking: The non-disclosure agreement has been signed by both parties.
+```
 
-The encoder (395M parameters; a 149M version is published too) is never updated in use. What changes is small, versioned and
-reversible.
+Three likely requirements are not a sure thing, so it does not call the packet ready (the default
+bar is 90%); it names the one answer that would settle it. Then people answer, and change their minds:
 
-| Mechanism | Takes effect | Safeguard |
+```python
+task.confirm("nda", by="Priya in Legal")           # send_packet: NEEDS_INFO -> READY
+task.add("mail-3", "Email from Acme: we withdraw our approval; the colours are wrong.", about=["approved"])
+                                                   # send_packet: READY -> BLOCKED
+print(task.explain("send_packet"))                 # ...resting on mail-3, revision 1
+```
+
+That output is real: [`examples/quickstart.py`](examples/quickstart.py) runs it. Start from a
+template instead of writing requirements: `Tracker.from_template("client-onboarding", reader=reader, client="Acme")`.
+
+## Workflows it fits
+
+| Workflow | Requirements it tracks | It tells you |
 |---|---|---|
-| Correction memory | next query | an item can be deleted, restoring earlier behaviour exactly; nothing is generalised to similar cases until a gate has shown on held-out feedback that it helps |
-| Endorsement threshold | after each verdict | realised error rate among endorsed actions is bounded for every sequence of cases (`docs/PROOFS.md`, T5) |
-| Consolidation | on request | adopted only if single readings *and whole validation tasks* (set suites) do not get worse and held-out feedback improves; the report counts negative flips (readings the previous version got right), and a ceiling on them can be set; every version keeps its parent and can be rolled back. In the experiments it adopted nothing when starting from calibrated rules |
+| Client onboarding | brief received, files supplied, access granted, kickoff agreed | "Work can start once website access is confirmed." |
+| Campaign launch | copy and artwork approved, materials in, compliance cleared | "The revised artwork still needs approval." |
+| Event coordination | venue, equipment, schedule, at least *k* speakers confirmed | "A speaker cancelled; you still need one more." |
+| Support follow-up | fix or replacement delivered, customer confirmed | "Replacement arrived; the customer has not confirmed." |
+| Software release | test report passed, notes complete, sign-offs, rollback plan | "The new build needs a fresh test report." |
+| Group trips, shared projects | everyone confirmed, everyone paid, bookings made | "Everyone confirmed except one." |
 
-## Training
+Each is a ready-made template (`ease.templates`). Any workflow that can be written as *what must be
+true before what* works the same way; how well its messages are read is measured per kind of
+text, not assumed (see [limitations](#what-it-does-not-do-yet)).
 
-Everything runs on one Apple-silicon laptop. Data is streamed from the Hugging Face Hub; nothing
-is downloaded in full.
+## Only the reader
 
-```bash
-python -m ease.train.stage_a --config configs/stage_a.yaml      # base edge model, about 2.5 h
-bash scripts/run_experiments.sh                                 # pre-registered experiments, about 4.5 h
-python -m ease.train.stage_a --config configs/stage_a_large.yaml  # large edge model, about 5 h
-bash scripts/run_experiments_large.sh                           # the addendum's comparison, about 2.5 h
-python scripts/build_set_suites.py                              # set suites for the consolidation gate
-python scripts/package_release.py --out release                 # release directory and model card
+The reader is also published as a standard `transformers` model, for checking a claim against a
+passage anywhere: RAG answer verification, fact-checking, triage. It answers `SUPPORTS`,
+`REFUTES` or `NOT_ENOUGH_INFO`, and it was trained to say `NOT_ENOUGH_INFO` when a passage is about
+something else.
+
+```python
+from transformers import pipeline
+
+reader = pipeline("text-classification", model="jithinpothireddy21/ease-delta-reader", top_k=None)
+reader({"text": "The deposit invoice has been paid.",                       # claim first
+        "text_pair": "Office notice: the kitchen will be closed on Friday."},  # evidence second
+       truncation=True)
+# [{'label': 'NOT_ENOUGH_INFO', 'score': 0.999}, ...]
 ```
 
-| Corpus | Licence | Use |
+It also loads in sentence-transformers' `CrossEncoder`, and the base model has ONNX weights for
+onnxruntime and Transformers.js. See [the reader guide](docs/reader.md).
+
+## Why it is built this way
+
+- **It re-reads only what changed.** Readings are cached per (requirement, message); a change
+  re-reads the pairs it touches, about 2 to 7% of the tokens of re-reading the task. A duplicate or an
+  old copy costs nothing.
+- **Its cached state is exact.** It equals a full rebuild bit for bit (0 of 195,434 values
+  differed), so the shortcut never drifts. A person's correction takes effect at once and can be
+  undone exactly.
+- **It knows when a message is irrelevant.** Passages from unrelated documents are read as
+  evidence 0.6% of the time; a widely used public NLI model does so 45% of the time.
+- **It explains, asks, and waits.** Every proposal shows the records it rests on, it asks only
+  questions worth their cost, and a READY action is a proposal for a person to approve.
+
+Learned parts read language; exact code handles versions, precedence, logic and planning:
+
+```
+message ──> ledger (exact)        revisions, withdrawals, duplicates, stale copies
+              │
+              ▼
+          reader (learned)        one (requirement, message) pair -> supports / refutes / not enough info
+              │   cached per pair
+              ▼
+          precedence + logic      which record counts; all of / any of / at least k of / not
+              │   (exact)
+              ▼
+          planner (exact)         ready / blocked / needs info; the question worth asking
+```
+
+More in [concepts](docs/concepts.md) and [design](docs/DESIGN.md).
+
+## Results
+
+Measured on an Apple M4 Max against plans written and hashed before any test data was read
+([`PREREGISTRATION.md`](docs/PREREGISTRATION.md), [`PREREGISTRATION_LARGE.md`](docs/PREREGISTRATION_LARGE.md)).
+Tasks are generated; their text is human-written (Wikipedia revisions and NLI corpora). Hypotheses
+that failed are reported as failed.
+
+| | Shipped system |
+|---|---|
+| Correct ready / blocked / needs-info decisions | 91.6% on standard tasks, 86.8% on larger ones |
+| Against a dense reader of the whole task (same backbone and training) | +2.2 points [+0.6, +3.9] and fewer stale decisions on standard tasks; +5.5 [+2.3, +8.7] on larger ones (base reader) |
+| Larger reader against the base one | +2.0 points [+1.1, +2.9] and +2.2 [+0.7, +3.6], a little above the gain predicted before training |
+| Update after a change | 59 ms on the Apple GPU, 0.2 to 0.6 s on its CPU (395M reader) |
+| Reader on VitaminC test (claims against Wikipedia revisions) | 91.5% |
+| Cached state against a full rebuild | 0 of 195,434 values differed |
+
+Every number, with intervals: [results at a glance](docs/results-summary.md) and the generated
+[full report](docs/RESULTS.md).
+
+## What it does not do yet
+
+- **It has not been measured with people.** Whether it saves anyone time is the next question
+  ([study design](docs/NEXT_STEPS.md)), not a claim.
+- **English only**, short passages (256 tokens; documents are cut into attributed passages).
+- **Messages on the same subject that settle nothing** are still read as decisive about one time
+  in five. When several requirements are of one kind (one per speaker, say), tell it which one a
+  message concerns with `about`.
+- **"The latest version"** needs two records read together and is read unsafely; name the version.
+- **Conflicts that follow from a consequence** ("broke a leg" against "cycles to work") are mostly missed.
+- It reports what messages say, not whether they are true.
+
+The full list: [LIMITATIONS.md](docs/LIMITATIONS.md).
+
+## Models
+
+| Hugging Face | Size | For |
 |---|---|---|
-| VitaminC | CC BY-SA 3.0 | train, test |
-| MNLI | CC BY 3.0 / CC BY-SA 3.0 / MIT / other, by genre | train, test |
-| WANLI | CC BY 4.0 | train, test |
-| SNLI | CC BY-SA 4.0 | evaluation only (its labelling convention is wrong for evidence) |
-| ANLI | CC BY-NC 4.0 | evaluation only (non-commercial) |
-| STALE | CC BY 4.0 | evaluation only |
+| [`jithinpothireddy21/ease-delta`](https://huggingface.co/jithinpothireddy21/ease-delta) | 395M, 1.6 GB | the system: `EvidenceReader.from_pretrained()` (default) |
+| [`jithinpothireddy21/ease-delta-base`](https://huggingface.co/jithinpothireddy21/ease-delta-base) | 149M, 0.6 GB | the system, 2.7x faster, about 2 points less accurate |
+| [`jithinpothireddy21/ease-delta-reader`](https://huggingface.co/jithinpothireddy21/ease-delta-reader) | 395M | the reader alone, plain `transformers` |
+| [`jithinpothireddy21/ease-delta-reader-base`](https://huggingface.co/jithinpothireddy21/ease-delta-reader-base) | 149M | the reader alone; ONNX and in-browser |
 
-Training resumes exactly after an interruption (`--resume`): the data stream's state is part of
-every checkpoint.
+## Documentation
 
-## Layout
+| | |
+|---|---|
+| [Getting started](docs/getting-started.md) | install, first task, templates, emails, confirmations, keeping state |
+| [Concepts](docs/concepts.md) | requirements, records, readings, statuses, questions, corrections |
+| [Python API](docs/python-api.md) | `EvidenceReader`, `Tracker`, requirement expressions, templates |
+| [HTTP API](docs/http-api.md) | every endpoint, with examples |
+| [Reader guide](docs/reader.md) | the reader with transformers, CrossEncoder, ONNX, the browser |
+| [Deployment](docs/DEPLOYMENT.md) | one person, or many teams behind keys; Docker; backups |
+| [FAQ](docs/faq.md) | accuracy, privacy, licences, GPUs, languages, how it learns |
+| [Research](docs/README.md#research) | results, pre-registrations, deviations, proofs, design, sources |
 
-```
-src/ease/
-  ledger.py        versioned evidence, order-independent merge
-  graph.py         incremental evaluation with early cutoff
-  schema.py        predicates, gates, actions
-  logic.py         exact three-valued and probabilistic evaluation
-  scorer.py        edge model inference and caching; canonical shapes
-  aggregate.py     precedence policy; rule, refined and neural aggregators
-  engine.py        ties the above together
-  planner.py       value of information; stability certificates
-  proposer.py      dependency proposals with a conformal miss bound (off by default)
-  evolve/          memory, threshold tracker, gated consolidation, versions
-  ingest.py        documents into self-contained passages
-  runtime.py       persistence, limits, audit log
-  service/api.py   HTTP API (local, or many workspaces behind keys)
-  service/workspaces.py  workspaces, keys, quotas, webhooks, backups
-  service/confirmations.py  one-question confirmation links
-  service/ui.html  the page; no external resources
-  templates.py     workflow templates
-  importers.py     .eml / .mbox / text files into attributed passages
-  data/            streaming corpora, atoms, episode generator
-  train/           stage_a (edge), stage_b (aggregators), dense (baseline)
-  eval/            metrics and the evaluation harness
-scripts/           one script per pre-registered hypothesis, and the report generator
-docs/
-  PREREGISTRATION.md   hypotheses and decision rules, written before any test evaluation
-  RESULTS.md           generated from the measurements
-  DEVIATIONS.md        what was done differently from the plan
-  LIMITATIONS.md       what was not measured and what can break
-  PROOFS.md            what is proved, under which assumptions, and which test checks it
-  RESEARCH.md          sources, checked; prior art; findings that changed the design
-  MODEL_CARD.md
-tests/             property-based and unit tests
+## Contributing and citing
+
+Issues and pull requests are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md). The most useful
+contribution right now is real (anonymised) correspondence where it reads wrongly.
+
+```bibtex
+@software{pothireddy2026easedelta,
+  author = {Pothireddy, Jithin},
+  title  = {EASE-Delta: revision-aware decision computation},
+  year   = {2026},
+  url    = {https://github.com/jithinsaireddy/ease-delta}
+}
 ```
 
-## Licence
-
-Code: Apache-2.0. Model weights derive from ModernBERT-base (Apache-2.0) and from corpora under
-the licences above; VitaminC and part of MNLI are share-alike. Creative Commons' 2025 guidance on
-AI training describes releasing a model trained on share-alike material under the same licence
-as the cautious course; whether weights are an adaptation of their training text is not settled.
-The weights' licence is the owner's decision and is stated in the model card once made.
+Code: Apache-2.0. Weights: CC BY-SA 4.0, because one training corpus (VitaminC) is share-alike.
+No hosted model is called anywhere in this project, and no comparison with any commercial product
+is claimed.

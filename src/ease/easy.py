@@ -394,6 +394,7 @@ class Tracker:
         if data_dir is None:
             self._tmp = tempfile.TemporaryDirectory(prefix="ease-")
             data_dir = self._tmp.name
+        data_dir = Path(data_dir).expanduser()
         s = reader.settings
         tau = float(ready_at) if ready_at is not None else float(s.get("tau_initial", 0.9))
         self.runtime = Runtime(data_dir, reader.scorer, reader.aggregator, alpha=float(s.get("alpha", 0.05)),
@@ -540,6 +541,21 @@ class Tracker:
     def undo(self, correction_id: int) -> bool:
         """Withdraw a correction; behaviour returns exactly to what it was."""
         return bool(self.runtime.retract_correction(int(correction_id))["removed"])
+
+    # -- feedback on proposals -------------------------------------------------
+    def endorse(self, action: str) -> bool:
+        """Say that a READY action is being acted on, so that a verdict can follow. False if it is not READY."""
+        return bool(self.runtime.endorse(self.task_id, action)["endorsed"])
+
+    def verdict(self, action: str, was_wrong: bool) -> float:
+        """Report whether an endorsed action turned out wrong. The readiness bar moves so that the error rate
+        among endorsed actions stays near its target (docs/PROOFS.md, T5). Returns the new bar."""
+        return float(self.runtime.verdict(self.task_id, action, bool(was_wrong))["tau"])
+
+    @property
+    def ready_at(self) -> float:
+        """The current readiness bar: an action is READY when at least this likely to be satisfied."""
+        return max(0.5, float(self.runtime.tracker.tau))
 
     def verify(self) -> bool:
         """True when every cached value equals an independent full rebuild."""

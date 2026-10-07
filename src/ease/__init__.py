@@ -7,7 +7,7 @@ Design rule used throughout the package:
     exact code handles identities, versions, logic, arithmetic and permissions.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __all__ = ["EvidenceReader", "Reading", "Tracker", "define", "__version__"]
 
 

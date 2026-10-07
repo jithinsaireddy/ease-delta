@@ -16,7 +16,7 @@ tags:
 
 # Model card: EASE-Delta
 
-Generated 2026-10-03T16:43:31+00:00 by `scripts/package_release.py`. Figures are read from `runs/results/`. Full results, including hypotheses that were not supported: `docs/RESULTS.md`.
+Generated 2026-10-07T19:34:33+00:00 by `scripts/package_release.py`. Figures are read from `runs/results/`. Full results, including hypotheses that were not supported: `docs/RESULTS.md`.
 
 ## What it is
 
@@ -40,21 +40,25 @@ Tracking whether declared requirements of a task are met as documents and messag
 
 ## Use
 
-These files are read by the `ease` package: https://github.com/jithinsaireddy/ease-delta (`pip install git+https://github.com/jithinsaireddy/ease-delta`, then download this repository into a directory and point `--model` and `--aggregator` at its `edge/` and `aggregator/`).
+**EASE-Delta keeps a task's decisions current as its messages change.** You say what must be true before something can be done; messages arrive, get corrected, get withdrawn; it says what is ready, what is blocked and why, and which question is worth asking. This repository holds the trained reader and the settings the system runs with. [Code and documentation](https://github.com/jithinsaireddy/ease-delta) · [demo in your browser](https://jithinsaireddy.github.io/ease-delta/) · [Colab](https://colab.research.google.com/github/jithinsaireddy/ease-delta/blob/main/examples/try_ease_delta.ipynb)
 
 ```bash
-ease demo  --model edge --aggregator aggregator        # a client hand-off, twelve events
-ease serve --model edge --aggregator aggregator        # local API and page on 127.0.0.1:8791
+pip install "ease-delta @ git+https://github.com/jithinsaireddy/ease-delta"
 ```
 
 ```python
-from ease.scorer import ModelScorer
+from ease import EvidenceReader, Tracker
 
-scorer = ModelScorer("edge", canonical=True)
-logits, message = scorer.score([("The client has approved the design.",
-                                 "Email from the client: we approve the design as presented.")])[0]
-# logits: supports, refutes, settles nothing
+reader = EvidenceReader.from_pretrained("jithinpothireddy21/ease-delta-base")      # downloads this repository once
+reader.read("The client has approved the final design.",
+            "Email from the client: we approve the final design, please go ahead.")
+
+task = Tracker.from_template("client-onboarding", reader=reader, client="Acme")
+task.add("mail-1", "Email from Acme: the brief is attached, and the brand files are in the shared folder.")
+print(task.status())
 ```
+
+To run the page and the HTTP API, download it (`hf download jithinpothireddy21/ease-delta-base --local-dir release`) and run `ease serve --model release/edge --aggregator release/aggregator`. For claim-against-passage reading in plain `transformers`, use [`jithinpothireddy21/ease-delta-reader`](https://huggingface.co/jithinpothireddy21/ease-delta-reader).
 
 ## Training data
 

@@ -1,0 +1,1057 @@
+{
+ "model": "release",
+ "edge_version": "edge-2e659683f3e9a846",
+ "exact": true,
+ "ready_at": 0.9,
+ "machine": "macOS-27.2-arm64-arm-64bit",
+ "recorded": "2026-10-07",
+ "verified_against_full_rebuild": true,
+ "steps": [
+  {
+   "title": "The task is declared. Nothing has arrived yet.",
+   "event": null,
+   "update": null,
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.0
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.0
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "UNRESOLVED",
+      "satisfied": 0.0,
+      "violated": 0.0,
+      "open": 1.0,
+      "rests_on": []
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "UNRESOLVED",
+      "satisfied": 0.0,
+      "violated": 0.0,
+      "open": 1.0,
+      "rests_on": []
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "UNRESOLVED",
+      "satisfied": 0.0,
+      "violated": 0.0,
+      "open": 1.0,
+      "rests_on": []
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "UNRESOLVED",
+      "satisfied": 0.0,
+      "violated": 0.0,
+      "open": 1.0,
+      "rests_on": []
+     }
+    ],
+    "question": [
+     "The deposit invoice has been paid."
+    ]
+   }
+  },
+  {
+   "title": "The signed NDA is filed.",
+   "event": {
+    "record": "nda",
+    "revision": 1,
+    "text": "Note from the project team: both parties have signed the non-disclosure agreement; the countersigned copy is attached.",
+    "source": "team"
+   },
+   "update": {
+    "outcome": "applied",
+    "pairs_read": 4,
+    "milliseconds": 362.5,
+    "changed": []
+   },
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.0
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.0075
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "UNRESOLVED",
+      "satisfied": 0.0031,
+      "violated": 0.007,
+      "open": 0.9899,
+      "rests_on": []
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "UNRESOLVED",
+      "satisfied": 0.002,
+      "violated": 0.0162,
+      "open": 0.9819,
+      "rests_on": []
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "SATISFIED",
+      "satisfied": 0.9899,
+      "violated": 0.0015,
+      "open": 0.0086,
+      "rests_on": [
+       "nda"
+      ]
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "UNRESOLVED",
+      "satisfied": 0.0013,
+      "violated": 0.0075,
+      "open": 0.9912,
+      "rests_on": []
+     }
+    ],
+    "question": [
+     "The delivery date has been confirmed by the client.",
+     "The client has approved the design that is being delivered.",
+     "The deposit invoice has been paid."
+    ]
+   }
+  },
+  {
+   "title": "The client approves the design.",
+   "event": {
+    "record": "approval",
+    "revision": 1,
+    "text": "Email from the client: Thanks for sending this over. We approve the design as presented, please go ahead.",
+    "source": "client"
+   },
+   "update": {
+    "outcome": "applied",
+    "pairs_read": 4,
+    "milliseconds": 48.7,
+    "changed": []
+   },
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.0694
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.0107
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "SATISFIED",
+      "satisfied": 0.8497,
+      "violated": 0.0085,
+      "open": 0.1419,
+      "rests_on": [
+       "approval"
+      ]
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "UNRESOLVED",
+      "satisfied": 0.0838,
+      "violated": 0.0672,
+      "open": 0.849,
+      "rests_on": []
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "SATISFIED",
+      "satisfied": 0.9747,
+      "violated": 0.0168,
+      "open": 0.0084,
+      "rests_on": [
+       "nda"
+      ]
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "UNRESOLVED",
+      "satisfied": 0.0024,
+      "violated": 0.0107,
+      "open": 0.9869,
+      "rests_on": []
+     }
+    ],
+    "question": [
+     "The delivery date has been confirmed by the client.",
+     "The client has approved the design that is being delivered.",
+     "The deposit invoice has been paid."
+    ]
+   }
+  },
+  {
+   "title": "The client confirms the date.",
+   "event": {
+    "record": "date",
+    "revision": 1,
+    "text": "Email from the client: Confirming that delivery on 12 October works for us.",
+    "source": "client"
+   },
+   "update": {
+    "outcome": "applied",
+    "pairs_read": 4,
+    "milliseconds": 48.1,
+    "changed": []
+   },
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.7811
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.0147
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "SATISFIED",
+      "satisfied": 0.8485,
+      "violated": 0.0195,
+      "open": 0.132,
+      "rests_on": [
+       "approval"
+      ]
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "SATISFIED",
+      "satisfied": 0.9524,
+      "violated": 0.0065,
+      "open": 0.0411,
+      "rests_on": [
+       "date"
+      ]
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "SATISFIED",
+      "satisfied": 0.9665,
+      "violated": 0.0251,
+      "open": 0.0083,
+      "rests_on": [
+       "nda"
+      ]
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "UNRESOLVED",
+      "satisfied": 0.0037,
+      "violated": 0.0147,
+      "open": 0.9816,
+      "rests_on": []
+     }
+    ],
+    "question": [
+     "The delivery date has been confirmed by the client.",
+     "The client has approved the design that is being delivered.",
+     "The deposit invoice has been paid."
+    ]
+   }
+  },
+  {
+   "title": "An unrelated message arrives.",
+   "event": {
+    "record": "lunch",
+    "revision": 1,
+    "text": "Office notice: the kitchen will be closed on Friday for maintenance.",
+    "source": "system"
+   },
+   "update": {
+    "outcome": "applied",
+    "pairs_read": 4,
+    "milliseconds": 48.2,
+    "changed": []
+   },
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.7811
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.0153
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "SATISFIED",
+      "satisfied": 0.8485,
+      "violated": 0.0196,
+      "open": 0.1319,
+      "rests_on": [
+       "approval"
+      ]
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "SATISFIED",
+      "satisfied": 0.9524,
+      "violated": 0.0067,
+      "open": 0.0409,
+      "rests_on": [
+       "date"
+      ]
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "SATISFIED",
+      "satisfied": 0.9665,
+      "violated": 0.0251,
+      "open": 0.0083,
+      "rests_on": [
+       "nda"
+      ]
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "UNRESOLVED",
+      "satisfied": 0.004,
+      "violated": 0.0153,
+      "open": 0.9806,
+      "rests_on": []
+     }
+    ],
+    "question": [
+     "The delivery date has been confirmed by the client.",
+     "The client has approved the design that is being delivered.",
+     "The deposit invoice has been paid."
+    ]
+   }
+  },
+  {
+   "title": "The deposit is paid.",
+   "event": {
+    "record": "payment",
+    "revision": 1,
+    "text": "Note from accounts: payment has been received for the deposit invoice.",
+    "source": "team"
+   },
+   "update": {
+    "outcome": "applied",
+    "pairs_read": 4,
+    "milliseconds": 47.7,
+    "changed": [
+     [
+      "send_payment_reminder",
+      "NEEDS_INFO",
+      "BLOCKED"
+     ]
+    ]
+   },
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.7803
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "BLOCKED",
+      "confidence": 0.0118
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "SATISFIED",
+      "satisfied": 0.8486,
+      "violated": 0.0198,
+      "open": 0.1316,
+      "rests_on": [
+       "approval"
+      ]
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "SATISFIED",
+      "satisfied": 0.9527,
+      "violated": 0.0083,
+      "open": 0.0389,
+      "rests_on": [
+       "date"
+      ]
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "SATISFIED",
+      "satisfied": 0.9651,
+      "violated": 0.0265,
+      "open": 0.0083,
+      "rests_on": [
+       "nda"
+      ]
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "SATISFIED",
+      "satisfied": 0.9583,
+      "violated": 0.0118,
+      "open": 0.0299,
+      "rests_on": [
+       "payment"
+      ]
+     }
+    ],
+    "question": [
+     "The delivery date has been confirmed by the client.",
+     "The client has approved the design that is being delivered.",
+     "The non-disclosure agreement has been signed by both parties."
+    ]
+   }
+  },
+  {
+   "title": "The same approval email is delivered a second time.",
+   "event": {
+    "record": "approval",
+    "revision": 1,
+    "text": "Email from the client: Thanks for sending this over. We approve the design as presented, please go ahead.",
+    "source": "client"
+   },
+   "update": {
+    "outcome": "duplicate",
+    "pairs_read": 0,
+    "milliseconds": 0.2,
+    "changed": []
+   },
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.7803
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "BLOCKED",
+      "confidence": 0.0118
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "SATISFIED",
+      "satisfied": 0.8486,
+      "violated": 0.0198,
+      "open": 0.1316,
+      "rests_on": [
+       "approval"
+      ]
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "SATISFIED",
+      "satisfied": 0.9527,
+      "violated": 0.0083,
+      "open": 0.0389,
+      "rests_on": [
+       "date"
+      ]
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "SATISFIED",
+      "satisfied": 0.9651,
+      "violated": 0.0265,
+      "open": 0.0083,
+      "rests_on": [
+       "nda"
+      ]
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "SATISFIED",
+      "satisfied": 0.9583,
+      "violated": 0.0118,
+      "open": 0.0299,
+      "rests_on": [
+       "payment"
+      ]
+     }
+    ],
+    "question": [
+     "The delivery date has been confirmed by the client.",
+     "The client has approved the design that is being delivered.",
+     "The non-disclosure agreement has been signed by both parties."
+    ]
+   }
+  },
+  {
+   "title": "The client withdraws the approval.",
+   "event": {
+    "record": "approval",
+    "revision": 2,
+    "text": "Email from the client: We need to pause. After internal review we are withdrawing our approval of the design until the colour palette is revised.",
+    "source": "client"
+   },
+   "update": {
+    "outcome": "applied",
+    "pairs_read": 4,
+    "milliseconds": 48.3,
+    "changed": [
+     [
+      "send_packet",
+      "NEEDS_INFO",
+      "BLOCKED"
+     ]
+    ]
+   },
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "BLOCKED",
+      "confidence": 0.0773
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "BLOCKED",
+      "confidence": 0.0101
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "VIOLATED",
+      "satisfied": 0.1006,
+      "violated": 0.6624,
+      "open": 0.237,
+      "rests_on": [
+       "approval"
+      ]
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "SATISFIED",
+      "satisfied": 0.786,
+      "violated": 0.1776,
+      "open": 0.0364,
+      "rests_on": [
+       "date"
+      ]
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "SATISFIED",
+      "satisfied": 0.9782,
+      "violated": 0.0134,
+      "open": 0.0085,
+      "rests_on": [
+       "nda"
+      ]
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "SATISFIED",
+      "satisfied": 0.9599,
+      "violated": 0.0101,
+      "open": 0.03,
+      "rests_on": [
+       "payment"
+      ]
+     }
+    ],
+    "question": [
+     "The delivery date has been confirmed by the client.",
+     "The client has approved the design that is being delivered."
+    ]
+   }
+  },
+  {
+   "title": "A late copy of the original approval arrives from an archive.",
+   "event": {
+    "record": "approval",
+    "revision": 1,
+    "text": "Email from the client: Thanks for sending this over. We approve the design as presented, please go ahead.",
+    "source": "client"
+   },
+   "update": {
+    "outcome": "stale",
+    "pairs_read": 0,
+    "milliseconds": 0.4,
+    "changed": []
+   },
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "BLOCKED",
+      "confidence": 0.0773
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "BLOCKED",
+      "confidence": 0.0101
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "VIOLATED",
+      "satisfied": 0.1006,
+      "violated": 0.6624,
+      "open": 0.237,
+      "rests_on": [
+       "approval"
+      ]
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "SATISFIED",
+      "satisfied": 0.786,
+      "violated": 0.1776,
+      "open": 0.0364,
+      "rests_on": [
+       "date"
+      ]
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "SATISFIED",
+      "satisfied": 0.9782,
+      "violated": 0.0134,
+      "open": 0.0085,
+      "rests_on": [
+       "nda"
+      ]
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "SATISFIED",
+      "satisfied": 0.9599,
+      "violated": 0.0101,
+      "open": 0.03,
+      "rests_on": [
+       "payment"
+      ]
+     }
+    ],
+    "question": [
+     "The delivery date has been confirmed by the client.",
+     "The client has approved the design that is being delivered."
+    ]
+   }
+  },
+  {
+   "title": "The delivery date moves.",
+   "event": {
+    "record": "date",
+    "revision": 2,
+    "text": "Email from the client: Given the redesign, 12 October no longer works for delivery. We have not settled on a new date yet.",
+    "source": "client"
+   },
+   "update": {
+    "outcome": "applied",
+    "pairs_read": 4,
+    "milliseconds": 47.4,
+    "changed": []
+   },
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "BLOCKED",
+      "confidence": 0.0049
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "BLOCKED",
+      "confidence": 0.0121
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "VIOLATED",
+      "satisfied": 0.1716,
+      "violated": 0.6532,
+      "open": 0.1752,
+      "rests_on": [
+       "approval"
+      ]
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "VIOLATED",
+      "satisfied": 0.029,
+      "violated": 0.9369,
+      "open": 0.0341,
+      "rests_on": [
+       "date"
+      ]
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "SATISFIED",
+      "satisfied": 0.9852,
+      "violated": 0.0062,
+      "open": 0.0086,
+      "rests_on": [
+       "nda"
+      ]
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "SATISFIED",
+      "satisfied": 0.9579,
+      "violated": 0.0121,
+      "open": 0.0299,
+      "rests_on": [
+       "payment"
+      ]
+     }
+    ],
+    "question": null
+   }
+  },
+  {
+   "title": "The revised design is approved.",
+   "event": {
+    "record": "approval",
+    "revision": 3,
+    "text": "Email from the client: The revised palette looks right. We approve the updated design for delivery.",
+    "source": "client"
+   },
+   "update": {
+    "outcome": "applied",
+    "pairs_read": 4,
+    "milliseconds": 48.9,
+    "changed": []
+   },
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "BLOCKED",
+      "confidence": 0.3572
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "BLOCKED",
+      "confidence": 0.0133
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "SATISFIED",
+      "satisfied": 0.9546,
+      "violated": 0.0131,
+      "open": 0.0323,
+      "rests_on": [
+       "approval"
+      ]
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "VIOLATED",
+      "satisfied": 0.3796,
+      "violated": 0.5954,
+      "open": 0.025,
+      "rests_on": [
+       "date"
+      ]
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "SATISFIED",
+      "satisfied": 0.9858,
+      "violated": 0.0057,
+      "open": 0.0086,
+      "rests_on": [
+       "nda"
+      ]
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "SATISFIED",
+      "satisfied": 0.9568,
+      "violated": 0.0133,
+      "open": 0.0299,
+      "rests_on": [
+       "payment"
+      ]
+     }
+    ],
+    "question": [
+     "The delivery date has been confirmed by the client.",
+     "The client has approved the design that is being delivered."
+    ]
+   }
+  },
+  {
+   "title": "A new date is confirmed.",
+   "event": {
+    "record": "date",
+    "revision": 3,
+    "text": "Email from the client: We confirm 19 October as the delivery date.",
+    "source": "client"
+   },
+   "update": {
+    "outcome": "applied",
+    "pairs_read": 4,
+    "milliseconds": 48.6,
+    "changed": [
+     [
+      "send_packet",
+      "BLOCKED",
+      "NEEDS_INFO"
+     ]
+    ]
+   },
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.8988
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "BLOCKED",
+      "confidence": 0.0163
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "SATISFIED",
+      "satisfied": 0.9421,
+      "violated": 0.0121,
+      "open": 0.0458,
+      "rests_on": [
+       "approval"
+      ]
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "SATISFIED",
+      "satisfied": 0.9697,
+      "violated": 0.0082,
+      "open": 0.0221,
+      "rests_on": [
+       "date"
+      ]
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "SATISFIED",
+      "satisfied": 0.9838,
+      "violated": 0.0077,
+      "open": 0.0085,
+      "rests_on": [
+       "nda"
+      ]
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "SATISFIED",
+      "satisfied": 0.954,
+      "violated": 0.0163,
+      "open": 0.0298,
+      "rests_on": [
+       "payment"
+      ]
+     }
+    ],
+    "question": [
+     "The delivery date has been confirmed by the client.",
+     "The client has approved the design that is being delivered."
+    ]
+   }
+  },
+  {
+   "title": "The payment record is withdrawn: the transfer bounced.",
+   "event": {
+    "record": "payment",
+    "revision": 2,
+    "text": null,
+    "source": "team"
+   },
+   "update": {
+    "outcome": "withdrawn",
+    "pairs_read": 0,
+    "milliseconds": 1.6,
+    "changed": [
+     [
+      "send_payment_reminder",
+      "BLOCKED",
+      "NEEDS_INFO"
+     ]
+    ]
+   },
+   "state": {
+    "actions": [
+     {
+      "id": "send_packet",
+      "description": "Send the delivery packet to the client",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.8999
+     },
+     {
+      "id": "send_payment_reminder",
+      "description": "Send a reminder about the deposit invoice",
+      "disposition": "NEEDS_INFO",
+      "confidence": 0.0198
+     }
+    ],
+    "requirements": [
+     {
+      "id": "design_approved",
+      "text": "The client has approved the design that is being delivered.",
+      "status": "SATISFIED",
+      "satisfied": 0.9421,
+      "violated": 0.0121,
+      "open": 0.0459,
+      "rests_on": [
+       "approval"
+      ]
+     },
+     {
+      "id": "date_confirmed",
+      "text": "The delivery date has been confirmed by the client.",
+      "status": "SATISFIED",
+      "satisfied": 0.9696,
+      "violated": 0.0072,
+      "open": 0.0232,
+      "rests_on": [
+       "date"
+      ]
+     },
+     {
+      "id": "nda_signed",
+      "text": "The non-disclosure agreement has been signed by both parties.",
+      "status": "SATISFIED",
+      "satisfied": 0.9852,
+      "violated": 0.0062,
+      "open": 0.0086,
+      "rests_on": [
+       "nda"
+      ]
+     },
+     {
+      "id": "invoice_paid",
+      "text": "The deposit invoice has been paid.",
+      "status": "UNRESOLVED",
+      "satisfied": 0.0042,
+      "violated": 0.0198,
+      "open": 0.976,
+      "rests_on": []
+     }
+    ],
+    "question": [
+     "The delivery date has been confirmed by the client.",
+     "The client has approved the design that is being delivered.",
+     "The deposit invoice has been paid."
+    ]
+   }
+  }
+ ]
+}
