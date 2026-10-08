@@ -6,6 +6,13 @@
   from the issues labelled `misreading`, keeping only reports whose author consented to publication (CC BY 4.0);
   `scripts/misreadings.py score` measures both released readers on it.
 - `scripts/usage_stats.py` also reports the two readers and the demo Space.
+- **The local page needs no record ids**: it opens on starting a task from a template when there are none, adds a
+  message with who it is from, and edits or withdraws any message from the list, numbering ids and revisions itself;
+  an edit keeps the message's original time, so a correction never jumps ahead of later messages. The full record
+  form is under Advanced. The page shows each requirement and action in words.
+- API: `GET /tasks/{id}/records` returns what each record says and who said it; `GET /tasks/{id}` adds `text` to each
+  requirement and `description` to each action.
+- The demo page, the online app and the local page offer a way to report a wrong reading.
 
 ## 0.2.0 (2026-10-07)
 

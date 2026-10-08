@@ -260,6 +260,11 @@ def create_app(service: Service | Runtime) -> FastAPI:
         with svc.lock:
             return guard(lambda: rt(ws).state(task_id))
 
+    @app.get("/tasks/{task_id}/records")
+    def records(task_id: str, ws: Workspace = Depends(workspace)):
+        with svc.lock:
+            return {"records": guard(lambda: rt(ws).records(task_id))}
+
     @app.put("/tasks/{task_id}/schema")
     def update_schema(task_id: str, body: SchemaIn, ws: Workspace = Depends(workspace)):
         if body.task_id != task_id:

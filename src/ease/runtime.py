@@ -223,9 +223,12 @@ class Runtime:
     def state(self, task_id: str) -> dict:
         with self.lock:
             eng = self.engine(task_id)
+            beliefs = eng.beliefs()
+            for p in eng.schema.predicates:  # the requirement's own words, for people reading the state
+                beliefs[p.id]["text"] = p.text
             out = {"task_id": task_id, "schema_version": eng.schema.version(),
                    "assessments": {k: self._assessment(eng, k) for k in eng.assessments()},
-                   "beliefs": eng.beliefs(),
+                   "beliefs": beliefs,
                    "records": {rid: {"revision": st.revision, "status": st.status(eng.now).value}
                                for rid, st in sorted(eng.ledger.records().items())},
                    "threshold": self.tracker.state(),
@@ -234,12 +237,28 @@ class Runtime:
 
     def _assessment(self, eng: Engine, aid: str) -> dict:
         a = eng.assessment(aid).as_dict()
+        a["description"] = next(x.description for x in eng.schema.actions if x.id == aid)
         a["endorsed"] = a["disposition"] == "READY"
         a["confidence"] = a["status"]["satisfied"]
         if self.tracker.stalled:
             a["note"] = ("The error target cannot currently be met, so nothing is endorsed. "
                          "Candidates are shown for review only.")
         return a
+
+    def records(self, task_id: str) -> list[dict]:
+        """Every record at its current revision, with what it says and who said it, for people who review
+        or correct them. A conflicted record lists each version that claims the revision."""
+        with self.lock:
+            eng = self.engine(task_id)
+            out = []
+            for rid, st in sorted(eng.ledger.records().items()):
+                versions = [{"text": p.text, "source_id": p.source_id, "authority": p.authority,
+                             "valid_from": p.valid_from, "valid_until": p.valid_until, "span": p.span}
+                            for p in st.payloads]
+                row = {"record_id": rid, "revision": st.revision, "status": st.status(eng.now).value}
+                row.update(versions[0] if len(versions) == 1 else {"text": None, "versions": versions})
+                out.append(row)
+            return out
 
     def explain(self, task_id: str, action_id: str) -> dict:
         with self.lock:

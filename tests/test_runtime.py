@@ -233,3 +233,33 @@ def test_export_feedback_leaves_out_records_that_changed_or_were_purged(tmp_path
     assert out["rows"] == 1 and out["skipped_because_record_changed_or_gone"] == 1
     assert all("approved, go ahead" not in r["evidence"] for r in rows), "purged text must not be exported"
     rt.close()
+
+
+def test_state_names_requirements_and_actions_in_words(client):
+    client.post("/tasks", json=SCHEMA)
+    st = client.get("/tasks/packet").json()
+    assert st["beliefs"]["approved"]["text"] == CLAIM_A and st["beliefs"]["date"]["text"] == CLAIM_D
+    assert st["assessments"]["send_packet"]["description"] == "Send the packet"
+
+
+def test_records_show_what_each_message_says_and_follow_edits_and_withdrawals(client):
+    client.post("/tasks", json=SCHEMA)
+    assert client.get("/tasks/packet/records").json() == {"records": []}
+    client.post("/tasks/packet/events", json=ev("msg-1", 1, "Client: approved, go ahead."))
+    assert client.get("/tasks/packet/records").json()["records"] == [
+        {"record_id": "msg-1", "revision": 1, "status": "active", "text": "Client: approved, go ahead.",
+         "source_id": "client", "authority": 2, "valid_from": 1.0, "valid_until": None, "span": None}]
+
+    client.post("/tasks/packet/events", json=ev("msg-1", 2, "Client: we withdraw approval pending changes."))
+    (row,) = client.get("/tasks/packet/records").json()["records"]
+    assert row["revision"] == 2 and row["text"] == "Client: we withdraw approval pending changes."
+    client.post("/tasks/packet/events", json={"record_id": "msg-1", "revision": 3, "text": None, "source_id": "client"})
+    (row,) = client.get("/tasks/packet/records").json()["records"]
+    assert (row["revision"], row["status"], row["text"]) == (3, "withdrawn", None)
+
+    client.post("/tasks/packet/events", json=ev("msg-2", 1, "Delivery confirmed for 12 October."))
+    client.post("/tasks/packet/events", json=ev("msg-2", 1, "Delivery moved to 19 October."))
+    row = {r["record_id"]: r for r in client.get("/tasks/packet/records").json()["records"]}["msg-2"]
+    assert row["status"] == "conflicted" and row["text"] is None
+    assert sorted(v["text"] for v in row["versions"]) == ["Delivery confirmed for 12 October.", "Delivery moved to 19 October."]
+    assert client.get("/tasks/nope/records").status_code == 404

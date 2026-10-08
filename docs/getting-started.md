@@ -151,9 +151,11 @@ ease demo  --model release/edge --aggregator release/aggregator    # a client ha
 ease serve --model release/edge --aggregator release/aggregator    # http://127.0.0.1:8791
 ```
 
-`ease serve` gives you a page for doing all of the above by hand, including one-question confirmation links you
-can send to someone outside your team, and an HTTP API ([reference](http-api.md)). For several teams on one
-server, see [deployment](DEPLOYMENT.md).
+`ease serve` gives you a page for doing all of the above without writing code. Start a task from a template (the
+page opens there when there are none), paste each message as it arrives and say who it is from, and edit or withdraw
+any message from the list; the page numbers messages and their versions for you, and the full record form is under
+*Advanced*. It also makes one-question confirmation links you can send to someone outside your team, and serves an
+HTTP API ([reference](http-api.md)). For several teams on one server, see [deployment](DEPLOYMENT.md).
 
 ## Faster, or exact
 

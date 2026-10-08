@@ -34,12 +34,14 @@
   label { display: block; font-size: 12px; color: var(--muted); margin: 8px 0 2px; }
   input, select, textarea, button { font: inherit; color: inherit; }
   input, select, textarea { width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: 7px; padding: 7px 9px; }
+  input[type="checkbox"] { width: auto; margin: 3px 0 0; flex: none; accent-color: var(--accent); }
   textarea { min-height: 84px; resize: vertical; }
   textarea.code { font: 12.5px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; min-height: 190px; }
   button { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 7px; padding: 7px 13px; cursor: pointer; font-weight: 600; }
   button.quiet { background: transparent; color: var(--accent); border: 1px solid var(--line); font-weight: 500; }
+  button.small { padding: 2px 8px; font-size: 12px; }
   button:disabled { opacity: 0.5; cursor: default; }
-  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
   .badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 0.03em; }
   .READY, .SATISFIED { color: var(--ready); background: var(--ready-bg); }
@@ -56,22 +58,29 @@
   .rec { background: var(--code); border-radius: 7px; padding: 7px 9px; margin: 6px 0 0; font-size: 13.5px; overflow-wrap: anywhere; }
   .rec .meta { color: var(--muted); font-size: 12px; margin-bottom: 2px; }
   .rec .fix { margin-top: 5px; }
-  .rec .fix button, .item .small { padding: 2px 8px; font-size: 12px; }
+  .rec .fix button { padding: 2px 8px; font-size: 12px; }
   table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
-  th, td { text-align: left; padding: 4px 8px 4px 0; border-top: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
-  th { color: var(--muted); font-weight: 500; font-size: 12px; border-top: 0; }
+  th, td { text-align: left; padding: 6px 8px 6px 0; border-top: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+  th { color: var(--muted); font-weight: 500; font-size: 12px; border-top: 0; white-space: nowrap; overflow-wrap: normal; }
+  td.num { white-space: nowrap; overflow-wrap: normal; }
+  td.word { overflow-wrap: normal; min-width: 6em; }
+  .acts { margin-top: 4px; }
+  tr.editing td { background: var(--code); }
   .note { border-left: 3px solid var(--accent); padding: 6px 10px; background: var(--code); border-radius: 0 7px 7px 0; margin: 8px 0 0; font-size: 13.5px; overflow-wrap: anywhere; }
   .err { border-left-color: var(--blocked); color: var(--blocked); }
   .tablewrap { overflow-x: auto; }
   code { background: var(--code); padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
-  details summary { cursor: pointer; color: var(--muted); font-size: 13px; margin-top: 8px; }
+  details summary { cursor: pointer; color: var(--muted); font-size: 13px; margin-top: 10px; }
+  .check { display: flex; gap: 8px; align-items: flex-start; color: var(--ink); font-size: 13.5px; margin: 6px 0 0; cursor: pointer; }
+  .start { border: 1px solid var(--line); border-radius: 9px; padding: 4px 14px 14px; margin-top: 12px; }
+  .start h3 { margin: 10px 0 2px; font-size: 16px; }
 </style>
 </head>
 <body>
 <header>
   <h1>EASE-Delta</h1>
-  <p>Declare what must be true. Add messages and documents as they arrive, change or are withdrawn.
-     The assistant tells you what is ready, what is blocked and why. It proposes; it never sends or executes anything.</p>
+  <p>Say what must be true before something can be done, then add messages as they arrive, change or are withdrawn.
+     After every change it tells you what is ready, what is blocked and why. It proposes; it never sends or executes anything.</p>
   <div id="keybox" hidden>
     <label for="key">This service needs a workspace key</label>
     <div class="row"><input id="key" type="password" autocomplete="off" placeholder="ease_..." style="max-width: 420px"><button id="keyBtn">Use key</button></div>
@@ -83,20 +92,21 @@
     <h2>Task</h2>
     <div class="row">
       <select id="task" aria-label="Task" style="max-width: 320px"></select>
-      <button class="quiet" id="refresh">Refresh</button>
       <button class="quiet" id="new">New task</button>
+      <button class="quiet" id="refresh">Refresh</button>
       <button class="quiet" id="verify">Check against full rebuild</button>
       <span class="muted" id="threshold"></span>
     </div>
-    <div id="create" hidden>
-      <label for="template">Start from a template</label>
-      <div class="row">
-        <select id="template" style="max-width: 360px"></select>
-        <input id="newTaskId" placeholder="task id, e.g. acme-onboarding" style="max-width: 260px" autocomplete="off">
-      </div>
-      <p class="muted" id="templateHelp"></p>
+    <div id="create" class="start" hidden>
+      <h3>Start a task</h3>
+      <p class="muted" style="margin: 0">Choose the kind of work. It comes with the requirements and the actions that depend on them.</p>
+      <label for="template">Kind of work</label>
+      <select id="template" style="max-width: 360px"></select>
+      <p class="muted" id="templateHelp" style="margin: 4px 0 0"></p>
       <div id="params" class="grid2"></div>
-      <div class="row" style="margin-top: 8px"><button id="createTpl">Create from template</button><button class="quiet" id="cancel">Cancel</button></div>
+      <label for="newTaskId">Task name (optional)</label>
+      <input id="newTaskId" style="max-width: 320px" autocomplete="off">
+      <div class="row" style="margin-top: 10px"><button id="createTpl">Start this task</button><button class="quiet" id="cancel">Cancel</button></div>
       <details>
         <summary>Advanced: write the task definition as JSON</summary>
         <textarea id="schema" class="code" spellcheck="false"></textarea>
@@ -113,22 +123,42 @@
   </section>
 
   <section>
-    <h2>Add or change evidence</h2>
-    <div class="grid2">
-      <div><label for="rid">Record id</label><input id="rid" placeholder="email-14" autocomplete="off"></div>
-      <div><label for="rev">Revision</label><input id="rev" type="number" min="0" value="1"></div>
-      <div><label for="src">Source</label><input id="src" placeholder="client" autocomplete="off"></div>
-      <div><label for="auth">Authority (0-9)</label><input id="auth" type="number" min="0" max="9" value="1"></div>
+    <h2>Add a message</h2>
+    <label for="msgText">Message</label>
+    <textarea id="msgText" placeholder="Paste an email or a note. Say who is speaking, for example: Email from Acme: we approve the final design."></textarea>
+    <p class="muted" style="margin: 2px 0 0">The reader sees only the text, so keep the sender in it.</p>
+    <label for="msgFrom">From</label>
+    <select id="msgFrom" style="max-width: 320px"></select>
+    <p class="muted" style="margin: 4px 0 0">When two messages disagree, the one from whoever counts more wins: a manager or legal first, then the
+      client, then our team, then anyone else. Between equals, the later message wins.</p>
+    <details id="aboutBox" hidden>
+      <summary>It concerns only some requirements (optional)</summary>
+      <p class="muted" style="margin: 4px 0 0">Tick what this message is about, and it is read only against those. Leave all unticked to read it against every requirement.</p>
+      <div id="aboutList"></div>
+    </details>
+    <div id="editing" class="note" hidden></div>
+    <div class="row" style="margin-top: 10px">
+      <button id="addMsg">Add message</button>
+      <button class="quiet" id="cancelEdit" hidden>Cancel</button>
     </div>
-    <label for="text">Text (say who is speaking: "Email from the client: ...")</label>
-    <textarea id="text" placeholder="Paste the passage. Leave empty and press Withdraw to retract the record."></textarea>
-    <div class="row" style="margin-top: 8px">
-      <button id="deliver">Deliver</button>
-      <button class="quiet" id="withdraw">Withdraw record</button>
-    </div>
-    <label for="file">Or import a file: an email (.eml), a mailbox (.mbox), a text or Markdown file</label>
+    <label for="file">Or import a file: an email (.eml), a mailbox (.mbox), a text or Markdown file. It counts as from the choice above.</label>
     <div class="row"><input id="file" type="file" accept=".eml,.mbox,.txt,.md" style="max-width: 360px"><button class="quiet" id="importBtn">Import</button></div>
     <div id="change"></div>
+    <details>
+      <summary>Advanced: record id, revision and authority</summary>
+      <div class="grid2">
+        <div><label for="rid">Record id</label><input id="rid" placeholder="email-14" autocomplete="off"></div>
+        <div><label for="rev">Revision</label><input id="rev" type="number" min="0" value="1"></div>
+        <div><label for="src">Source</label><input id="src" placeholder="client" autocomplete="off"></div>
+        <div><label for="auth">Authority (0-9)</label><input id="auth" type="number" min="0" max="9" value="1"></div>
+      </div>
+      <label for="text">Text (say who is speaking: "Email from the client: ...")</label>
+      <textarea id="text" placeholder="Paste the passage. Leave empty and press Withdraw to retract the record."></textarea>
+      <div class="row" style="margin-top: 8px">
+        <button id="deliver">Deliver</button>
+        <button class="quiet" id="withdraw">Withdraw record</button>
+      </div>
+    </details>
   </section>
 
   <section>
@@ -137,8 +167,8 @@
   </section>
 
   <section>
-    <h2>Records</h2>
-    <div class="tablewrap"><table id="records"><thead><tr><th>Record</th><th>Revision</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+    <h2>Messages</h2>
+    <div class="tablewrap"><table id="records"><thead><tr><th>Message</th><th>Version</th><th>Status</th></tr></thead><tbody></tbody></table></div>
   </section>
 </main>
 <footer class="muted">Read a message wrongly? Report it with the Misreading form in the project's GitHub repository,
@@ -150,7 +180,18 @@
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
 const pct = (x) => (100 * x).toFixed(0) + "%";
-let current = null, templates = [];
+const enc = encodeURIComponent;
+let current = null, templates = [], taskIds = [], records = [], beliefs = {}, editing = null;
+
+// Who a message is from decides which message wins when two disagree (authority), as in the examples and templates.
+const ROLES = [
+  {key: "client", label: "The client", source: "client", authority: 2},
+  {key: "team", label: "Our team", source: "team", authority: 1},
+  {key: "manager", label: "A manager or legal", source: "manager", authority: 3},
+  {key: "other", label: "Someone else, or a system", source: "other", authority: 0},
+];
+const STATUS_WORDS = {active: "counts", withdrawn: "withdrawn", conflicted: "two versions disagree", expired: "expired", not_yet_valid: "not valid yet"};
+const words = (d) => ({READY: "ready", BLOCKED: "blocked", NEEDS_INFO: "needs info"})[d] || d.toLowerCase().replace("_", " ");
 
 const EXAMPLE = {
   task_id: "client-handoff",
@@ -193,12 +234,22 @@ async function whoami() {
 
 async function loadTasks(select) {
   const {tasks} = await api("/tasks");
+  taskIds = tasks;
   const s = $("task"); s.replaceChildren();
   if (!tasks.length) s.append(new Option("no tasks yet", ""));
   for (const t of tasks) s.append(new Option(t, t));
   if (select && tasks.includes(select)) s.value = select;
   current = s.value || null;
+  if (!tasks.length) await openCreate();  // a new user starts here
   await render();
+}
+
+// ------------------------------------------------------------------ starting a task
+async function openCreate() {
+  $("create").hidden = false;
+  try { await loadTemplates(); } catch (e) { say(e.message, true); }
+  if (!$("schema").value) $("schema").value = JSON.stringify(EXAMPLE, null, 2);
+  updateIdHint();
 }
 
 async function loadTemplates() {
@@ -216,14 +267,17 @@ function renderParams() {
   $("templateHelp").textContent = t.description;
   for (const [name, spec] of Object.entries(t.params)) {
     const d = el("div");
-    const lab = el("label", "", name.replace(/_/g, " ") + (spec.help ? ` (${spec.help})` : "") + (spec.type === "list" ? " — one per line" : ""));
+    const title = name.replace(/_/g, " ");
+    const lab = el("label", "", title.charAt(0).toUpperCase() + title.slice(1) + (spec.help ? ` (${spec.help})` : "") + (spec.type === "list" ? ", one per line" : ""));
     lab.htmlFor = "p_" + name;
     const inp = spec.type === "list" ? el("textarea") : el("input");
     inp.id = "p_" + name;
     if (spec.type === "int") { inp.type = "number"; inp.value = spec.default || 0; }
     else if (spec.type === "text") { inp.value = spec.default === undefined ? "" : spec.default; }
+    inp.oninput = updateIdHint;
     d.append(lab, inp); box.append(d);
   }
+  updateIdHint();
 }
 
 function collectParams() {
@@ -235,6 +289,26 @@ function collectParams() {
   return out;
 }
 
+const slug = (s) => s.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+// A task name made from the first name given, such as "acme-client-onboarding", unique among the tasks.
+function suggestId() {
+  const t = templates.find((x) => x.id === $("template").value);
+  if (!t) return "task";
+  let name = "";
+  for (const [p, spec] of Object.entries(t.params)) {
+    const v = spec.type === "text" ? $("p_" + p).value.trim() : "";
+    if (v && v !== spec.default) { name = v; break; }
+  }
+  const base = ((slug(name) ? slug(name) + "-" : "") + t.id).slice(0, 56).replace(/-+$/, "") || "task";
+  let id = base, n = 2;
+  while (taskIds.includes(id)) id = `${base}-${n++}`;
+  return id;
+}
+
+function updateIdHint() { if (templates.length) $("newTaskId").placeholder = `${suggestId()}, made from the name above`; }
+
+// ------------------------------------------------------------------ the state of the task
 function bar(p) {
   const b = el("div", "bar");
   b.setAttribute("role", "img");
@@ -248,9 +322,14 @@ function bar(p) {
 async function render() {
   const actions = $("actions"), preds = $("predicates"), tbody = $("records").querySelector("tbody");
   $("question").replaceChildren(); tbody.replaceChildren();
-  if (!current) { actions.replaceChildren(el("p", "muted", "No task selected.")); preds.replaceChildren(el("p", "muted", "No task selected.")); return; }
+  if (!current) {
+    records = []; beliefs = {}; renderAbout(); renderRecords(tbody);
+    actions.replaceChildren(el("p", "muted", "No task selected.")); preds.replaceChildren(el("p", "muted", "No task selected.")); return;
+  }
   let st;
-  try { st = await api(`/tasks/${encodeURIComponent(current)}`); } catch (e) { say(e.message, true); return; }
+  try { st = await api(`/tasks/${enc(current)}`); } catch (e) { say(e.message, true); return; }
+  try { records = (await api(`/tasks/${enc(current)}/records`)).records; } catch (e) { records = []; say(e.message, true); }
+  beliefs = st.beliefs;
   const t = st.threshold;
   $("threshold").textContent = `Endorses at confidence ≥ ${Math.max(0.5, t.tau).toFixed(2)} · ${t.verdicts} verdicts, error rate ${pct(t.error_rate)} (bound ${pct(t.bound)})`;
 
@@ -259,7 +338,8 @@ async function render() {
     const item = el("div", "item");
     const h = el("h3"); h.append(el("span", "", id), el("span", "badge " + a.disposition, a.disposition.replace("_", " ")));
     item.append(h);
-    item.append(el("div", "muted", `confidence ${pct(a.confidence)} · chance of success ${pct(a.p_success)} · expected value ${a.expected_utility.toFixed(2)}`));
+    if (a.description) item.append(el("div", "claim", a.description));
+    item.append(el("div", "muted", `${pct(a.confidence)} likely ready · chance of success ${pct(a.p_success)} · expected value ${a.expected_utility.toFixed(2)}`));
     if (a.disposition === "READY" && a.needs_approval) item.append(el("div", "note", "Ready to propose. Nothing happens until you approve it yourself."));
     if (a.note) item.append(el("div", "note", a.note));
     const why = el("button", "quiet", "Why?"); why.style.marginTop = "6px";
@@ -273,7 +353,9 @@ async function render() {
   for (const [id, b] of Object.entries(st.beliefs)) {
     const item = el("div", "item");
     const h = el("h3"); h.append(el("span", "", id), el("span", "badge " + b.status, b.status));
-    item.append(h, bar(b.probabilities));
+    item.append(h);
+    if (b.text) item.append(el("div", "claim", b.text));
+    item.append(bar(b.probabilities));
     item.append(el("div", "muted", `satisfied ${pct(b.probabilities.SATISFIED)} · violated ${pct(b.probabilities.VIOLATED)} · open ${pct(b.probabilities.UNRESOLVED + b.probabilities.CONFLICT)}`
       + (b.decisive.length ? ` · rests on ${b.decisive.join(", ")}` : "")));
     const ask = el("button", "quiet small", "Ask someone to confirm"); ask.style.marginTop = "6px";
@@ -282,17 +364,11 @@ async function render() {
     preds.append(item);
   }
 
-  for (const [rid, r] of Object.entries(st.records)) {
-    const tr = el("tr");
-    tr.append(el("td", "", rid), el("td", "", String(r.revision)), el("td", "", r.status));
-    tr.style.cursor = "pointer";
-    tr.onclick = () => { $("rid").value = rid; $("rev").value = r.revision + 1; $("text").focus(); };
-    tbody.append(tr);
-  }
-  if (!Object.keys(st.records).length) { const tr = el("tr"); const td = el("td", "muted", "No records yet."); td.colSpan = 3; tr.append(td); tbody.append(tr); }
+  renderRecords(tbody);
+  renderAbout();
 
   try {
-    const q = await api(`/tasks/${encodeURIComponent(current)}/question`);
+    const q = await api(`/tasks/${enc(current)}/question`);
     const box = $("question");
     if (q.question) {
       const n = el("div", "note");
@@ -305,12 +381,158 @@ async function render() {
   } catch (e) { /* the question is advisory; the rest of the page stands without it */ }
 }
 
+// ------------------------------------------------------------------ messages
+const roleOf = (r) => ROLES.find((x) => x.source === r.source_id && x.authority === r.authority);
+const when = (t) => (t && t > 1e9 ? new Date(t * 1000).toLocaleString([], {day: "numeric", month: "short", hour: "2-digit", minute: "2-digit"}) : "");
+
+function renderRecords(tbody) {
+  tbody.replaceChildren();
+  if (!records.length) {
+    const tr = el("tr"); const td = el("td", "muted", current ? "No messages yet. Add the first one with the box above." : "No task selected.");
+    td.colSpan = 3; tr.append(td); tbody.append(tr); return;
+  }
+  // newest first: by the time a message counts from, then by id with numbers in order (msg-10 after msg-9)
+  const order = [...records].sort((a, b) => ((b.valid_from ?? -Infinity) - (a.valid_from ?? -Infinity))
+    || b.record_id.localeCompare(a.record_id, undefined, {numeric: true}));
+  for (const r of order) {
+    const tr = el("tr");
+    if (editing && editing.record_id === r.record_id) tr.className = "editing";
+    const text = typeof r.text === "string" ? r.text
+      : r.versions ? r.versions.map((v) => (v.text === null ? "(withdrawn)" : v.text)).join("  |  ") : "";
+    const shown = text.length > 220 ? text.slice(0, 220) + "…" : text;
+    const body = el("div", "", shown || (r.status === "withdrawn" ? "(withdrawn)" : ""));
+    if (shown !== text) body.title = text;
+    const role = roleOf(r);
+    const who = role ? role.label.toLowerCase() : (r.source_id || "no source given");
+    const acts = el("div", "acts row");
+    const edit = el("button", "quiet small", "Edit"); edit.onclick = () => startEdit(r);
+    acts.append(edit);
+    if (r.status !== "withdrawn") { const w = el("button", "quiet small", "Withdraw"); w.onclick = () => withdrawRecord(r); acts.append(w); }
+    const msg = el("td"); msg.append(body, el("div", "muted", [r.record_id, "from " + who, when(r.valid_from)].filter(Boolean).join(" · ")), acts);
+    tr.append(msg, el("td", "num", String(r.revision)), el("td", "word", STATUS_WORDS[r.status] || r.status));
+    tbody.append(tr);
+  }
+}
+
+function renderFrom() {
+  const s = $("msgFrom");
+  for (const r of ROLES) { const o = new Option(r.label, r.key); o.dataset.source = r.source; o.dataset.authority = r.authority; s.append(o); }
+}
+
+function setFrom(r) {
+  const s = $("msgFrom");
+  for (const o of Array.from(s.options)) if (o.value === "keep") o.remove();
+  const role = roleOf(r);
+  if (role) { s.value = role.key; return; }
+  const o = new Option(`As before: ${r.source_id || "no source"}, authority ${r.authority || 0}`, "keep");
+  o.dataset.source = r.source_id || ""; o.dataset.authority = r.authority || 0;
+  s.append(o); s.value = "keep";
+}
+
+function chosenFrom() {
+  const o = $("msgFrom").selectedOptions[0];
+  return {source_id: o.dataset.source, authority: Number(o.dataset.authority)};
+}
+
+function renderAbout() {
+  const ticked = new Set(chosenAbout()), box = $("aboutList");
+  box.replaceChildren();
+  for (const [id, b] of Object.entries(beliefs)) {
+    const lab = el("label", "check"), cb = el("input");
+    cb.type = "checkbox"; cb.value = id; cb.checked = ticked.has(id);
+    lab.append(cb, el("span", "", b.text || id));
+    box.append(lab);
+  }
+  $("aboutBox").hidden = !Object.keys(beliefs).length;
+}
+const chosenAbout = () => Array.from(document.querySelectorAll("#aboutList input:checked")).map((x) => x.value);
+function clearAbout() { for (const x of document.querySelectorAll("#aboutList input")) x.checked = false; }
+
+function nextId() {
+  let n = 0;
+  for (const r of records) { const m = /^msg-(\d+)$/.exec(r.record_id); if (m) n = Math.max(n, Number(m[1])); }
+  return `msg-${n + 1}`;
+}
+
+function startEdit(r) {
+  editing = r;
+  $("msgText").value = typeof r.text === "string" ? r.text : "";
+  setFrom(r);
+  const extra = r.status === "withdrawn" ? " It was withdrawn: write or paste its text again to put it back."
+    : r.status === "conflicted" ? " Two versions disagree: saving the right one settles it." : "";
+  $("editing").textContent = `Editing ${r.record_id}. Saving makes it version ${r.revision + 1}, and the version before stops counting.${extra}`;
+  $("editing").hidden = false; $("cancelEdit").hidden = false; $("addMsg").textContent = "Save change";
+  $("rid").value = r.record_id; $("rev").value = r.revision + 1; $("src").value = r.source_id || ""; $("auth").value = r.authority || 0;
+  $("text").value = $("msgText").value;
+  renderRecords($("records").querySelector("tbody"));
+  $("msgText").focus();
+}
+
+function stopEdit() {
+  editing = null;
+  $("editing").hidden = true; $("cancelEdit").hidden = true; $("addMsg").textContent = "Add message";
+  for (const o of Array.from($("msgFrom").options)) if (o.value === "keep") o.remove();
+  renderRecords($("records").querySelector("tbody"));
+}
+
+async function addMessage() {
+  if (!current) { say("Start or choose a task first.", true); return; }
+  const text = $("msgText").value.trim();
+  if (!text) { say("Write or paste the message first.", true); $("msgText").focus(); return; }
+  const from = chosenFrom(), about = chosenAbout();
+  let body;
+  if (editing) {  // the next revision of the same message; it keeps its original time, so it does not jump ahead of later messages
+    body = {record_id: editing.record_id, revision: editing.revision + 1, text, ...from,
+            valid_from: editing.valid_from ?? Date.now() / 1000, valid_until: editing.valid_until ?? null, span: editing.span ?? null};
+  } else {
+    try { records = (await api(`/tasks/${enc(current)}/records`)).records; } catch (e) { /* use the list already shown */ }
+    body = {record_id: nextId(), revision: 1, text, ...from, valid_from: Date.now() / 1000};
+  }
+  if (about.length) body.about = about;
+  $("addMsg").disabled = true;
+  try {
+    const out = await post(`/tasks/${enc(current)}/events`, body);
+    showChange(out.change, body.record_id);
+    say(""); $("msgText").value = ""; clearAbout(); stopEdit();
+    await render(); await whoami();
+  } catch (e) { say(e.message, true); }
+  $("addMsg").disabled = false;
+}
+
+async function withdrawRecord(r) {
+  if (!window.confirm(`Withdraw ${r.record_id}? It stops counting at once. To put it back later, use Edit and give its text again.`)) return;
+  try {
+    const out = await post(`/tasks/${enc(current)}/events`, {record_id: r.record_id, revision: r.revision + 1, text: null,
+                                                           source_id: r.source_id || "", authority: r.authority || 0,
+                                                           valid_from: r.valid_from ?? null});
+    showChange(out.change, r.record_id);
+    if (editing && editing.record_id === r.record_id) { $("msgText").value = ""; stopEdit(); }
+    say("");
+    await render(); await whoami();
+  } catch (e) { say(e.message, true); }
+}
+
+function showChange(c, rid) {
+  const box = $("change"); box.replaceChildren();
+  const n = el("div", "note"), o = c.ledger.outcome;
+  const head = {applied: c.ledger.status === "withdrawn" ? `${rid} withdrawn.` : `${rid} saved.`,
+                duplicate: `${rid} was already there exactly like this, so nothing changed.`,
+                stale: `A newer version of ${rid} is already there, so nothing changed.`,
+                conflict: `${rid} now has two versions that disagree. Edit it to settle which one is right.`}[o] || `${rid}: ${o}.`;
+  n.append(el("div", "", head));
+  for (const [a, from, to] of c.changed_actions) n.append(el("div", "", `${a}: ${words(from)} → ${words(to)}`));
+  if (!c.changed_actions.length && c.ledger.changed) n.append(el("div", "", "No decision changed."));
+  n.append(el("div", "muted", `${c.edges_scored} pairs read · ${c.propagation.total_recomputed} values recomputed · ${(1000 * c.seconds).toFixed(0)} ms`));
+  box.append(n);
+}
+
+// ------------------------------------------------------------------ explaining, confirming, correcting
 async function confirmLink(predicateId, item, button) {
   const name = window.prompt("Who should confirm this? Their name is recorded with the answer.");
   if (!name) return;
   button.disabled = true;
   try {
-    const out = await post(`/tasks/${encodeURIComponent(current)}/confirmations`, {predicate_id: predicateId, to_name: name});
+    const out = await post(`/tasks/${enc(current)}/confirmations`, {predicate_id: predicateId, to_name: name});
     const n = el("div", "note");
     n.append(el("div", "", `Send this link to ${out.to_name}. It shows only the question, works once, and expires in 3 days.`));
     const link = el("code", "", out.url); n.append(link);
@@ -325,7 +547,7 @@ async function confirmLink(predicateId, item, button) {
 async function explain(actionId, item, button) {
   button.disabled = true;
   try {
-    const ex = await api(`/tasks/${encodeURIComponent(current)}/explain/${encodeURIComponent(actionId)}`);
+    const ex = await api(`/tasks/${enc(current)}/explain/${enc(actionId)}`);
     for (const p of ex.predicates) {
       const block = el("div"); block.style.marginTop = "8px";
       const h = el("div"); h.append(el("span", "badge " + p.status, p.status), document.createTextNode(" " + p.text));
@@ -341,7 +563,7 @@ async function explain(actionId, item, button) {
           const b = el("button", "quiet", label);
           b.onclick = async () => {
             try {
-              const out = await post(`/tasks/${encodeURIComponent(current)}/readings`, {record_id: r.record_id, predicate_id: p.predicate, establishes: value});
+              const out = await post(`/tasks/${enc(current)}/readings`, {record_id: r.record_id, predicate_id: p.predicate, establishes: value});
               say(`Recorded (item ${out.memory_item}). It takes effect now and can be withdrawn.`);
               await render();
             } catch (e) { say(e.message, true); }
@@ -357,15 +579,7 @@ async function explain(actionId, item, button) {
   } catch (e) { say(e.message, true); button.disabled = false; }
 }
 
-function showChange(c) {
-  const box = $("change"); box.replaceChildren();
-  const n = el("div", "note");
-  n.append(el("div", "", `Ledger: ${c.ledger.outcome}. Pairs read: ${c.edges_scored}. Nodes recomputed: ${c.propagation.total_recomputed}. ${(1000 * c.seconds).toFixed(0)} ms.`));
-  if (!c.ledger.changed) n.append(el("div", "muted", "Nothing changed, so nothing was recomputed."));
-  for (const [a, from, to] of c.changed_actions) n.append(el("div", "", `${a}: ${from.replace("_", " ")} → ${to.replace("_", " ")}`));
-  box.append(n);
-}
-
+// ------------------------------------------------------------------ advanced: records by hand, and files
 async function deliver(withdraw) {
   if (!current) { say("Create or select a task first.", true); return; }
   const text = $("text").value.trim();
@@ -374,8 +588,8 @@ async function deliver(withdraw) {
                 source_id: $("src").value.trim(), authority: Number($("auth").value), valid_from: Date.now() / 1000};
   if (!body.record_id) { say("A record needs an id.", true); return; }
   try {
-    const out = await post(`/tasks/${encodeURIComponent(current)}/events`, body);
-    showChange(out.change);
+    const out = await post(`/tasks/${enc(current)}/events`, body);
+    showChange(out.change, body.record_id);
     say("");
     await render(); await whoami();
   } catch (e) { say(e.message, true); }
@@ -393,13 +607,12 @@ async function importFile() {
   if (!f) { say("Choose a file first.", true); return; }
   try {
     const content = toBase64(await f.arrayBuffer());
-    const out = await post(`/tasks/${encodeURIComponent(current)}/import`, {filename: f.name, content_base64: content,
-                                                                               source_id: $("src").value.trim(), authority: Number($("auth").value)});
+    const out = await post(`/tasks/${enc(current)}/import`, {filename: f.name, content_base64: content, ...chosenFrom()});
     const box = $("change"); box.replaceChildren();
     const n = el("div", "note");
     n.append(el("div", "", `${out.messages.length} message(s) imported.`));
     for (const m of out.messages) {
-      n.append(el("div", "muted", `${m.attribution}: ${m.passages} passage(s)` + (m.changed_actions.length ? ` · ${m.changed_actions.map((c) => `${c[0]}: ${c[1]} → ${c[2]}`).join(", ")}` : "")));
+      n.append(el("div", "muted", `${m.attribution}: ${m.passages} passage(s)` + (m.changed_actions.length ? ` · ${m.changed_actions.map((c) => `${c[0]}: ${words(c[1])} → ${words(c[2])}`).join(", ")}` : "")));
     }
     box.append(n);
     say("");
@@ -407,17 +620,18 @@ async function importFile() {
   } catch (e) { say(e.message, true); }
 }
 
-$("task").onchange = () => { current = $("task").value || null; render(); };
+$("task").onchange = () => { current = $("task").value || null; if (editing) { $("msgText").value = ""; stopEdit(); } render(); };
 $("refresh").onclick = () => loadTasks(current);
-$("new").onclick = async () => { $("create").hidden = false; try { await loadTemplates(); } catch (e) { say(e.message, true); } if (!$("schema").value) $("schema").value = JSON.stringify(EXAMPLE, null, 2); $("newTaskId").focus(); };
+$("new").onclick = () => openCreate();
 $("template").onchange = renderParams;
 $("cancel").onclick = () => { $("create").hidden = true; };
 $("createTpl").onclick = async () => {
-  const taskId = $("newTaskId").value.trim();
-  if (!taskId) { say("Give the task an id.", true); return; }
+  const taskId = $("newTaskId").value.trim() || suggestId();
   try {
     await post("/tasks/from-template", {template: $("template").value, task_id: taskId, params: collectParams()});
-    $("create").hidden = true; say(`Task ${taskId} created.`); await loadTasks(taskId);
+    $("create").hidden = true; $("newTaskId").value = "";
+    say(`Task ${taskId} started. Add its messages as they arrive.`); await loadTasks(taskId);
+    $("msgText").focus();
   } catch (e) { say(e.message, true); }
 };
 $("createBtn").onclick = async () => {
@@ -426,13 +640,16 @@ $("createBtn").onclick = async () => {
   try { await post("/tasks", body); $("create").hidden = true; say(`Task ${body.task_id} created.`); await loadTasks(body.task_id); }
   catch (e) { say(e.message, true); }
 };
+$("addMsg").onclick = addMessage;
+$("cancelEdit").onclick = () => { $("msgText").value = ""; stopEdit(); };
+$("msgText").onkeydown = (e) => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") addMessage(); };
 $("deliver").onclick = () => deliver(false);
 $("withdraw").onclick = () => deliver(true);
 $("importBtn").onclick = importFile;
 $("verify").onclick = async () => {
   if (!current) return;
   try {
-    const v = await api(`/tasks/${encodeURIComponent(current)}/verify`);
+    const v = await api(`/tasks/${enc(current)}/verify`);
     say(`${v.computed_nodes} cached values compared with a full rebuild: ${v.not_bitwise_equal} differ (largest difference ${v.max_abs_difference.toExponential(2)}).`, v.not_bitwise_equal > 0);
   } catch (e) { say(e.message, true); }
 };
@@ -443,6 +660,7 @@ $("keyBtn").onclick = async () => {
   await whoami();
   loadTasks(current).catch((e) => say(e.message, true));
 };
+renderFrom();
 whoami().then(() => loadTasks().catch((e) => say(e.message, true)));
 </script>
 </body>

@@ -37,7 +37,8 @@ curl -s localhost:8791/tasks -H 'content-type: application/json' -d '{
 | `POST /tasks/from-template` | `{template, task_id, params}` |
 | `POST /tasks` | a full definition: `predicates`, `gates` (`op` is `AND`, `OR`, `NOT` or `ATLEAST` with `k`), `actions` |
 | `GET /tasks` | task ids |
-| `GET /tasks/{id}` | `assessments` (per action: `disposition`, `confidence`, `p_success`, ...), `beliefs` (per requirement: `status`, `probabilities`, `decisive` records), `records`, `threshold` |
+| `GET /tasks/{id}` | `assessments` (per action: `description`, `disposition`, `confidence`, `p_success`, ...), `beliefs` (per requirement: `text`, `status`, `probabilities`, `decisive` records), `records` (revision and status), `threshold` |
+| `GET /tasks/{id}/records` | every record at its current revision, with `text`, `source_id`, `authority`, `valid_from`, `valid_until` and `span`; a conflicted record lists its `versions` |
 | `PUT /tasks/{id}/schema` | change the requirements or actions; only what changed is recomputed |
 
 ## Evidence
