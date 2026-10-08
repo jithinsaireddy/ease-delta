@@ -9,6 +9,15 @@ Thank you for helping. Three kinds of contribution matter most right now, in thi
    whether it saved you any time. No person has been measured using it yet, so every report counts.
 3. **Code.** Bug fixes, importers for more sources (read-only), templates for more workflows, other languages.
 
+## How a misreading becomes evaluation data
+
+A maintainer runs `python scripts/misreadings.py sync`, which rebuilds `evals/misreadings.jsonl` from the issues
+labelled `misreading`. Only reports whose author answered "Yes" to the form's consent question are written there,
+under CC BY 4.0 with the author and the issue as attribution; a report without consent is counted and nothing from
+it is stored. Label an issue `invalid` or `duplicate` to keep it out. `python scripts/misreadings.py score` then
+measures both released readers on the file, so every new training run can be checked against what people found.
+Details are in [evals/README.md](evals/README.md).
+
 ## Working on the code
 
 ```bash

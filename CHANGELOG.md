@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- **Misreading reports become evaluation data**: `scripts/misreadings.py sync` rebuilds `evals/misreadings.jsonl`
+  from the issues labelled `misreading`, keeping only reports whose author consented to publication (CC BY 4.0);
+  `scripts/misreadings.py score` measures both released readers on it.
+- `scripts/usage_stats.py` also reports the two readers and the demo Space.
+
 ## 0.2.0 (2026-10-07)
 
 - **Short API**: `ease.EvidenceReader` (read a claim against a passage; models load from the Hugging Face Hub by name)
