@@ -10,6 +10,7 @@ import html
 import os
 import threading
 import time
+from urllib.parse import quote
 
 import gradio as gr
 import torch
@@ -24,6 +25,7 @@ MODEL = os.environ.get("EASE_MODEL", "jithinpothireddy21/ease-delta")
 PUBLIC_NLI = "tasksource/ModernBERT-base-nli"
 GITHUB = "https://github.com/jithinsaireddy/ease-delta"
 RESULTS = GITHUB + "/blob/main/docs/RESULTS.md"
+REPORT = GITHUB + "/issues/new?template=misreading.yml"  # the Misreading form; its text fields fill from the URL
 
 READER = EvidenceReader.from_pretrained(MODEL, exact=False)
 LOCK = threading.Lock()  # one model, read by one request at a time
@@ -55,7 +57,14 @@ def read_passage(claim: str, passage: str):
         p = torch.softmax(PUB_MODEL(**enc).logits[0], -1)[PUB_COLS].tolist()
     ours = {"supports": r.supports, "refutes": r.refutes, "not enough info": r.not_enough_info}
     theirs = {"supports (entailment)": p[0], "refutes (contradiction)": p[1], "not enough info (neutral)": p[2]}
-    return ours, theirs
+    said = max(ours, key=ours.get)
+    fields = {"title": "Misreading: " + claim.strip()[:80], "requirement": claim.strip(), "message": passage.strip(),
+              "model": f"{MODEL} (online demo app)"}
+    url = REPORT + "".join(f"&{k}={quote(v, safe='')}" for k, v in fields.items())
+    report = (f"Is the EASE-Delta answer wrong? [Report it]({url}). It opens a public GitHub issue with this claim and "
+              f"passage filled in, so remove anything private first. On the form, choose what it said (**{said}**) and "
+              "what it should have said.")
+    return ours, theirs, report
 
 
 READ_EXAMPLES = [
@@ -254,6 +263,9 @@ messages arrive, get corrected, get withdrawn. EASE-Delta reads each message aga
 every change tells you what is ready, what is blocked and why, and which single question is worth asking.
 It proposes; it never acts. [Code and docs]({GITHUB}) &middot; [Measured results]({RESULTS}) &middot;
 [Model](https://huggingface.co/jithinpothireddy21/ease-delta)
+
+This app runs on a server, so what you type is processed there; it is not saved to any account, but please do not
+paste anything private. Found a wrong reading? [Report it]({REPORT}): if you allow it on the form, it becomes a test case for the next model.
 """
 
 with gr.Blocks(title="EASE-Delta: keep decisions current") as demo:
@@ -291,6 +303,8 @@ with gr.Blocks(title="EASE-Delta: keep decisions current") as demo:
                 status = gr.HTML(status_html(None))
                 why_action = gr.Dropdown([], label="Why? Choose an action")
                 why = gr.Markdown()
+                gr.Markdown(f"Did it read a message wrongly? [Report it]({REPORT}) with the requirement and the "
+                            "message, after removing anything private.")
     with gr.Tab("Read one passage"):
         gr.Markdown("**Does this passage support the claim, refute it, or not settle it at all?** "
                     "The EASE-Delta reader next to a widely used public NLI model, on the same pair.")
@@ -301,7 +315,8 @@ with gr.Blocks(title="EASE-Delta: keep decisions current") as demo:
         with gr.Row():
             ours = gr.Label(label="EASE-Delta reader")
             theirs = gr.Label(label=f"{PUBLIC_NLI} (for comparison)")
-        gr.Examples(READ_EXAMPLES, inputs=[claim, passage], outputs=[ours, theirs], fn=read_passage,
+        report = gr.Markdown()
+        gr.Examples(READ_EXAMPLES, inputs=[claim, passage], outputs=[ours, theirs, report], fn=read_passage,
                     cache_examples=False, run_on_click=True)
         gr.Markdown("On passages taken from unrelated documents, the EASE-Delta reader gave a decisive answer 0.58% "
                     f"of the time and the public model 45%, in the same evaluation ([results]({RESULTS})). The public "
@@ -334,7 +349,7 @@ failed, is in the [results report]({RESULTS}).
     yes.click(lambda s, r, w: confirm(s, r, w, True), [state, req, who], outs)
     no.click(lambda s, r, w: confirm(s, r, w, False), [state, req, who], outs)
     why_action.change(lambda s, a: explain_md(s["tracker"] if s else None, a), [state, why_action], why)
-    read_btn.click(read_passage, [claim, passage], [ours, theirs])
+    read_btn.click(read_passage, [claim, passage], [ours, theirs, report])
 
 if __name__ == "__main__":
     # EASE_SHARE=1 prints a temporary public link (for running the demo from a notebook, e.g. on Colab)

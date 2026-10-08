@@ -1,6 +1,6 @@
 # Results at a glance
 
-Measured on an Apple M4 Max against plans written before any test data was read
+Measured on an Apple M4 Max against plans written before the experiments they cover
 ([PREREGISTRATION.md](PREREGISTRATION.md), [PREREGISTRATION_LARGE.md](PREREGISTRATION_LARGE.md)). Tasks are
 generated; their text is human-written (Wikipedia revisions and NLI corpora). Brackets are 95% intervals over
 episodes. The figures are copied from the generated [RESULTS.md](RESULTS.md), which is the authority; if they ever

@@ -59,6 +59,7 @@
   .fill { height: 100%; width: 0; transition: width .35s ease; }
   .fill.s { background: var(--ready); } .fill.r { background: var(--blocked); } .fill.n { background: var(--open); }
   .verdict { font-size: 22px; font-weight: 700; margin: 4px 0 2px; }
+  .report { font-size: 14px; color: var(--muted); margin: 14px 0 0; }
   .muted { color: var(--muted); font-size: 14px; }
   .note { font-size: 13px; color: var(--muted); border-left: 3px solid var(--accent); padding: 4px 0 4px 10px; margin-top: 14px; }
   .progress { height: 4px; background: var(--soft); border-radius: 2px; overflow: hidden; margin-top: 10px; display: none; }
@@ -140,6 +141,9 @@
         <div class="rrow"><span>supports</span><div class="track"><div class="fill s" id="fs"></div></div><span class="kv" id="ps"></span></div>
         <div class="rrow"><span>refutes</span><div class="track"><div class="fill r" id="fr"></div></div><span class="kv" id="pr"></span></div>
         <div class="rrow"><span>not enough info</span><div class="track"><div class="fill n" id="fn"></div></div><span class="kv" id="pn"></span></div>
+        <p class="report"><a id="reportLink" href="https://github.com/jithinsaireddy/ease-delta/issues/new?template=misreading.yml" target="_blank" rel="noopener">Is this answer wrong? Report it</a>.
+          This opens a public GitHub issue with the claim and the passage filled in, so remove names and anything private first. On the form,
+          choose what it said, <b id="reportSaid">&ndash;</b>, and what it should have said. If you allow it there, your report becomes a test case for the next model.</p>
       </div>
       <div class="note">This page runs the 149M base reader, compressed to 8 bits for the browser; on 3,000 development pairs it gave the same answer as the
         full model 98.1% of the time. On passages from unrelated documents, the reader gives a decisive answer 0.6&ndash;0.8% of the time; a widely used public
@@ -178,7 +182,7 @@
 
   <section>
     <h2>Measured, and pre-registered</h2>
-    <p class="sub">Hypotheses and decision rules were written and hashed before any test data was read; the failures are reported too. Tasks are generated; their text is human-written.</p>
+    <p class="sub">Hypotheses and decision rules were written and hashed before the experiments they cover; the failures are reported too. Tasks are generated; their text is human-written.</p>
     <div class="card tablewrap">
       <table>
         <tr><th>What was measured</th><th>Result</th></tr>
@@ -312,6 +316,12 @@ async function read() {
     $("result").hidden = false;
     $("verdict").textContent = names[top];
     for (const [id, v] of [["s", s], ["r", r], ["n", n]]) { $("f" + id).style.width = (100 * v).toFixed(1) + "%"; $("p" + id).textContent = (100 * v).toFixed(1) + "%"; }
+    // A wrong answer goes to the Misreading form with its text fields filled in (GitHub fills form fields by id).
+    const fields = { template: "misreading.yml", title: "Misreading: " + claim.slice(0, 80), requirement: claim, message: passage,
+                     model: MODEL + " (8-bit, demo page)" };
+    $("reportLink").href = "https://github.com/jithinsaireddy/ease-delta/issues/new?" +
+      Object.entries(fields).map(([k, v]) => k + "=" + encodeURIComponent(v)).join("&");
+    $("reportSaid").textContent = names[top];
     $("readStatus").textContent = `Read in your browser in ${(performance.now() - t0).toFixed(0)} ms.`;
   } catch (e) {
     $("readStatus").textContent = "The model could not run here: " + e.message;

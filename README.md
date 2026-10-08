@@ -143,7 +143,7 @@ More in [concepts](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/c
 
 ## Results
 
-Measured on an Apple M4 Max against plans written and hashed before any test data was read
+Measured on an Apple M4 Max against plans written and hashed before the experiments they cover
 ([`PREREGISTRATION.md`](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/PREREGISTRATION.md), [`PREREGISTRATION_LARGE.md`](https://github.com/jithinsaireddy/ease-delta/blob/main/docs/PREREGISTRATION_LARGE.md)).
 Tasks are generated; their text is human-written (Wikipedia revisions and NLI corpora). Hypotheses
 that failed are reported as failed.

@@ -26,6 +26,12 @@ from ease.util import atomic_write_json, get_device, read_json
 GITHUB = "https://github.com/jithinsaireddy/ease-delta"
 SPACE = "https://huggingface.co/spaces/jithinpothireddy21/ease-delta-demo"
 PUBLIC_NLI = "tasksource/ModernBERT-base-nli"
+PLAN = {  # what each size was evaluated against, and when that plan was fixed
+    "large": f"The evaluation plan was written and hashed before training: [`docs/PREREGISTRATION_LARGE.md`]"
+             f"({GITHUB}/blob/main/docs/PREREGISTRATION_LARGE.md).",
+    "base": f"The evaluation plan was written and hashed while this model was still training, before any test split "
+            f"was evaluated: [`docs/PREREGISTRATION.md`]({GITHUB}/blob/main/docs/PREREGISTRATION.md).",
+}
 
 
 def check(out: Path, edge: EdgeModel, eval_cache: str, n: int, device) -> dict:
@@ -197,7 +203,7 @@ def card(repo: str, size: str, edge_dir: Path, results: dict, other: dict | None
          "WANLI (cc-by-4.0), plus 20% synthetic unrelated pairs (the claim of one example with the evidence of another "
          "from a different topic, labelled `NOT_ENOUGH_INFO`). SNLI was left out because its annotators labelled "
          "unrelated content as contradiction; ANLI because its licence is non-commercial. One run, on one Apple M4 Max. "
-         f"The evaluation plan was written and hashed before training: [`docs/PREREGISTRATION_LARGE.md`]({GITHUB}/blob/main/docs/PREREGISTRATION_LARGE.md).\n",
+         + PLAN[size] + "\n",
          "## Limitations\n",
          "- English only.",
          "- Passages on the claim's own subject that do not settle it are still read as decisive about one time in five (VitaminC test, not-enough-info items).",
